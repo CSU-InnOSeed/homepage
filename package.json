@@ -43,6 +43,7 @@
 	"dependencies": {
 		"@popperjs/core": "^2.11.8",
 		"@types/ramda": "^0.28.15",
+		"echarts": "^6.0.0",
 		"flowbite": "^2.4.1",
 		"flowbite-svelte": "^0.46.15",
 		"fp-ts": "^2.12.2",

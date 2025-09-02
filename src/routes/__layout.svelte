@@ -8,6 +8,7 @@
 	import { compose } from 'ramda';
 	import { showNavigator } from '@/global/navigator';
 	import { BannerStatus, currentStatus } from '@/global/banner';
+	import { page } from '$app/stores';
 
 	let bannerStatus: BannerStatus | null = null;
 
@@ -46,6 +47,10 @@
 	});
 </script>
 
-<Banner />
+{#if $page.url.pathname === '/'}
+	<Banner />
+{/if}
 <Navigator />
-<slot />
+<div class="{ $page.url.pathname !== '/' ? 'pt-16' : '' }">
+	<slot />
+</div>

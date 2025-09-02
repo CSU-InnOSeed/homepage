@@ -6,6 +6,7 @@
 	import List from '@/components/card/List.svelte';
 	import IconLink from '@/components/IconLink.svelte';
 	import Img from '@/components/img/Img.svelte';
+import EchartBar from '@/components/global/EchartBar.svelte';
 </script>
 
 <List>
@@ -95,4 +96,8 @@
 			</p>
 		</CardContextBlock>
 	</Card>
+	<!-- 动态成果图表展示 -->
+		<div class="mt-10 flex justify-center">
+			<EchartBar />
+		</div>
 </List>
