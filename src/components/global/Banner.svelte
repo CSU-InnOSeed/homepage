@@ -103,82 +103,17 @@
 	});
 </script>
 
-{#if displayVideo || display}
+{#if display}
 	<header
 		transition:fly
 		id="banner"
-		class={`flex justify-center items-center sm:block w-full ${
-			displayVideo ? '' : 'h-screen sm:h-80 overflow-hidden'
-		}`}
+		class="flex justify-center items-center sm:block w-full h-screen sm:h-80 overflow-hidden relative"
+		style="background: linear-gradient(120deg, #ffe0b2 0%, #b3e5fc 100%);"
 	>
-		{#if displayVideo}
-			<div
-				transition:fly
-				class="{minimized
-					? 'h-0'
-					: 'w-full h-screen'} overflow-hidden flex justify-center items-center bg-black transition-all duration-300"
-			>
-				<video
-					use:addAllEvent
-					id="think_different_video"
-					class={`${minimized ? `w-0 h-0` : `w-full max-h-screen`}`}
-					autoplay
-					muted={isMuted}
-				>
-					<track kind="captions" />
-					<source src="component/Banner/think_different.mp4" type="video/mp4" />
-				</video>
-				{#if isWaiting}
-					<Loading spinnerStyle={'stroke:rgb(255,255,255)'} />
-				{/if}
-			</div>
-			{#if showTips}
-				<div
-					transition:fade
-					class="absolute w-screen h-screen top-0 flex flex-col justify-end items-center gap-5"
-				>
-					<p class="text-white">向下滑动,边听边看</p>
-					<ChevronDoubleDownIcon class="text-white w-10 h-10 animate-bounce" />
-				</div>
-			{/if}
-		{/if}
-		{#if display && !displayVideo}
-			<div class="w-full h-screen flex justify-center items-center bg-black opacity-40">
-					<Img
-						{src}
-						id="bg_img"
-						clazz="object-cover h-full sm:w-full"
-						alt="1997 apple think different ad."
-					/>
-			</div>
-		{/if}
+		<div style="position:absolute;inset:0;background:rgba(255,255,255,0.5);z-index:1;"></div>
+		<div class="w-full h-full flex justify-center items-center relative" style="z-index:2;">
+			<Logo />
+		</div>
 	</header>
-
-	{#if display && !displayVideo}
-		<Logo on:click={clickPlay} />
-	{/if}
-
-	{#if displayVideo}
-		<Controller
-			on:close={() => {
-				currentEvent.set({
-					type: 'C',
-					control: { close: true },
-					page: { from: page.url.pathname }
-				});
-			}}
-			on:play={play}
-			on:pause={pause}
-			on:rewind={rewind}
-			on:volumeUp={() => (isMuted = true)}
-			on:volumeOff={() => (isMuted = false)}
-			on:setMinimize={setMinimize}
-			minimize={minimized}
-			{isPaused}
-			{isMuted}
-			autoRolled={true}
-			autoRolledDuration={3000}
-		/>
-	{/if}
 {/if}
 
