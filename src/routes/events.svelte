@@ -71,8 +71,8 @@
 <div class="w-full flex flex-col items-center mt-8 px-4">
   <h1 class="text-3xl font-bold mb-8">活动预告</h1>
 
-<div class="w-full flex flex-col items-center mt-8 px-4">
-  <h1 class="text-3xl font-bold mb-8">活动预告</h1>
+<!-- <div class="w-full flex flex-col items-center mt-8 px-4">
+  <h1 class="text-3xl font-bold mb-8">活动预告</h1> -->
 
   <!-- 日历导航 -->
   <div class="flex items-center justify-between w-full max-w-4xl mb-4">
