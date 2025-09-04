@@ -12,7 +12,7 @@
 		<div class="content flex flex-col top-32 text-xl gap-5">
 			<div>
 				<p>实验室邮箱:</p>
-				<p>us@innoseed.club</p>
+				<p>contact@innoseed.club</p>
 			</div>
 			<div>
 				<p>学生负责人微信:</p>
@@ -27,7 +27,7 @@
 		<div class="content flex flex-col top-32 text-xl gap-5">
 			<div>
 				<p>实验室邮箱:</p>
-				<p>us@innoseed.club</p>
+				<p>contact@innoseed.club</p>
 			</div>
 			<div>
 				<p>学生负责人微信:</p>
