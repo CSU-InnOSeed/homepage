@@ -63,7 +63,7 @@
 					{#if showCopySuccess}
 						<div class="copy-success">✓ 已复制到剪贴板</div>
 					{/if}
-					<p>请保存此个性标签，它包含您的选择信息。</p>
+					<p>请保存此个性标签，并于填写申请表时填入。</p>
 					<button class="next-button" on:click={nextStep}>下一步</button>
 				</div>
 			{/if}
