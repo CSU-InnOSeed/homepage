@@ -32,7 +32,7 @@
 			alt="the logo of ios club."
 			src="global/iOS_Club_LOGO.png"
 		/>
-		<h1 class="text-xl font-bold">中南大学新芽实验室</h1>
+		<h1 class="text-xl font-bold">中南大学InnOSeed实验室</h1>
 		<div
 			class={`invisible sm:visible fixed top-0 right-5 w-1/3 max-w-sm h-10 flex justify-end items-center gap-5`}
 		/>

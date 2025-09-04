@@ -13,7 +13,7 @@
     </CardTitleBlock>
     <CardContextBlock>
       <h1 class="text-5xl font-bold truncate">加入我们</h1>
-      <p>加入新芽实验室，加入颠覆世界的行列</p>
+      <p>加入InnOSeed，加入颠覆世界的行列</p>
     </CardContextBlock>
   </Card>
   <div class="hidden md:block relative w-full max-w-7xl h-full">
@@ -24,7 +24,7 @@
     />
     <div class="flex flex-col justify-center items-start gap-5">
       <h1 class="z-10 text-5xl font-bold">加入我们</h1>
-      <p class="z-10">加入新芽实验室，加入颠覆世界的行列</p>
+      <p class="z-10">加入InnOSeed，加入颠覆世界的行列</p>
     </div>
   </div>
   <List class="flex flex-col justify-center items-center">
