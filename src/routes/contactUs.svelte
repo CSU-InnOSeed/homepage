@@ -27,11 +27,12 @@
 		<div class="content flex flex-col top-32 text-xl gap-5">
 			<div>
 				<p>实验室邮箱:</p>
-				<p>csuiosclub@gmail.com</p>
+				<p>us@innoseed.club</p>
 			</div>
 			<div>
 				<p>学生负责人微信:</p>
-				<p>l15986059328</p>
+				<p>王同学 wpcwzy1</p>
+				<p>刘同学 -sssSiXxxx-</p>
 			</div>
 		</div>
 	</div>

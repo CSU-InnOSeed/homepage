@@ -26,7 +26,7 @@
 			</div>
 			<div class="p-5">
 				<h1 class="font-bold text-5xl">Step.1</h1>
-				<h1 class="text-3xl truncate">选择你的面试官</h1>
+				<h1 class="text-3xl truncate">生成你的个性标签</h1>
 			</div>
 		</CardTitleBlock>
 		<CardContextBlock >
