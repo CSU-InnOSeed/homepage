@@ -3,11 +3,10 @@
     import { fly } from 'svelte/transition';
     import ToolTip from '@/components/global/ToolTip.svelte';
     import MatchCard from "./MatchCard.svelte";
-    import { options, interviewers } from "./options";
+    import { options } from "./options";
     import {createEventDispatcher, onMount} from 'svelte';
     const dispatch = createEventDispatcher();
 
-    let showIndex = 0;
     let matchAble = false;
 
     function handleSelect(){
@@ -30,38 +29,21 @@
         // if(matchAble === false){
         //     return;
         // }
-        let selectItem = new Set();
-        options.forEach(option => {
-            option.options.forEach(item => {
+        let selectedIndices: number[][] = [];
+        options.forEach((option, groupIndex) => {
+            let indices: number[] = [];
+            option.options.forEach((item, index) => {
                 if(item.selected){
-                    selectItem.add(item.name);
+                    indices.push(index);
                 }
             });
+            selectedIndices.push(indices);
         });
-        //进行排序
-        interviewers.forEach(interviewer => {
-            let count = 0;
-            interviewer.tags.forEach(tag => {
-                if(selectItem.has(tag.name)){
-                    tag.selected = true;
-                    count++;
-                }else{
-                    tag.selected = false;
-                }
-            });
-            interviewer.tags.sort((a,b) => {
-                if (a.selected !== b.selected) {
-                    return b.selected ? 1 : -1;
-                }
-                // 如果 a.selected 和 b.selected 相同,返回 0
-                    return 0;
-            });
-            interviewer.matchCount = count;
-        });
-
-        interviewers.sort((a,b) => b.matchCount - a.matchCount);
-        console.log(interviewers);
-        dispatch('match',{})
+        // 生成个性标签
+        let codeString = selectedIndices.map((indices, idx) => `${idx}:${indices.join(',')}`).join(';');
+        let encodedCode = btoa(codeString);
+        console.log('Generated code:', encodedCode);
+        dispatch('match', {code: encodedCode});
     }
 </script>
 
@@ -90,23 +72,14 @@
 </div>
 <div class="card-area">
     {#each options as option,index}
-        {#if showIndex == 0}
+        <div class="option-group">
+            <h3 class="group-title">{option.title}</h3>
             <MatchCard on:itemSelect={handleSelect} options={option.options}></MatchCard>
-        {/if}
-    {/each}
-    {#each options as option,index}
-        {#if showIndex == 1}
-            <MatchCard on:itemSelect={handleSelect} options={option.options}></MatchCard>
-        {/if}
-    {/each}
-    {#each options as option,index}
-        {#if showIndex == 2}
-            <MatchCard on:itemSelect={handleSelect} options={option.options}></MatchCard>
-        {/if}
+        </div>
     {/each}
 </div>
 <div class="button-group">
-    <div class="finish-button" on:click={match}>匹配</div>
+    <div class="finish-button" on:click={match}>生成个性标签</div>
 </div>
 </div>
 
@@ -183,5 +156,16 @@
     .close-icon:hover{
         transition: none;
     }
+  }
+
+  .option-group {
+    margin-bottom: 20px;
+  }
+
+  .group-title {
+    text-align: center;
+    color: #4E5969;
+    font-size: 18px;
+    margin-bottom: 10px;
   }
 </style>

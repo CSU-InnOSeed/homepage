@@ -7,7 +7,7 @@ let show = false;
 
 const option = {
   title: {
-    text: '成果展示',
+    text: '竞赛成果展示（样例数据）',
     left: 'center',
     textStyle: { fontSize: 20, fontWeight: 700, color: '#222' }
   },
@@ -15,7 +15,7 @@ const option = {
   grid: { left: 40, right: 20, bottom: 40, top: 60 },
   xAxis: {
     type: 'category',
-    data: ['省级竞赛奖', '国家级竞赛奖', '国际竞赛奖', '2022奖学金', '2023奖学金'],
+    data: ['省级竞赛奖', '国家级竞赛奖', '国际竞赛奖'],
     axisLabel: { fontSize: 15, color: '#666', fontWeight: 500 },
     axisLine: { lineStyle: { color: '#e0e0e0' } }
   },
@@ -29,7 +29,8 @@ const option = {
     {
       name: '数量',
       type: 'bar',
-      data: [18, 7, 2, 12, 15],
+      barWidth: '35%',
+      data: [18, 7, 2],
       itemStyle: {
   color: '#3B5CCC', // 现代精致蓝色
         borderRadius: [8, 8, 0, 0],
@@ -70,7 +71,7 @@ onMount(() => {
   {#if show}
     <div bind:this={chartDiv}
       in:fly={{ y: 60, duration: 500, opacity: 0.1 }}
-      style="width: 90vw; max-width: 900px; height: 340px;"
+      style="width: 80vw; max-width: 750px; height: 340px;"
     ></div>
   {/if}
 </div>

@@ -1,6 +1,13 @@
 <script>
 	import Img from '@/components/img/Img.svelte';
 	import { fly } from 'svelte/transition';
+	import { createEventDispatcher } from 'svelte';
+	
+	const dispatch = createEventDispatcher();
+	
+	function nextStep() {
+		dispatch('nextStep', {});
+	}
 </script>
 
 <div transition:fly class="flex flex-col justify-center items-center gap-5">
@@ -13,3 +20,24 @@
 			alt="qr code"
 	/>
 </div>
+
+<div class="flex justify-center mt-8">
+	<button class="next-button" on:click={nextStep}>下一步</button>
+</div>
+
+<style>
+	.next-button {
+		padding: 10px 20px;
+		background-color: #165DFF;
+		color: white;
+		border: none;
+		border-radius: 5px;
+		cursor: pointer;
+		font-size: 16px;
+		transition: background-color 0.2s;
+	}
+	
+	.next-button:hover {
+		background-color: #0d4ae8;
+	}
+</style>

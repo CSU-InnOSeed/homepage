@@ -13,7 +13,7 @@
     </CardTitleBlock>
     <CardContextBlock>
       <h1 class="text-5xl font-bold truncate">加入我们</h1>
-      <p>加入苹果实验室，加入颠覆世界的行列</p>
+      <p>加入新芽实验室，加入颠覆世界的行列</p>
     </CardContextBlock>
   </Card>
   <div class="hidden md:block relative w-full max-w-7xl h-full">
@@ -24,7 +24,7 @@
     />
     <div class="flex flex-col justify-center items-start gap-5">
       <h1 class="z-10 text-5xl font-bold">加入我们</h1>
-      <p class="z-10">加入苹果实验室，加入颠覆世界的行列</p>
+      <p class="z-10">加入新芽实验室，加入颠覆世界的行列</p>
     </div>
   </div>
   <List class="flex flex-col justify-center items-center">
@@ -34,7 +34,7 @@
       >
         <CardTitleBlock>
           <div class="flex flex-col lg:flex-row justify-center items-center gap-5">
-            <h1 class="text-3xl truncate">iOSClub 23届招新</h1>
+            <h1 class="text-3xl truncate">InnOSeed 2025年招新</h1>
           </div>
         </CardTitleBlock>
         <CardContextBlock>
@@ -51,7 +51,7 @@
       <CardContextBlock>
         <h1 class="font-bold">我们在找的你🤝</h1>
         <ul>
-          <li>1. 是中南大学23级的同学</li>
+          <li>1. 是中南大学24级或25级的同学</li>
           <li>2. 对技术有着一定热情</li>
           <li>3. 觉得自己的想法十分独特, 愿意将想法付诸行动</li>
           <li>4. 想认识其他同样独特的人</li>
@@ -60,8 +60,8 @@
         <h1 class="font-bold">你将会得到👀</h1>
         <ul class="">
           <li>1. 我们的合作资源</li>
-          <li>2. 属于苹果实验室的硬件资源 （实验室空间与设备）</li>
-          <li>3. 一群热心且各有所长的学长姐</li>
+          <li>2. 属于InnOSeed实验室的硬件资源 （实验室空间与设备）</li>
+          <li>3. 一群热心且各有所长的学长学姐</li>
           <li>4. 和你一起颠覆世界的队友</li>
           <li>5. 一个全新的世界</li>
         </ul>

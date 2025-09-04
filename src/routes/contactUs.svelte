@@ -16,7 +16,8 @@
 			</div>
 			<div>
 				<p>学生负责人微信:</p>
-				<p>wpcwzy1</p>
+				<p>王同学 wpcwzy1</p>
+				<p>刘同学 -sssSiXxxx-</p>
 			</div>
 		</div>
 	</div>

@@ -14,8 +14,8 @@
 >
 	<Img src={imgSrc} id="logo" clazz={`w-48 h-48`} alt="the logo of innoseed club." />
 	<section class="flex flex-col justify-center items-center gap-3">
-		<h1 class="text-4xl sm:text-5xl rainbow-text font-bold ">Think different.</h1>
-		<h2 class="text-xl rainbow-text font-bold">中南大学新芽实验室</h2>
+		<h1 class="text-4xl sm:text-5xl rainbow-text font-bold ">中南大学InnOSeed新芽实验室</h1>
+		<h2 class="text-xl rainbow-text font-bold"> </h2>
 	</section>
 </div>
 <!-- blank to prevent content being hidden by navigator-->

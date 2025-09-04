@@ -41,7 +41,7 @@
 		});
 
 		pipe(
-			local.get<section[]>('apply21'),
+			local.get<section[]>('apply23'),
 			getOrElse(() => [
 				{
 					tag: '了解流程',
@@ -49,7 +49,7 @@
 					done: false
 				},
 				{
-					tag: '选择面试官',
+					tag: '生成个性标签',
 					current: false,
 					done: false
 				},
@@ -78,14 +78,26 @@
 <div class="pt-20 mb-52 w-full flex flex-col justify-between items-center">
 	<Tab bind:sections on:click={tabOnClick} />
 	{#if sections[0]?.current}
-		<Guide />
+		<Guide on:nextStep={() => {
+			sections[0].done = true;
+			sections[0].current = false;
+			sections[1].current = true;
+		}} />
 		<!-- <PickInterviewer /> -->
 	{/if}
 	{#if sections[1]?.current}
-		<PickInterviewer />
+		<PickInterviewer on:nextStep={() => {
+			sections[1].done = true;
+			sections[1].current = false;
+			sections[2].current = true;
+		}} />
 	{/if}
 	{#if sections[2]?.current}
-		<Application />
+		<Application on:nextStep={() => {
+			sections[2].done = true;
+			sections[2].current = false;
+			sections[3].current = true;
+		}} />
 	{/if}
 	{#if sections[3]?.current}
 		<Done />
