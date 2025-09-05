@@ -3,7 +3,7 @@
 	import { PlayIcon } from '@rgossiaux/svelte-heroicons/solid';
 	import Img from './img/Img.svelte';
 
-	const imgSrc = 'global/iOS_Club_LOGO.svg';
+	const imgSrc = 'global/iOS_Club_LOGO.png';
 </script>
 
 <div
