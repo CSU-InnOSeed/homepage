@@ -29,8 +29,8 @@
 		<Img
 			id="logo"
 			clazz={`w-11 h-11`}
-			alt="the logo of ios club."
-			src="global/iOS_Club_LOGO.png"
+			alt="the logo of innoseed lab."
+			src="global/iOS_Club_LOGO.svg"
 		/>
 		<h1 class="text-xl font-bold">中南大学InnOSeed实验室</h1>
 		<div
