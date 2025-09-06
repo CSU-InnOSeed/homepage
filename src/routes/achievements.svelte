@@ -20,7 +20,7 @@ const images = [
 
   <!-- 轮播图部分 -->
   <Carousel {images} />
-  <JingsaiEchart />
-  <JiangxuejinEchart />
-  <KechuangEchart />
+  <!-- <JingsaiEchart /> -->
+  <!-- <JiangxuejinEchart /> -->
+  <!-- <KechuangEchart /> -->
 </div>
