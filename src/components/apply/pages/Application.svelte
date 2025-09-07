@@ -11,7 +11,7 @@
 </script>
 
 <div transition:fly class="flex flex-col justify-center items-center gap-5">
-	<a style="color: blue" href="https://jcniq4y51hx2.feishu.cn/share/base/form/shrcn7jz8ZE5NhEImgPxFryKs7c">
+	<a style="color: blue" href="https://innoseed.feishu.cn/share/base/form/shrcn7jz8ZE5NhEImgPxFryKs7c">
 		点击文字跳转至简历投递网站，或扫码进行填写
 	</a>
 	<Img
