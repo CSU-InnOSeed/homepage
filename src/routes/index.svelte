@@ -7,7 +7,7 @@
 	import IconLink from '@/components/IconLink.svelte';
 	import Img from '@/components/img/Img.svelte';
 	// import EchartBar from '@/components/global/EchartBar.svelte';
-	// import Typewriter from 'svelte-typewriter/Typewriter.svelte';
+	import Typewriter from 'svelte-typewriter/Typewriter.svelte';
 	import { onMount } from 'svelte';
 
 	// awards list for marquee (CSS 无限循环滚动)
@@ -68,9 +68,54 @@
 		'大学生科技创新创业大赛',
 		'全国大学生市场调查与分析大赛'
 	];
+	const about = [
+		"在InnOSeed，没有标准答案，只有不同的见解。",
+		"我们更像俱乐部，属于different thinkers的俱乐部。",
+		"没有固定模式、没有条条框框。",
+		"丰富的资源支持, 深度学习研究、系统应用开发或者任何方向，都能获得资源加持。",
+		"遇见心有鸿鹄的人、遇见新鲜独到的见解与观点、收获珍贵且坚韧的友谊与羁绊。"
+	]
+
+	const icons = [
+		{path: "/index/ic-button-generate.svg", txt: "参与竞赛，培养综合素质", title: "竞赛", color: "purple-800"},
+		{path: "/index/ic-custom-tip.svg", txt: "纵深发展，探求真理与奥秘", title: "科研", color: "green-800"},
+		{path: "/index/ico-finevoice-podcast.svg", txt: "进入市场，点燃创业理想", title: "创业", color: "blue-800"},
+		{path: "/index/ico-navigation-custom.svg", txt: "莫愁前路无知己", title: "志合者", color: "red-800"},
+	]
 </script>
 
 <List>
+	<div class="flex flex-col gap-3 items-center pb-12">
+		<p class="font-serif tracking-widest font-bold text-4xl 
+		bg-gradient-to-r from-blue-500 to-green-500 bg-clip-text text-transparent">
+		中南大学InnOSeed潇湘实验室
+		</p>
+		<!-- 打字机效果 -->
+			<div>
+			<!-- wordInterval 设置每个p标签显示完成后等待擦除的时间（ms） -->
+				<Typewriter mode={"loop"} delay={0} wordInterval={3000} interval={60} unwriteInterval={30}
+				showCursorOnDelay={true}>
+				{#each about as abt}
+					<p class="type-text" >{abt}</p>
+				{/each}
+				</Typewriter>
+			</div>
+	</div>
+	<div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+		{#each icons as icon}
+			<figure class="flex flex-col md:flex-row gap-2 justify-center items-center hover:bg-stone-50 p-4 rounded-md">
+				<div 
+					class="bg-stone-50/50 p-2 rounded-md shadow-lg flex-shrink-0 w-16 h-16 flex items-center justify-center"
+				>
+					<img src={icon.path} alt="" />
+				</div>
+				<div class="flex flex-col flex-grow min-w-0">
+					<p class={`text-lg font-bold text-${icon.color} text-center md:text-start`}>{icon.title}</p>
+					<p class="text-sm text-gray-400">{icon.txt}</p>
+				</div>
+			</figure>
+		{/each}
+	</div>
 	<!-- <Card class="flex flex-col md:flex-row md:justify-between md:items-start items-center"> -->
 	<!-- <CardTitleBlock class="flex-shrink-0 w-full"> -->
 	<div
@@ -329,6 +374,10 @@
 </List>
 
 <style>
+
+.heading-font {
+		font-family: "ZCOOL XiaoWei", sans-serif;
+}
 /* 目前无需额外样式，页面使用 Tailwind CSS 实现布局与样式 */
 
 /* 奖项名称无限循环滚动（双份元素，translateX(-50%) 时正好第二份接上） */
