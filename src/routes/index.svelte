@@ -39,7 +39,7 @@
 		'全国大学生软件创新大赛',
 		'大学生科技创新创业大赛',
 		'全国大学生市场调查与分析大赛',
-		
+
 		'计算机设计大赛',
 		'海峡两岸计算机作品赛',
 		'国家奖学金',
@@ -137,28 +137,31 @@
 	<!-- caption as sibling so it doesn't affect badges layout -->
 		<div class="w-full text-center text-sm text-gray-500 mt-1">
 		2019年至2025年间
-	</div>
-
+		</div>
 		<!-- 无限循环奖项名称跑马灯（纯 CSS，无缝无空白） -->
-		<div class="w-full mt-8">
-			<div class="relative overflow-hidden">
-				<div class="marquee" aria-label="awards marquee">
-					<div class="marquee-track" role="list">
-						{#each awards as a}
-							<span class="marquee-item text-gray-700 whitespace-nowrap">{a}</span>
-						{/each}
-						{#each awards as a}
-							<span class="marquee-item text-gray-700 whitespace-nowrap" aria-hidden="true">{a}</span>
-						{/each}
+		<div class="w-full mt-8 flex justify-center">
+			<div class="w-full max-w-6xl px-6">
+				<div class="relative overflow-hidden">
+					<div class="marquee" aria-label="awards marquee">
+						<div class="marquee-track" role="list">
+							{#each awards as a}
+								<span class="marquee-item text-gray-700 whitespace-nowrap">{a}</span>
+							{/each}
+							{#each awards as a}
+								<span class="marquee-item text-gray-700 whitespace-nowrap" aria-hidden="true">{a}</span>
+							{/each}
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
+
 	<!-- </CardTitleBlock>
 			<CardContextBlock class="min-h-[120px]">
 				<p class="p-4"> </p>
 			</CardContextBlock> -->
 	<!-- </Card> -->
+	<img src="index/hezhao.jpeg" alt="中南大学InnOSeed团队合照" class="my-10 rounded-lg shadow-lg w-full max-w-4xl mx-auto" />
 	<div
 		class="flex flex-col md:flex-row md:justify-start justify-center items-center gap-5 p-4 flex-wrap"
 	>
@@ -220,7 +223,6 @@
 			</div>
 		</div>
 	</div>
-	<img src="index/hezhao.jpeg" alt="中南大学InnOSeed团队合照" class="my-10 rounded-lg shadow-lg w-full max-w-4xl mx-auto" />
 	<Card class="flex flex-col md:flex-row-reverse md:justify-between items-center">
 		<CardTitleBlock>
 			<div class="p-5">
