@@ -268,32 +268,6 @@
 			</div>
 		</div>
 	</div>
-	<Card class="flex flex-col md:flex-row-reverse md:justify-between items-center">
-		<CardTitleBlock>
-			<div class="p-5">
-				<h1 class="text-4xl">在InnOSeed</h1>
-				<h1 class="font-bold text-5xl truncate">做你想做的</h1>
-			</div>
-			<!-- <div transition:fade class="flex justify-center items-center">
-				<canvas id="myChart" width="400" height="400" />
-			</div> -->
-		</CardTitleBlock>
-		<CardContextBlock>
-			<p>InnOSeed有许多与企业合作，为中南大学尤其是计算机学院的同学提供有意思的活动沙龙。</p>
-			<p>
-				我们联络优秀的业界前辈举行techtalk，为同学们答疑解惑、指点迷津；成员们也在各项活动与学术学习中大放异彩。
-			</p>
-			<p>欢迎到我们各平台的账号了解我们的最新成果。</p>
-			<ul class="flex justify-center items-center gap-5">
-				<li>
-					<IconLink imgUrl="global/csdn.png" href={'https://blog.csdn.net/cyl_csdn_1'} />
-				</li>
-				<li>
-					<IconLink imgUrl="global/github.png" href="https://github.com/CSU-InnOSeed" />
-				</li>
-			</ul>
-		</CardContextBlock>
-	</Card>
 	<Card class="flex flex-col md:flex-row md:justify-between items-center">
 		<CardTitleBlock>
 			<div transition:fade class="flex justify-center items-center">
@@ -342,9 +316,35 @@
 			<p class="text-gray-800">
 				中南大学InnOSeed欢迎各种形式的合作，
 				详情请咨询目前的学生负责人，请见
-				<a href="/contactUs" class="font-bold text-blue-600 ">联系我们</a>。
+				<a href="#footer" class="font-bold text-blue-600 ">联系我们</a>。
 			</p>
 			</div>
+		</CardContextBlock>
+	</Card>
+	<Card class="flex flex-col md:flex-row-reverse md:justify-between items-center">
+		<CardTitleBlock>
+			<div class="p-5">
+				<h1 class="text-4xl">在InnOSeed</h1>
+				<h1 class="font-bold text-5xl truncate">做你想做的</h1>
+			</div>
+			<!-- <div transition:fade class="flex justify-center items-center">
+				<canvas id="myChart" width="400" height="400" />
+			</div> -->
+		</CardTitleBlock>
+		<CardContextBlock>
+			<p>InnOSeed有许多与企业合作，为中南大学尤其是计算机学院的同学提供有意思的活动沙龙。</p>
+			<p>
+				我们联络优秀的业界前辈举行techtalk，为同学们答疑解惑、指点迷津；成员们也在各项活动与学术学习中大放异彩。
+			</p>
+			<p>欢迎到我们各平台的账号了解我们的最新成果。</p>
+			<ul class="flex justify-center items-center gap-5">
+				<li>
+					<IconLink imgUrl="global/csdn.png" href={'https://blog.csdn.net/cyl_csdn_1'} />
+				</li>
+				<li>
+					<IconLink imgUrl="global/github.png" href="https://github.com/CSU-InnOSeed" />
+				</li>
+			</ul>
 		</CardContextBlock>
 	</Card>
 	<Card class="flex flex-col md:flex-row-reverse md:justify-between items-center">

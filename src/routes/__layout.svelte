@@ -54,7 +54,7 @@
 <div class="{ $page.url.pathname !== '/' ? 'pt-16' : '' }">
 	<slot />
 </div>
-<footer class="bg-gray-100 py-8 text-center border-t border-gray-200">
+<footer id="footer" class="bg-gray-100 py-8 text-center border-t border-gray-200">
 	<div class="container mx-auto px-4">
 		<h3 class="text-lg font-semibold mb-4">联系我们</h3>
 		<p class="text-gray-700">
