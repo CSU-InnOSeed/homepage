@@ -31,7 +31,8 @@
 		<!-- 打字机效果 -->
 			<div>
 			<!-- wordInterval 设置每个p标签显示完成后等待擦除的时间（ms） -->
-				<Typewriter mode={"loop"} delay={0} wordInterval={5000} interval={60} unwriteInterval={30}>
+				<Typewriter mode={"loop"} delay={0} wordInterval={5000} interval={60} unwriteInterval={30}
+				showCursorOnDelay={true}>
 				{#each about as abt}
 					<p class="type-text" >{abt}</p>
 				{/each}
@@ -108,7 +109,6 @@
 </List>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=ZCOOL+XiaoWei&display=swap');
 
 .type-text {
   font-family: "ZCOOL XiaoWei", sans-serif;
