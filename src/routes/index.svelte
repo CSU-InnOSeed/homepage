@@ -73,13 +73,50 @@
 			</div>
 			<h1 class="p-5 font-bold text-4xl truncate">与我们合作</h1>
 		</CardTitleBlock>
-		<CardContextBlock>
-			<p>
-				中南大学InnOSeed欢迎各种形式的合作，详情请咨询目前的学生负责人，请见<a
-					class="font-bold"
-					href="/contactUs">联系我们</a
-				>。
+		<CardContextBlock class="w-full">
+			<!-- 使用网格布局 -->
+			<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+				<!-- 苗子阳卡片 -->
+				<div class="rounded-2xl shadow-md border p-4 text-gray-800"
+					 style="background: linear-gradient(120deg, #ffffffff 0%, #ebf9ffff 100%);">
+					<h2 class="font-bold text-lg mb-2 text-center">升学代表人物：苗子阳</h2>
+					<ul class="list-disc list-inside space-y-1">
+					<li>中南大学年度人物</li>
+					<li>优秀学生标兵</li>
+					<li>保研至中南大学</li>
+					</ul>
+				</div>
+
+				<!-- 常佳宇卡片 -->
+				<div class="rounded-2xl shadow-md border p-4 text-gray-800"
+					 style="background: linear-gradient(120deg, #ffffffff 0%, #ebf9ffff 100%);">
+					<h2 class="font-bold text-lg mb-2 text-center">留学代表人物：常佳宇</h2>
+					<ul class="list-disc list-inside space-y-1">
+					<li>robocup世界一等奖</li>
+					<li>前往斯坦福大学深造</li>
+					</ul>
+				</div>
+
+				<!-- 颜思宇卡片 -->
+				<div class="rounded-2xl shadow-md border p-4 text-gray-800"
+					 style="background: linear-gradient(120deg, #ffffffff 0%, #ebf9ffff 100%);">
+					<h2 class="font-bold text-lg mb-2 text-center">竞赛代表人物：颜思宇</h2>
+					<ul class="list-disc list-inside space-y-1">
+					<li>国家级竞赛奖项12项</li>
+					<li>省级奖项20余项</li>
+					<li>获省级竞赛最高荣誉</li> 
+					</ul>
+				</div>
+			</div>
+
+			<!-- 联系我们 -->
+			<div class="rounded-2xl shadow-md border p-4 bg-white">
+			<p class="text-gray-800">
+				中南大学InnOSeed欢迎各种形式的合作，
+				详情请咨询目前的学生负责人，请见
+				<a href="/contactUs" class="font-bold text-blue-600 ">联系我们</a>。
 			</p>
+			</div>
 		</CardContextBlock>
 	</Card>
 	<Card class="flex flex-col md:flex-row-reverse md:justify-between items-center">
@@ -96,7 +133,7 @@
 			</p>
 			<p>
 				在每年9月初，我们会透过本站及各个渠道进行宣传招新。期待你的<a
-					class="font-bold"
+					class="font-bold text-blue-600 "
 					href="/recruit">加入。</a
 				>
 			</p>
