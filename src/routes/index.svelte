@@ -7,7 +7,7 @@
 	import IconLink from '@/components/IconLink.svelte';
 	import Img from '@/components/img/Img.svelte';
 	// import EchartBar from '@/components/global/EchartBar.svelte';
-	import Typewriter from "svelte-typewriter";
+	import Typewriter from 'svelte-typewriter/Typewriter.svelte';
 	const about = [
 		"与具有鲜明科研性质的导师实验室不同，在InnOSeed，没有标准答案，只有不同的见解。",
 		"我们的性质更像俱乐部，属于different thinkers的俱乐部。",
@@ -30,7 +30,8 @@
 		<CardContextBlock class="min-h-[120px]">
 		<!-- 打字机效果 -->
 			<div>
-				<Typewriter loop interval={60} delay={3000} unwriteInterval={30}>
+			<!-- wordInterval 设置每个p标签显示完成后等待擦除的时间（ms） -->
+				<Typewriter mode={"loop"} delay={0} wordInterval={5000} interval={60} unwriteInterval={30}>
 				{#each about as abt}
 					<p class="type-text" >{abt}</p>
 				{/each}
