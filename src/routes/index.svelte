@@ -7,11 +7,19 @@
 	import IconLink from '@/components/IconLink.svelte';
 	import Img from '@/components/img/Img.svelte';
 	// import EchartBar from '@/components/global/EchartBar.svelte';
+	import Typewriter from 'svelte-typewriter/Typewriter.svelte';
+	const about = [
+		"与具有鲜明科研性质的导师实验室不同，在InnOSeed，没有标准答案，只有不同的见解。",
+		"我们的性质更像俱乐部，属于different thinkers的俱乐部。",
+		"在这里，每一个人都有自己的前进路线与学习方向，没有固定模式、没有条条框框，不同路线上的实验室成员聚集在同一屋檐下，进行思维的碰撞、眼界的交流。",
+		"在InnOSeed，我们有丰富的资源支持。无论是深度学习研究、系统应用开发或者任何方向，都能在实验室中获得资源加持。",
+		"在这里，你能遇见心有鸿鹄的人、遇见新鲜独到的见解与观点、收获珍贵且坚韧的友谊与羁绊。"
+	]
 </script>
 
 <List>
-	<Card class="flex flex-col md:flex-row md:justify-between items-center">
-		<CardTitleBlock>
+	<Card class="flex flex-col md:flex-row md:justify-between md:items-start items-center">
+		<CardTitleBlock class="flex-shrink-0">
 			<div transition:fade class="flex justify-center items-center">
 				<Img src="index/undraw_conversation_re_c26v.svg" alt="Think different" clazz="w-32 h-32" />
 			</div>
@@ -19,18 +27,17 @@
 				<h1 class="font-bold text-5xl">Think different</h1>
 			</div>
 		</CardTitleBlock>
-		<CardContextBlock>
-			<p>
-				与具有鲜明科研性质的导师实验室不同，在InnOSeed，没有标准答案，只有不同的见解。虽然自称实验室，但其实我们的性质更像俱乐部，属于different
-				thinkers的俱乐部。
-			</p>
-			<p>
-				在这里，每一个人都有自己的前进路线与学习方向，没有固定模式、没有条条框框，不同路线上的实验室成员聚集在同一屋檐下，进行思维的碰撞、眼界的交流。
-			</p>
-			<p>
-				在InnOSeed，我们有丰富的资源支持。无论是深度学习研究、系统应用开发或者任何方向，都能在实验室中获得资源加持。
-			</p>
-			<p>在这里，你能遇见心有鸿鹄的人、遇见新鲜独到的见解与观点、收获珍贵且坚韧的友谊与羁绊。</p>
+		<CardContextBlock class="min-h-[120px]">
+		<!-- 打字机效果 -->
+			<div>
+			<!-- wordInterval 设置每个p标签显示完成后等待擦除的时间（ms） -->
+				<Typewriter mode={"loop"} delay={0} wordInterval={5000} interval={60} unwriteInterval={30}
+				showCursorOnDelay={true}>
+				{#each about as abt}
+					<p class="type-text" >{abt}</p>
+				{/each}
+				</Typewriter>
+			</div>
 		</CardContextBlock>
 	</Card>
 	<Card class="flex flex-col md:flex-row-reverse md:justify-between items-center">
@@ -100,3 +107,12 @@
 			<EchartBar />
 		</div> -->
 </List>
+
+<style>
+
+.type-text {
+  font-family: "ZCOOL XiaoWei", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+</style>
