@@ -61,7 +61,7 @@
 					<IconLink imgUrl="global/csdn.png" href={'https://blog.csdn.net/cyl_csdn_1'} />
 				</li>
 				<li>
-					<IconLink imgUrl="global/github.png" href="https://github.com/CSU-Apple-Lab" />
+					<IconLink imgUrl="global/github.png" href="https://github.com/CSU-InnOSeed" />
 				</li>
 			</ul>
 		</CardContextBlock>
