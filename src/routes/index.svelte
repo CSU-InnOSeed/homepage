@@ -7,6 +7,7 @@
 	import IconLink from '@/components/IconLink.svelte';
 	import Img from '@/components/img/Img.svelte';
 	// import EchartBar from '@/components/global/EchartBar.svelte';
+	import Typewriter from "svelte-typewriter";
 </script>
 
 <List>
@@ -20,17 +21,22 @@
 			</div>
 		</CardTitleBlock>
 		<CardContextBlock>
-			<p>
-				与具有鲜明科研性质的导师实验室不同，在InnOSeed，没有标准答案，只有不同的见解。虽然自称实验室，但其实我们的性质更像俱乐部，属于different
-				thinkers的俱乐部。
-			</p>
-			<p>
-				在这里，每一个人都有自己的前进路线与学习方向，没有固定模式、没有条条框框，不同路线上的实验室成员聚集在同一屋檐下，进行思维的碰撞、眼界的交流。
-			</p>
-			<p>
-				在InnOSeed，我们有丰富的资源支持。无论是深度学习研究、系统应用开发或者任何方向，都能在实验室中获得资源加持。
-			</p>
-			<p>在这里，你能遇见心有鸿鹄的人、遇见新鲜独到的见解与观点、收获珍贵且坚韧的友谊与羁绊。</p>
+		<!-- 打字机效果 -->
+			<Typewriter loop>
+				<p class="type-text">
+					与具有鲜明科研性质的导师实验室不同，在InnOSeed，没有标准答案，只有不同的见解。
+				</p>
+				<p class="type-text">
+					我们的性质更像俱乐部，属于different thinkers的俱乐部。
+				</p>
+				<p class="type-text">
+					在这里，每一个人都有自己的前进路线与学习方向，没有固定模式、没有条条框框，不同路线上的实验室成员聚集在同一屋檐下，进行思维的碰撞、眼界的交流。
+				</p>
+				<p class="type-text">
+					在InnOSeed，我们有丰富的资源支持。无论是深度学习研究、系统应用开发或者任何方向，都能在实验室中获得资源加持。
+				</p>
+				<p class="type-text">在这里，你能遇见心有鸿鹄的人、遇见新鲜独到的见解与观点、收获珍贵且坚韧的友谊与羁绊。</p>
+			</Typewriter>
 		</CardContextBlock>
 	</Card>
 	<Card class="flex flex-col md:flex-row-reverse md:justify-between items-center">
@@ -100,3 +106,13 @@
 			<EchartBar />
 		</div> -->
 </List>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=ZCOOL+XiaoWei&display=swap');
+
+.type-text {
+  font-family: "ZCOOL XiaoWei", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+</style>
