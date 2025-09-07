@@ -1,20 +1,33 @@
 <script lang="ts">
   import { onMount } from 'svelte';
 
+  // 类型定义
+  interface EventItem {
+    date: string;
+    title: string;
+    description: string;
+  }
+
+  interface CalendarDay {
+    date: Date;
+    day: number;
+    isCurrentMonth: boolean;
+    events: EventItem[];
+  }
+
   // 示例活动数据
-  const events = [
+  const events: EventItem[] = [
     { date: '2025-09-10', title: '2025年招新-简历投递开放', description: '期待闪闪发光的你' },
     { date: '2025-09-20', title: 'InnOSeed 黑客松 Mini Camp（暂定）', description: '一起做点不一样的' },
     { date: '2025-09-27', title: '2025招新-面试 Day 1', description: '期待闪闪发光的你' },
-    { date: '2025-09-28', title: '2025招新-面试 Day 2', description: '期待闪闪发光的你' },
-    
+    { date: '2025-09-28', title: '2025招新-面试 Day 2', description: '期待闪闪发光的你' }
   ];
 
   let currentDate = new Date();
   let currentMonth = currentDate.getMonth();
   let currentYear = currentDate.getFullYear();
-  let selectedDate = null;
-  let calendarDays = [];
+  let selectedDate: CalendarDay | null = null;
+  let calendarDays: CalendarDay[] = [];
 
   function generateCalendar() {
     const firstDay = new Date(currentYear, currentMonth, 1);
@@ -59,7 +72,7 @@
     generateCalendar();
   }
 
-  function selectDate(day) {
+  function selectDate(day: CalendarDay) {
     selectedDate = day;
   }
 
@@ -68,71 +81,87 @@
   });
 </script>
 
-<div class="w-full flex flex-col items-center mt-8 px-4">
-  <h1 class="text-3xl font-bold mb-8">活动预告</h1>
+<div class="w-full mt-6 md:mt-10">
+  <div class="max-w-7xl mx-auto px-4 lg:px-8">
+    <h1 class="text-3xl md:text-4xl font-bold mb-8 text-center tracking-tight">活动预告</h1>
 
-<!-- <div class="w-full flex flex-col items-center mt-8 px-4">
-  <h1 class="text-3xl font-bold mb-8">活动预告</h1> -->
+    <!-- 主体布局：大屏左右分栏，小屏上下堆叠 -->
+    <div class="flex flex-col gap-8 lg:grid lg:grid-cols-5 lg:gap-12">
+      <!-- 日历 + 详情 区（占 2 列） -->
+      <div class="lg:col-span-2">
+        <div class="bg-white/70 backdrop-blur border border-gray-200 rounded-xl shadow-sm p-5 md:p-6">
+          <!-- 日历导航 -->
+          <div class="flex items-center justify-between mb-4">
+            <button on:click={prevMonth} class="w-10 h-10 flex items-center justify-center rounded-lg bg-blue-500 text-white hover:bg-blue-600 active:scale-95 transition">&lt;</button>
+            <h2 class="text-lg md:text-xl font-semibold select-none">{currentYear}年{currentMonth + 1}月</h2>
+            <button on:click={nextMonth} class="w-10 h-10 flex items-center justify-center rounded-lg bg-blue-500 text-white hover:bg-blue-600 active:scale-95 transition">&gt;</button>
+          </div>
 
-  <!-- 日历导航 -->
-  <div class="flex items-center justify-between w-full max-w-4xl mb-4">
-    <button on:click={prevMonth} class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">&lt;</button>
-    <h2 class="text-xl font-semibold">{currentYear}年{currentMonth + 1}月</h2>
-    <button on:click={nextMonth} class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">&gt;</button>
-  </div>
+          <!-- 日历网格 -->
+          <div class="grid grid-cols-7 gap-1.5 md:gap-2 text-sm md:text-base">
+            {#each ['一', '二', '三', '四', '五', '六', '日'] as dayName}
+              <div class="text-center font-medium py-1.5 text-gray-600">{dayName}</div>
+            {/each}
 
-  <!-- 响应式布局容器 -->
-  <div class="w-full max-w-6xl flex flex-col md:flex-row gap-8">
-    <!-- 日历部分 -->
-    <div class="flex-1 flex flex-col items-center">
-      <!-- 日历网格 -->
-      <div class="grid grid-cols-7 gap-2 w-full max-w-md mb-8">
-        {#each ['一', '二', '三', '四', '五', '六', '日'] as dayName}
-          <div class="text-center font-semibold py-2">{dayName}</div>
-        {/each}
+            {#each calendarDays as day}
+              <button
+                on:click={() => selectDate(day)}
+                class="relative group aspect-square flex flex-col items-center justify-center rounded-md border text-[13px] md:text-sm transition
+                  {day.isCurrentMonth ? 'bg-white hover:bg-blue-50 border-gray-200' : 'bg-gray-50 text-gray-400 border-gray-200'}
+                  {day.events.length > 0 ? 'font-semibold text-blue-600' : ''}
+                  {selectedDate === day ? 'ring-2 ring-blue-500 ring-offset-1' : ''}"
+              >
+                {day.day}
+                {#if day.events.length > 0}
+                  <span class="absolute bottom-1 h-1.5 w-1.5 rounded-full bg-blue-500"></span>
+                {/if}
+              </button>
+            {/each}
+          </div>
 
-        {#each calendarDays as day}
-          <button
-            on:click={() => selectDate(day)}
-            class="p-2 border rounded hover:bg-gray-100 {day.isCurrentMonth ? 'text-black' : 'text-gray-400'} {day.events.length > 0 ? 'bg-blue-100 border-blue-300' : ''}"
-          >
-            {day.day}
-            {#if day.events.length > 0}
-              <div class="w-2 h-2 bg-blue-500 rounded-full mx-auto mt-1"></div>
+          <!-- 选中日期的活动详情 -->
+          <div class="mt-6">
+            <h3 class="text-base font-semibold mb-3 text-gray-800">{selectedDate ? selectedDate.date.toLocaleDateString('zh-CN') : '请选择日期'} 的活动</h3>
+            {#if selectedDate}
+              {#if selectedDate.events.length > 0}
+                <div class="space-y-3">
+                  {#each selectedDate.events as event}
+                    <div class="border rounded-lg px-4 py-3 bg-white shadow-[0_1px_2px_rgba(0,0,0,0.05)]">
+                      <h4 class="font-medium mb-1 leading-snug">{event.title}</h4>
+                      <p class="text-gray-600 text-sm leading-relaxed">{event.description}</p>
+                    </div>
+                  {/each}
+                </div>
+              {:else}
+                <p class="text-gray-500 text-sm">这一天没有活动安排</p>
+              {/if}
+            {:else}
+              <p class="text-gray-400 text-sm">点击上方日历中的日期查看详情</p>
             {/if}
-          </button>
-        {/each}
+          </div>
+        </div>
       </div>
 
-      <!-- 选中日期的活动详情 -->
-      {#if selectedDate}
-        <div class="w-full max-w-md">
-          <h3 class="text-lg font-semibold mb-4">{selectedDate.date.toLocaleDateString('zh-CN')} 的活动</h3>
-          {#if selectedDate.events.length > 0}
-            {#each selectedDate.events as event}
-              <div class="bg-white border rounded p-4 mb-2 shadow">
-                <h4 class="font-semibold">{event.title}</h4>
-                <p class="text-gray-600">{event.description}</p>
+      <!-- 活动列表（占 3 列） -->
+      <div class="lg:col-span-3">
+        <div class="bg-white/70 backdrop-blur border border-gray-200 rounded-xl shadow-sm p-5 md:p-6 h-full flex flex-col">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="text-lg font-semibold">所有活动</h3>
+          </div>
+          <div class="space-y-4 overflow-auto pr-1" style="max-height:560px;">
+            {#each events as event}
+              <div class="group border border-gray-200 rounded-lg p-4 bg-white hover:border-blue-300 hover:shadow-sm transition relative">
+                <div class="flex items-start justify-between gap-4">
+                  <div>
+                    <h4 class="font-medium mb-1 leading-snug group-hover:text-blue-600">{event.title}</h4>
+                    <p class="text-gray-600 text-sm mb-1 leading-relaxed">{event.description}</p>
+                    <p class="text-xs text-gray-500">{new Date(event.date).toLocaleDateString('zh-CN')}</p>
+                  </div>
+                </div>
               </div>
             {/each}
-          {:else}
-            <p class="text-gray-500">这一天没有活动安排</p>
-          {/if}
-        </div>
-      {/if}
-    </div>
-
-    <!-- 活动列表部分 -->
-    <div class="flex-1">
-      <div class="w-full max-w-md mx-auto md:mx-0">
-        <h3 class="text-lg font-semibold mb-4">所有活动</h3>
-        {#each events as event}
-          <div class="bg-white border rounded p-4 mb-2 shadow">
-            <h4 class="font-semibold">{event.title}</h4>
-            <p class="text-gray-600">{event.description}</p>
-            <p class="text-sm text-gray-500">{new Date(event.date).toLocaleDateString('zh-CN')}</p>
           </div>
-        {/each}
+        </div>
       </div>
     </div>
   </div>

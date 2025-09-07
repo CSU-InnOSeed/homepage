@@ -12,9 +12,7 @@
 
 	const links = [
 		{ href: '/', tag: '首页' },
-		{ href: '/achievements', tag: '社团成果' },
 		{ href: '/events', tag: '活动预告' },
-		{ href: '/contactUs', tag: '联系我们' },
 		{ href: '/recruit', tag: '招新' }
 	];
 </script>

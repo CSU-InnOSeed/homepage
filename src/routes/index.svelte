@@ -7,39 +7,220 @@
 	import IconLink from '@/components/IconLink.svelte';
 	import Img from '@/components/img/Img.svelte';
 	// import EchartBar from '@/components/global/EchartBar.svelte';
-	import Typewriter from 'svelte-typewriter/Typewriter.svelte';
-	const about = [
-		"与具有鲜明科研性质的导师实验室不同，在InnOSeed，没有标准答案，只有不同的见解。",
-		"我们的性质更像俱乐部，属于different thinkers的俱乐部。",
-		"在这里，每一个人都有自己的前进路线与学习方向，没有固定模式、没有条条框框，不同路线上的实验室成员聚集在同一屋檐下，进行思维的碰撞、眼界的交流。",
-		"在InnOSeed，我们有丰富的资源支持。无论是深度学习研究、系统应用开发或者任何方向，都能在实验室中获得资源加持。",
-		"在这里，你能遇见心有鸿鹄的人、遇见新鲜独到的见解与观点、收获珍贵且坚韧的友谊与羁绊。"
-	]
+	// import Typewriter from 'svelte-typewriter/Typewriter.svelte';
+	import { onMount } from 'svelte';
+
+	// awards list for marquee (CSS 无限循环滚动)
+	const awards = [
+		'计算机设计大赛',
+		'海峡两岸计算机作品赛',
+		'国家奖学金',
+		'全国三维数字化创新设计大赛',
+		'全国大学生服务外包创新创业大赛',
+		'中国大学生工程实践与创新能力大赛',
+		'国家级大创',
+		'“互联网+”大学生创新创业大赛',
+		'湖南省“科技+”创新创业大赛',
+		'全国大学生英语翻译大赛',
+		'工程实践与创新能力大赛',
+		'“集思杯”研究导向型学习成果大赛',
+		'全国大学生电子商务“创新、创意及创业”挑战赛',
+		'中南大学数学建模竞赛',
+		'升华杯”大学生创业计划竞赛',
+		'亚太地区大学生数学建模大赛',
+		'全国大学生英语竞赛',
+		'中国高校大数据挑战赛',
+		'中国高校计算机大赛移动应用创新赛',
+		'“雷锋杯”青年志愿服务项目大赛',
+		'Mathorcup全国高校大数据竞赛',
+		'全国大学生信息安全大赛',
+		'全国大学生生物医学工程创新竞赛',
+		'湖南省物联网应用设计大赛',
+		'全国大学生软件创新大赛',
+		'大学生科技创新创业大赛',
+		'全国大学生市场调查与分析大赛',
+		
+		'计算机设计大赛',
+		'海峡两岸计算机作品赛',
+		'国家奖学金',
+		'全国三维数字化创新设计大赛',
+		'全国大学生服务外包创新创业大赛',
+		'中国大学生工程实践与创新能力大赛',
+		'国家级大创',
+		'“互联网+”大学生创新创业大赛',
+		'湖南省“科技+”创新创业大赛',
+		'全国大学生英语翻译大赛',
+		'工程实践与创新能力大赛',
+		'“集思杯”研究导向型学习成果大赛',
+		'全国大学生电子商务“创新、创意及创业”挑战赛',
+		'中南大学数学建模竞赛',
+		'升华杯”大学生创业计划竞赛',
+		'亚太地区大学生数学建模大赛',
+		'全国大学生英语竞赛',
+		'中国高校大数据挑战赛',
+		'中国高校计算机大赛移动应用创新赛',
+		'“雷锋杯”青年志愿服务项目大赛',
+		'Mathorcup全国高校大数据竞赛',
+		'全国大学生信息安全大赛',
+		'全国大学生生物医学工程创新竞赛',
+		'湖南省物联网应用设计大赛',
+		'全国大学生软件创新大赛',
+		'大学生科技创新创业大赛',
+		'全国大学生市场调查与分析大赛'
+	];
 </script>
 
 <List>
-	<Card class="flex flex-col md:flex-row md:justify-between md:items-start items-center">
-		<CardTitleBlock class="flex-shrink-0">
-			<div transition:fade class="flex justify-center items-center">
-				<Img src="index/undraw_conversation_re_c26v.svg" alt="Think different" clazz="w-32 h-32" />
+	<!-- <Card class="flex flex-col md:flex-row md:justify-between md:items-start items-center"> -->
+	<!-- <CardTitleBlock class="flex-shrink-0 w-full"> -->
+	<div
+		class="flex flex-col md:flex-row md:justify-start justify-center items-center gap-5 p-4 flex-wrap"
+	>
+		<!-- Badge 1 -->
+		<div
+			class="rounded-2xl px-10 py-4 flex items-center gap-3 min-w-[180px] bg-white/60 backdrop-blur-sm shadow-sm hover:shadow-md transition-shadow"
+		>
+				<div
+					class="text-4xl md:text-6xl font-extrabold bg-gradient-to-r from-orange-500 to-amber-400 text-transparent bg-clip-text"
+				>
+					10
+				</div>
+			<div class="leading-tight">
+				<div class="text-lg font-medium">国家/国际一等奖</div>
+				<div class="text-sm text-gray-600">人次</div>
 			</div>
-			<div class="p-5 flex flex-col justify-center items-start">
-				<h1 class="font-bold text-5xl">Think different</h1>
+		</div>
+		<!-- Badge 2 -->
+		<div
+			class="rounded-2xl px-10 py-4 flex items-center gap-3 min-w-[180px] bg-white/60 backdrop-blur-sm shadow-sm hover:shadow-md transition-shadow"
+		>
+			<div
+				class="text-4xl md:text-6xl font-extrabold bg-gradient-to-r from-amber-400 to-lime-300 text-transparent bg-clip-text"
+			>
+				13
 			</div>
-		</CardTitleBlock>
-		<CardContextBlock class="min-h-[120px]">
-		<!-- 打字机效果 -->
-			<div>
-			<!-- wordInterval 设置每个p标签显示完成后等待擦除的时间（ms） -->
-				<Typewriter mode={"loop"} delay={0} wordInterval={5000} interval={60} unwriteInterval={30}
-				showCursorOnDelay={true}>
-				{#each about as abt}
-					<p class="type-text" >{abt}</p>
-				{/each}
-				</Typewriter>
+			<div class="leading-tight">
+				<div class="text-lg font-medium">国家奖学金</div>
+				<div class="text-sm text-gray-600">人次</div>
 			</div>
-		</CardContextBlock>
-	</Card>
+		</div>
+		<!-- Badge 3 -->
+		<div
+			class="rounded-2xl px-10 py-4 flex items-center gap-3 min-w-[180px] bg-white/60 backdrop-blur-sm shadow-sm hover:shadow-md transition-shadow"
+		>
+			<div
+				class="text-4xl md:text-6xl font-extrabold bg-gradient-to-r from-lime-400 to-teal-400 text-transparent bg-clip-text"
+			>
+				64
+			</div>
+			<div class="leading-tight">
+				<div class="text-lg font-medium">国家级荣誉</div>
+				<div class="text-sm text-gray-600">奖项数量</div>
+			</div>
+		</div>
+
+		<!-- Badge 4 -->
+		<div
+			class="rounded-2xl px-10 py-4 flex items-center gap-3 min-w-[180px] bg-white/60 backdrop-blur-sm shadow-sm hover:shadow-md transition-shadow"
+		>
+			<div
+				class="text-4xl md:text-6xl font-extrabold bg-gradient-to-r from-teal-500 to-sky-500 text-transparent bg-clip-text"
+			>
+				140+
+			</div>
+			<div class="leading-tight">
+				<div class="text-lg font-medium">校级以上荣誉</div>
+				<div class="text-sm text-gray-600">奖项数量</div>
+			</div>
+		</div>
+	</div>
+	<!-- caption as sibling so it doesn't affect badges layout -->
+		<div class="w-full text-center text-sm text-gray-500 mt-1">
+		2019年至2025年间
+	</div>
+
+		<!-- 无限循环奖项名称跑马灯（纯 CSS，无缝无空白） -->
+		<div class="w-full mt-8">
+			<div class="relative overflow-hidden">
+				<div class="marquee" aria-label="awards marquee">
+					<div class="marquee-track" role="list">
+						{#each awards as a}
+							<span class="marquee-item text-gray-700 whitespace-nowrap">{a}</span>
+						{/each}
+						{#each awards as a}
+							<span class="marquee-item text-gray-700 whitespace-nowrap" aria-hidden="true">{a}</span>
+						{/each}
+					</div>
+				</div>
+			</div>
+		</div>
+	<!-- </CardTitleBlock>
+			<CardContextBlock class="min-h-[120px]">
+				<p class="p-4"> </p>
+			</CardContextBlock> -->
+	<!-- </Card> -->
+	<div
+		class="flex flex-col md:flex-row md:justify-start justify-center items-center gap-5 p-4 flex-wrap"
+	>
+		<!-- Badge 1 -->
+		<div
+			class="rounded-2xl px-10 py-4 flex items-center gap-3 min-w-[180px] bg-white/60 backdrop-blur-sm shadow-sm hover:shadow-md transition-shadow"
+		>
+				<div
+					class="text-4xl md:text-6xl font-extrabold bg-gradient-to-r from-purple-500 to-pink-400 text-transparent bg-clip-text"
+				>
+					5
+				</div>
+			<div class="leading-tight">
+				<div class="text-lg font-medium">清华履历</div>
+				<div class="text-sm text-gray-600">人次</div>
+			</div>
+		</div>
+		<!-- Badge 2 -->
+		<div
+			class="rounded-2xl px-10 py-4 flex items-center gap-3 min-w-[180px] bg-white/60 backdrop-blur-sm shadow-sm hover:shadow-md transition-shadow"
+		>
+			<div
+				class="text-4xl md:text-6xl font-extrabold bg-gradient-to-r from-pink-500 to-rose-400 text-transparent bg-clip-text"
+			>
+				2
+			</div>
+			<div class="leading-tight">
+				<div class="text-lg font-medium">北大履历</div>
+				<div class="text-sm text-gray-600">人次</div>
+			</div>
+		</div>
+		<!-- Badge 3 -->
+		<div
+			class="rounded-2xl px-10 py-4 flex items-center gap-3 min-w-[180px] bg-white/60 backdrop-blur-sm shadow-sm hover:shadow-md transition-shadow"
+		>
+			<div
+				class="text-4xl md:text-6xl font-extrabold bg-gradient-to-r from-rose-500 to-orange-400 text-transparent bg-clip-text"
+			>
+				1
+			</div>
+			<div class="leading-tight">
+				<div class="text-lg font-medium">斯坦福大学</div>
+				<div class="text-sm text-gray-600">人次</div>
+			</div>
+		</div>
+
+		<!-- Badge 4 -->
+		<div
+			class="rounded-2xl px-10 py-4 flex items-center gap-3 min-w-[180px] bg-white/60 backdrop-blur-sm shadow-sm hover:shadow-md transition-shadow"
+		>
+			<div
+				class="text-4xl md:text-6xl font-extrabold bg-gradient-to-r from-orange-500 to-yellow-400 text-transparent bg-clip-text"
+			>
+				3
+			</div>
+			<div class="leading-tight">
+				<div class="text-lg font-medium">QS前100交换</div>
+				<div class="text-sm text-gray-600">人次</div>
+			</div>
+		</div>
+	</div>
+	<img src="index/hezhao.jpeg" alt="中南大学InnOSeed团队合照" class="my-10 rounded-lg shadow-lg w-full max-w-4xl mx-auto" />
 	<Card class="flex flex-col md:flex-row-reverse md:justify-between items-center">
 		<CardTitleBlock>
 			<div class="p-5">
@@ -103,16 +284,18 @@
 		</CardContextBlock>
 	</Card>
 	<!-- 动态成果图表展示 -->
-		<!-- <div class="mt-10 flex justify-center">
+	<!-- <div class="mt-10 flex justify-center">
 			<EchartBar />
 		</div> -->
 </List>
 
 <style>
+/* 目前无需额外样式，页面使用 Tailwind CSS 实现布局与样式 */
 
-.type-text {
-  font-family: "ZCOOL XiaoWei", sans-serif;
-  font-weight: 400;
-  font-style: normal;
-}
+/* 奖项名称无限循环滚动（双份元素，translateX(-50%) 时正好第二份接上） */
+.marquee { overflow: hidden; }
+.marquee-track { display: inline-flex; gap: 2rem; animation: marquee 200s linear infinite; }
+.marquee-item { flex: 0 0 auto; }
+.marquee:hover .marquee-track, .marquee:focus-within .marquee-track { animation-play-state: paused; }
+@keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 </style>
