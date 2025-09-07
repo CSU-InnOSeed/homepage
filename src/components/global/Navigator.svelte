@@ -12,9 +12,7 @@
 
 	const links = [
 		{ href: '/', tag: '首页' },
-		{ href: '/achievements', tag: '社团成果' },
 		{ href: '/events', tag: '活动预告' },
-		{ href: '/contactUs', tag: '联系我们' },
 		{ href: '/recruit', tag: '招新' }
 	];
 </script>
@@ -37,5 +35,5 @@
 			class={`invisible sm:visible fixed top-0 right-5 w-1/3 max-w-sm h-10 flex justify-end items-center gap-5`}
 		/>
 	{/if}
-	<Menu items={links} headerClass={show ? 'text-gray-700' : 'text-white'} />
+	<Menu items={links} headerClass={'text-gray-800'} />
 </nav>
