@@ -16,9 +16,9 @@
 
 <div
 	transition:fade
-	class={`top-20 w-full pt-1 pb-1 pl-3 logo-bg
+	class={`w-full pt-1 pb-1 pl-3 logo-bg
 					transition-all duration-300
-					flex absolute flex-col sm:flex-row justify-center items-center h-screen sm:h-80 gap-5 md:gap-16`}
+					flex relative sm:absolute sm:top-20 flex-col sm:flex-row justify-center items-center h-auto sm:h-80 gap-5 md:gap-16`}
 >
 	<!-- <Img src={imgSrc} id="logo" clazz={`w-48 h-48`} alt="the logo of innoseed lab." /> -->
 	<!-- <section class="flex flex-col justify-center items-center gap-3"> -->
@@ -27,8 +27,8 @@
 	<!-- </section> -->
 	 <div class="flex flex-col gap-3 items-center pb-12">
 		<p
-			class="font-serif tracking-widest font-bold text-4xl 
-		bg-gradient-to-r from-blue-500 to-green-500 bg-clip-text text-transparent"
+			class="font-serif tracking-widest font-bold text-3xl sm:text-4xl 
+		bg-gradient-to-r from-blue-500 to-green-500 bg-clip-text text-transparent text-center"
 		>
 			中南大学<span class="bitcount">InnOSeed</span>潇湘实验室
 		</p>
