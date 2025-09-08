@@ -12,3 +12,26 @@
 body{
 	font-size: 18px;
 }
+
+/* BitcountPropDouble font for InnOSeed branding */
+@font-face {
+	font-family: 'BitcountPropDouble';
+	src: url('/global/BitcountPropDouble.ttf') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+	font-display: swap;
+}
+
+.bitcount {
+	/* font-family: 'BitcountPropDouble', sans-serif; */
+	/* Avoid synthetic bold if parent sets font-weight:bold */
+	font-weight: normal;
+	font-synthesis: none;
+	/* Improve font smoothing on macOS/WebKit */
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	/* Rendering hints */
+	text-rendering: optimizeLegibility;
+	/* Make span an inline-block to avoid some text-transform/gradient artifacts */
+	display: inline-block;
+}

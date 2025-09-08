@@ -69,205 +69,206 @@
 		'全国大学生市场调查与分析大赛'
 	];
 	const about = [
-		"在InnOSeed，没有标准答案，只有不同的见解。",
-		"我们更像俱乐部，属于different thinkers的俱乐部。",
-		"没有固定模式、没有条条框框。",
-		"丰富的资源支持, 深度学习研究、系统应用开发或者任何方向，都能获得资源加持。",
-		"遇见心有鸿鹄的人、遇见新鲜独到的见解与观点、收获珍贵且坚韧的友谊与羁绊。"
-	]
+		'在<span class="bitcount">InnOSeed</span>，没有标准答案，只有不同的见解。',
+		'我们更像俱乐部，属于different thinkers的俱乐部。',
+		'没有固定模式、没有条条框框。',
+		'丰富的资源支持, 深度学习研究、系统应用开发或者任何方向，都能获得资源加持。',
+		'遇见心有鸿鹄的人、遇见新鲜独到的见解与观点、收获珍贵且坚韧的友谊与羁绊。'
+	];
 
 	const icons = [
-		{path: "/index/ic-button-generate.svg", txt: "参与竞赛，培养综合素质", title: "竞赛", color: "purple-800"},
-		{path: "/index/ic-custom-tip.svg", txt: "纵深发展，探求真理与奥秘", title: "科研", color: "green-800"},
-		{path: "/index/ico-finevoice-podcast.svg", txt: "进入市场，点燃创业理想", title: "创业", color: "blue-800"},
-		{path: "/index/ico-navigation-custom.svg", txt: "莫愁前路无知己", title: "志合者", color: "red-800"},
-	]
+		{
+			path: '/index/ic-button-generate.svg',
+			txt: '参与竞赛，培养综合素质',
+			title: '竞赛',
+			color: 'purple-800'
+		},
+		{
+			path: '/index/ic-custom-tip.svg',
+			txt: '纵深发展，探求真理与奥秘',
+			title: '科研',
+			color: 'green-800'
+		},
+		{
+			path: '/index/ico-finevoice-podcast.svg',
+			txt: '进入市场，点燃创业理想',
+			title: '创业',
+			color: 'blue-800'
+		},
+		{
+			path: '/index/ico-navigation-custom.svg',
+			txt: '莫愁前路无知己',
+			title: '志合者',
+			color: 'red-800'
+		}
+	];
+
+	// 竞赛成果（抽离为数据，方便后续修改）
+	const achievements = [
+		{
+			value: '10',
+			title: '国家/国际一等奖',
+			sub: '人次',
+			gradient: 'from-orange-500 to-amber-400'
+		},
+		{ value: '13', title: '国家奖学金', sub: '人次', gradient: 'from-amber-400 to-lime-300' },
+		{ value: '64', title: '国家级荣誉', sub: '奖项数量', gradient: 'from-lime-400 to-teal-400' },
+		{ value: '140+', title: '校级以上荣誉', sub: '奖项数量', gradient: 'from-teal-500 to-sky-500' }
+	];
+
+	// 高水平升学 / 交流成果，样式与 achievements 保持一致
+	const admissions = [
+		{ value: '5', title: '清华履历', sub: '人次', gradient: 'from-purple-500 to-pink-400' },
+		{ value: '2', title: '北大履历', sub: '人次', gradient: 'from-pink-500 to-rose-400' },
+		{ value: '1', title: '斯坦福大学', sub: '人次', gradient: 'from-rose-500 to-orange-400' },
+		{ value: '3', title: 'QS前100交换', sub: '人次', gradient: 'from-orange-500 to-yellow-400' }
+	];
 </script>
 
 <List>
 	<div class="flex flex-col gap-3 items-center pb-12">
-		<p class="font-serif tracking-widest font-bold text-4xl 
-		bg-gradient-to-r from-blue-500 to-green-500 bg-clip-text text-transparent">
-		中南大学InnOSeed潇湘实验室
+		<p
+			class="font-serif tracking-widest font-bold text-4xl 
+		bg-gradient-to-r from-blue-500 to-green-500 bg-clip-text text-transparent"
+		>
+			中南大学<span class="bitcount">InnOSeed</span>潇湘实验室
 		</p>
-		<!-- 打字机效果 -->
-			<div>
-			<!-- wordInterval 设置每个p标签显示完成后等待擦除的时间（ms） -->
-				<Typewriter mode={"loop"} delay={0} wordInterval={3000} interval={60} unwriteInterval={30}
-				showCursorOnDelay={true}>
+		<div>
+			<Typewriter
+				mode={'loop'}
+				delay={0}
+				wordInterval={3000}
+				interval={60}
+				unwriteInterval={30}
+				showCursorOnDelay={true}
+			>
 				{#each about as abt}
-					<p class="type-text" >{abt}</p>
+					<p class="type-text">{@html abt}</p>
 				{/each}
-				</Typewriter>
-			</div>
+			</Typewriter>
+		</div>
 	</div>
-	<div class="grid grid-cols-2 md:grid-cols-4 gap-2">
-		{#each icons as icon}
-			<figure class="flex flex-col md:flex-row gap-2 justify-center items-center hover:bg-stone-50 p-4 rounded-md">
-				<div 
-					class="bg-stone-50/50 p-2 rounded-md shadow-lg flex-shrink-0 w-16 h-16 flex items-center justify-center"
-				>
-					<img src={icon.path} alt="" />
-				</div>
-				<div class="flex flex-col flex-grow min-w-0">
-					<p class={`text-lg font-bold text-${icon.color} text-center md:text-start`}>{icon.title}</p>
-					<p class="text-sm text-gray-400">{icon.txt}</p>
-				</div>
-			</figure>
-		{/each}
-	</div>
-	<!-- <Card class="flex flex-col md:flex-row md:justify-between md:items-start items-center"> -->
-	<!-- <CardTitleBlock class="flex-shrink-0 w-full"> -->
+
+	<!-- 四象限图标区 -->
 	<div
 		class="flex flex-col md:flex-row md:justify-start justify-center items-center gap-5 p-4 flex-wrap"
 	>
-		<!-- Badge 1 -->
-		<div
-			class="rounded-2xl px-10 py-4 flex items-center gap-3 min-w-[180px] bg-white/60 backdrop-blur-sm shadow-sm hover:shadow-md transition-shadow"
-		>
-				<div
-					class="text-4xl md:text-6xl font-extrabold bg-gradient-to-r from-orange-500 to-amber-400 text-transparent bg-clip-text"
-				>
-					10
+		{#each icons as icon}
+			<div
+				class="rounded-2xl px-6 py-4 flex items-center gap-4 bg-white/60 backdrop-blur-sm shadow-sm hover:shadow-md transition-shadow"
+			>
+				{#if icon.path}
+					<div
+						class="bg-stone-50/50 p-2 rounded-md flex-shrink-0 w-12 h-12 flex items-center justify-center"
+					>
+						<img src={icon.path} alt={icon.title} class="max-w-full max-h-full object-contain" />
+					</div>
+				{/if}
+				<div class="leading-tight flex-grow">
+					<div class={`text-lg font-medium text-center md:text-start text-${icon.color}`}>
+						{icon.title}
+					</div>
+					<div class="text-sm text-gray-600 text-center md:text-start">{icon.txt}</div>
 				</div>
-			<div class="leading-tight">
-				<div class="text-lg font-medium">国家/国际一等奖</div>
-				<div class="text-sm text-gray-600">人次</div>
 			</div>
-		</div>
-		<!-- Badge 2 -->
-		<div
-			class="rounded-2xl px-10 py-4 flex items-center gap-3 min-w-[180px] bg-white/60 backdrop-blur-sm shadow-sm hover:shadow-md transition-shadow"
-		>
-			<div
-				class="text-4xl md:text-6xl font-extrabold bg-gradient-to-r from-amber-400 to-lime-300 text-transparent bg-clip-text"
-			>
-				13
-			</div>
-			<div class="leading-tight">
-				<div class="text-lg font-medium">国家奖学金</div>
-				<div class="text-sm text-gray-600">人次</div>
-			</div>
-		</div>
-		<!-- Badge 3 -->
-		<div
-			class="rounded-2xl px-10 py-4 flex items-center gap-3 min-w-[180px] bg-white/60 backdrop-blur-sm shadow-sm hover:shadow-md transition-shadow"
-		>
-			<div
-				class="text-4xl md:text-6xl font-extrabold bg-gradient-to-r from-lime-400 to-teal-400 text-transparent bg-clip-text"
-			>
-				64
-			</div>
-			<div class="leading-tight">
-				<div class="text-lg font-medium">国家级荣誉</div>
-				<div class="text-sm text-gray-600">奖项数量</div>
-			</div>
-		</div>
-
-		<!-- Badge 4 -->
-		<div
-			class="rounded-2xl px-10 py-4 flex items-center gap-3 min-w-[180px] bg-white/60 backdrop-blur-sm shadow-sm hover:shadow-md transition-shadow"
-		>
-			<div
-				class="text-4xl md:text-6xl font-extrabold bg-gradient-to-r from-teal-500 to-sky-500 text-transparent bg-clip-text"
-			>
-				140+
-			</div>
-			<div class="leading-tight">
-				<div class="text-lg font-medium">校级以上荣誉</div>
-				<div class="text-sm text-gray-600">奖项数量</div>
-			</div>
-		</div>
+		{/each}
 	</div>
-	<!-- caption as sibling so it doesn't affect badges layout -->
-		<div class="w-full text-center text-sm text-gray-500 mt-1">
-		2019年至2025年间
-		</div>
-		<!-- 无限循环奖项名称跑马灯（纯 CSS，无缝无空白） -->
-		<div class="w-full mt-8 flex justify-center">
-			<div class="w-full max-w-6xl px-6">
-				<div class="relative overflow-hidden">
-					<div class="marquee" aria-label="awards marquee">
-						<div class="marquee-track" role="list">
-							{#each awards as a}
-								<span class="marquee-item text-gray-700 whitespace-nowrap">{a}</span>
-							{/each}
-							{#each awards as a}
-								<span class="marquee-item text-gray-700 whitespace-nowrap" aria-hidden="true">{a}</span>
-							{/each}
+
+	<!-- 竞赛成果卡片 -->
+	<Card class="flex flex-col md:flex-row md:justify-between items-center">
+		<CardTitleBlock>
+			<div transition:fade class="flex justify-center items-center">
+				<Img src="index/undraw_certificate_cqps.svg" alt="竞赛成果" clazz="w-32 h-32" />
+			</div>
+			<h1 class="p-5 font-bold text-4xl truncate">竞赛成果</h1>
+		</CardTitleBlock>
+		<CardContextBlock class="w-full">
+			<div class="p-4">
+				<div
+					class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6"
+					role="list"
+					aria-label="achievements"
+				>
+					{#each achievements as a}
+						<div
+							role="listitem"
+							class="rounded-xl bg-white/60 backdrop-blur-sm shadow-sm hover:shadow-md transition-all h-32 sm:h-36 flex flex-col items-center justify-center text-center px-3 md:px-4"
+						>
+							<div
+								class={`text-4xl md:text-5xl font-extrabold bg-gradient-to-r ${a.gradient} text-transparent bg-clip-text tracking-tight`}
+							>
+								{a.value}
+							</div>
+							<div class="mt-1 md:mt-2 leading-tight">
+								<div class="text-sm md:text-base font-medium text-gray-800">{a.title}</div>
+								<div class="text-xs md:text-sm text-gray-500">{a.sub}</div>
+							</div>
+						</div>
+					{/each}
+				</div>
+				<div class="w-full text-center text-xs md:text-sm text-gray-500 mt-3">2019年至2025年间</div>
+			</div>
+			<div class="w-full mt-1 flex justify-center">
+				<div class="w-full max-w-3xl px-3">
+					<div class="relative overflow-hidden">
+						<div class="marquee" aria-label="awards marquee">
+							<div class="marquee-track" role="list">
+								{#each awards as a}
+									<span class="marquee-item text-gray-700 whitespace-nowrap">{a}</span>
+								{/each}
+								{#each awards as a}
+									<span class="marquee-item text-gray-700 whitespace-nowrap" aria-hidden="true"
+										>{a}</span
+									>
+								{/each}
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-
-	<!-- </CardTitleBlock>
-			<CardContextBlock class="min-h-[120px]">
-				<p class="p-4"> </p>
-			</CardContextBlock> -->
-	<!-- </Card> -->
-	<img src="index/hezhao.jpeg" alt="中南大学InnOSeed团队合照" class="my-10 rounded-lg shadow-lg w-full max-w-4xl mx-auto" />
-	<div
-		class="flex flex-col md:flex-row md:justify-start justify-center items-center gap-5 p-4 flex-wrap"
-	>
-		<!-- Badge 1 -->
-		<div
-			class="rounded-2xl px-10 py-4 flex items-center gap-3 min-w-[180px] bg-white/60 backdrop-blur-sm shadow-sm hover:shadow-md transition-shadow"
-		>
+		</CardContextBlock>
+	</Card>
+	<img
+		src="index/hezhao.jpeg"
+		alt="中南大学InnOSeed团队合照"
+		class="my-10 rounded-lg shadow-lg w-full max-w-4xl mx-auto"
+	/>
+	<Card class="flex flex-col md:flex-row-reverse md:justify-between items-center">
+		<CardTitleBlock>
+			<div transition:fade class="flex justify-center items-center">
+				<Img src="index/undraw_education_3vwh.svg" alt="升学/交流" clazz="w-32 h-32" />
+			</div>
+			<h1 class="p-5 font-bold text-4xl truncate">升学/交流</h1>
+		</CardTitleBlock>
+		<CardContextBlock class="w-full">
+			<!-- 升学 / 交流成果，与“竞赛成果”卡片一致风格 -->
+			<div class="p-4 w-full">
 				<div
-					class="text-4xl md:text-6xl font-extrabold bg-gradient-to-r from-purple-500 to-pink-400 text-transparent bg-clip-text"
+					class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6"
+					role="list"
+					aria-label="admissions"
 				>
-					5
+					{#each admissions as a}
+						<div
+							role="listitem"
+							class="rounded-xl bg-white/60 backdrop-blur-sm shadow-sm hover:shadow-md transition-all h-32 sm:h-36 flex flex-col items-center justify-center text-center px-3 md:px-4"
+						>
+							<div
+								class={`text-4xl md:text-5xl font-extrabold bg-gradient-to-r ${a.gradient} text-transparent bg-clip-text tracking-tight`}
+							>
+								{a.value}
+							</div>
+							<div class="mt-1 md:mt-2 leading-tight">
+								<div class="text-sm md:text-base font-medium text-gray-800">{a.title}</div>
+								<div class="text-xs md:text-sm text-gray-500">{a.sub}</div>
+							</div>
+						</div>
+					{/each}
 				</div>
-			<div class="leading-tight">
-				<div class="text-lg font-medium">清华履历</div>
-				<div class="text-sm text-gray-600">人次</div>
+				<div class="w-full text-center text-xs md:text-sm text-gray-500 mt-3">近年累计</div>
 			</div>
-		</div>
-		<!-- Badge 2 -->
-		<div
-			class="rounded-2xl px-10 py-4 flex items-center gap-3 min-w-[180px] bg-white/60 backdrop-blur-sm shadow-sm hover:shadow-md transition-shadow"
-		>
-			<div
-				class="text-4xl md:text-6xl font-extrabold bg-gradient-to-r from-pink-500 to-rose-400 text-transparent bg-clip-text"
-			>
-				2
-			</div>
-			<div class="leading-tight">
-				<div class="text-lg font-medium">北大履历</div>
-				<div class="text-sm text-gray-600">人次</div>
-			</div>
-		</div>
-		<!-- Badge 3 -->
-		<div
-			class="rounded-2xl px-10 py-4 flex items-center gap-3 min-w-[180px] bg-white/60 backdrop-blur-sm shadow-sm hover:shadow-md transition-shadow"
-		>
-			<div
-				class="text-4xl md:text-6xl font-extrabold bg-gradient-to-r from-rose-500 to-orange-400 text-transparent bg-clip-text"
-			>
-				1
-			</div>
-			<div class="leading-tight">
-				<div class="text-lg font-medium">斯坦福大学</div>
-				<div class="text-sm text-gray-600">人次</div>
-			</div>
-		</div>
-
-		<!-- Badge 4 -->
-		<div
-			class="rounded-2xl px-10 py-4 flex items-center gap-3 min-w-[180px] bg-white/60 backdrop-blur-sm shadow-sm hover:shadow-md transition-shadow"
-		>
-			<div
-				class="text-4xl md:text-6xl font-extrabold bg-gradient-to-r from-orange-500 to-yellow-400 text-transparent bg-clip-text"
-			>
-				3
-			</div>
-			<div class="leading-tight">
-				<div class="text-lg font-medium">QS前100交换</div>
-				<div class="text-sm text-gray-600">人次</div>
-			</div>
-		</div>
-	</div>
+		</CardContextBlock>
+	</Card>
 	<Card class="flex flex-col md:flex-row md:justify-between items-center">
 		<CardTitleBlock>
 			<div transition:fade class="flex justify-center items-center">
@@ -279,52 +280,58 @@
 			<!-- 使用网格布局 -->
 			<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
 				<!-- 苗子阳卡片 -->
-				<div class="rounded-2xl shadow-md border p-4 text-gray-800"
-					 style="background: linear-gradient(120deg, #ffffffff 0%, #ebf9ffff 100%);">
+				<div
+					class="rounded-2xl backdrop-blur-sm shadow-sm hover:shadow-md  p-4 text-gray-800 transition-shadow"
+					style="background: linear-gradient(120deg, #ffffffff 0%, #ebf9ffff 100%);"
+				>
 					<h2 class="font-bold text-lg mb-2 text-center">升学代表人物：苗子阳</h2>
 					<ul class="list-disc list-inside space-y-1">
-					<li>中南大学年度人物</li>
-					<li>优秀学生标兵</li>
-					<li>保研至中南大学</li>
+						<li>中南大学年度人物</li>
+						<li>优秀学生标兵</li>
+						<li>保研至中南大学</li>
 					</ul>
 				</div>
 
 				<!-- 常佳宇卡片 -->
-				<div class="rounded-2xl shadow-md border p-4 text-gray-800"
-					 style="background: linear-gradient(120deg, #ffffffff 0%, #ebf9ffff 100%);">
+				<div
+					class="rounded-2xl backdrop-blur-sm shadow-sm hover:shadow-md  p-4 text-gray-800 transition-shadow"
+					style="background: linear-gradient(120deg, #ffffffff 0%, #ebf9ffff 100%);"
+				>
 					<h2 class="font-bold text-lg mb-2 text-center">留学代表人物：常佳宇</h2>
 					<ul class="list-disc list-inside space-y-1">
-					<li>robocup世界一等奖</li>
-					<li>前往斯坦福大学深造</li>
+						<li>robocup世界一等奖</li>
+						<li>前往斯坦福大学深造</li>
 					</ul>
 				</div>
 
 				<!-- 颜思宇卡片 -->
-				<div class="rounded-2xl shadow-md border p-4 text-gray-800"
-					 style="background: linear-gradient(120deg, #ffffffff 0%, #ebf9ffff 100%);">
+				<div
+					class="rounded-2xl backdrop-blur-sm shadow-sm hover:shadow-md  p-4 text-gray-800 transition-shadow"
+					style="background: linear-gradient(120deg, #ffffffff 0%, #ebf9ffff 100%);"
+				>
 					<h2 class="font-bold text-lg mb-2 text-center">竞赛代表人物：颜思宇</h2>
 					<ul class="list-disc list-inside space-y-1">
-					<li>国家级竞赛奖项12项</li>
-					<li>省级奖项20余项</li>
-					<li>获省级竞赛最高荣誉</li> 
+						<li>国家级竞赛奖项12项</li>
+						<li>省级奖项20余项</li>
+						<li>获省级竞赛最高荣誉</li>
 					</ul>
 				</div>
 			</div>
 
 			<!-- 联系我们 -->
-			<div class="rounded-2xl shadow-md border p-4 bg-white">
-			<p class="text-gray-800">
-				中南大学InnOSeed欢迎各种形式的合作，
-				详情请咨询目前的学生负责人，请见
-				<a href="#footer" class="font-bold text-blue-600 ">联系我们</a>。
-			</p>
+			<div class="rounded-2xl backdrop-blur-sm shadow-sm hover:shadow-md  p-4 bg-white">
+				<p class="text-gray-800">
+					中南大学<span class="bitcount">InnOSeed</span>欢迎各种形式的合作，
+					详情请咨询目前的学生负责人，请见
+					<a href="#footer" class="font-bold text-blue-600 ">联系我们</a>。
+				</p>
 			</div>
 		</CardContextBlock>
 	</Card>
 	<Card class="flex flex-col md:flex-row-reverse md:justify-between items-center">
 		<CardTitleBlock>
 			<div class="p-5">
-				<h1 class="text-4xl">在InnOSeed</h1>
+				<h1 class="text-4xl">在<span class="bitcount">InnOSeed</span></h1>
 				<h1 class="font-bold text-5xl truncate">做你想做的</h1>
 			</div>
 			<!-- <div transition:fade class="flex justify-center items-center">
@@ -332,7 +339,10 @@
 			</div> -->
 		</CardTitleBlock>
 		<CardContextBlock>
-			<p>InnOSeed有许多与企业合作，为中南大学尤其是计算机学院的同学提供有意思的活动沙龙。</p>
+			<p>
+				<span class="bitcount">InnOSeed</span
+				>有许多与企业合作，为中南大学尤其是计算机学院的同学提供有意思的活动沙龙。
+			</p>
 			<p>
 				我们联络优秀的业界前辈举行techtalk，为同学们答疑解惑、指点迷津；成员们也在各项活动与学术学习中大放异彩。
 			</p>
@@ -356,7 +366,7 @@
 		</CardTitleBlock>
 		<CardContextBlock>
 			<p>
-				InnOSeed坚持小而精的发展路线，每届只固定招收 8-9
+				<span class="bitcount">InnOSeed</span>坚持小而精的发展路线，每届只固定招收 8-9
 				人，招生对象面向全校。我们没有硬性的招生标准，只希望能够和有着不同想法的你相遇。
 			</p>
 			<p>
@@ -374,16 +384,33 @@
 </List>
 
 <style>
+	.heading-font {
+		font-family: 'ZCOOL XiaoWei', sans-serif;
+	}
+	/* 目前无需额外样式，页面使用 Tailwind CSS 实现布局与样式 */
 
-.heading-font {
-		font-family: "ZCOOL XiaoWei", sans-serif;
-}
-/* 目前无需额外样式，页面使用 Tailwind CSS 实现布局与样式 */
-
-/* 奖项名称无限循环滚动（双份元素，translateX(-50%) 时正好第二份接上） */
-.marquee { overflow: hidden; }
-.marquee-track { display: inline-flex; gap: 2rem; animation: marquee 200s linear infinite; }
-.marquee-item { flex: 0 0 auto; }
-.marquee:hover .marquee-track, .marquee:focus-within .marquee-track { animation-play-state: paused; }
-@keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+	/* 奖项名称无限循环滚动（双份元素，translateX(-50%) 时正好第二份接上） */
+	.marquee {
+		overflow: hidden;
+	}
+	.marquee-track {
+		display: inline-flex;
+		gap: 2rem;
+		animation: marquee 200s linear infinite;
+	}
+	.marquee-item {
+		flex: 0 0 auto;
+	}
+	.marquee:hover .marquee-track,
+	.marquee:focus-within .marquee-track {
+		animation-play-state: paused;
+	}
+	@keyframes marquee {
+		0% {
+			transform: translateX(0);
+		}
+		100% {
+			transform: translateX(-50%);
+		}
+	}
 </style>
