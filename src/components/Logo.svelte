@@ -12,10 +12,10 @@
 					transition-all duration-300
 					flex absolute flex-col sm:flex-row justify-center items-center h-screen sm:h-80 gap-5 md:gap-16`}
 >
-	<Img src={imgSrc} id="logo" clazz={`w-48 h-48`} alt="the logo of innoseed lab." />
+	<!-- <Img src={imgSrc} id="logo" clazz={`w-48 h-48`} alt="the logo of innoseed lab." /> -->
 	<section class="flex flex-col justify-center items-center gap-3">
-		<h1 class="text-4xl sm:text-5xl rainbow-text font-bold ">中南大学InnOSeed潇湘实验室</h1>
-		<h2 class="text-xl rainbow-text font-bold" />
+		<!-- <h1 class="text-4xl sm:text-5xl rainbow-text font-bold ">中南大学InnOSeed潇湘实验室</h1> -->
+		<!-- <h2 class="text-xl rainbow-text font-bold" /> -->
 	</section>
 </div>
 <!-- blank to prevent content being hidden by navigator-->
@@ -35,7 +35,7 @@
 
 	/* 主容器背景：柔和的浅色到淡蓝渐变，和 logo 的冷暖呼应 */
 	.logo-bg {
-		background: linear-gradient(90deg, #fff6ec 0%, #f3f8fb 50%, #eef9ff 100%);
+		// background: linear-gradient(90deg, #fff6ec 0%, #f3f8fb 50%, #eef9ff 100%);
 	}
 
 	@keyframes maskedAnimation {
