@@ -7,7 +7,6 @@
 	import IconLink from '@/components/IconLink.svelte';
 	import Img from '@/components/img/Img.svelte';
 	// import EchartBar from '@/components/global/EchartBar.svelte';
-	import Typewriter from 'svelte-typewriter/Typewriter.svelte';
 	import { onMount } from 'svelte';
 
 	// awards list for marquee (CSS 无限循环滚动)
@@ -68,13 +67,6 @@
 		'大学生科技创新创业大赛',
 		'全国大学生市场调查与分析大赛'
 	];
-	const about = [
-		'在<span class="bitcount">InnOSeed</span>，没有标准答案，只有不同的见解。',
-		'我们更像俱乐部，属于different thinkers的俱乐部。',
-		'没有固定模式、没有条条框框。',
-		'丰富的资源支持, 深度学习研究、系统应用开发或者任何方向，都能获得资源加持。',
-		'遇见心有鸿鹄的人、遇见新鲜独到的见解与观点、收获珍贵且坚韧的友谊与羁绊。'
-	];
 
 	const icons = [
 		{
@@ -126,28 +118,7 @@
 </script>
 
 <List>
-	<div class="flex flex-col gap-3 items-center pb-12">
-		<p
-			class="font-serif tracking-widest font-bold text-4xl 
-		bg-gradient-to-r from-blue-500 to-green-500 bg-clip-text text-transparent"
-		>
-			中南大学<span class="bitcount">InnOSeed</span>潇湘实验室
-		</p>
-		<div>
-			<Typewriter
-				mode={'loop'}
-				delay={0}
-				wordInterval={3000}
-				interval={60}
-				unwriteInterval={30}
-				showCursorOnDelay={true}
-			>
-				{#each about as abt}
-					<p class="type-text">{@html abt}</p>
-				{/each}
-			</Typewriter>
-		</div>
-	</div>
+	
 
 	<!-- 四象限图标区 -->
 	<div
