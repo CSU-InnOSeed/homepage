@@ -108,9 +108,9 @@
 		transition:fly
 		id="banner"
 		class="flex justify-center items-center sm:block w-full h-[40vh] overflow-hidden relative"
-		style="background-image:url({src}); background-size:cover; background-position: center;"
+		style="background-image:url({src}); background-size:contain; background-position: center;"
 	>
-		<div style="position:absolute;inset:0;background:rgba(255,255,255,0.75);z-index:1;" />
+		<div style="position:absolute;inset:0;background:rgba(255,255,255,0.6);z-index:1;" />
 		<div class="w-full h-full flex justify-center items-center relative" style="z-index:2;">
 			<Logo />
 		</div>

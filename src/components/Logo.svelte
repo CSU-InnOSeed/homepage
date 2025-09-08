@@ -16,7 +16,7 @@
 
 <div
 	transition:fade
-	class={`w-full pt-1 pb-1 pl-3 logo-bg
+	class={`w-full top-10 pt-1 pb-1 pl-3 logo-bg
 					transition-all duration-300
 					flex relative sm:absolute sm:top-20 flex-col sm:flex-row justify-center items-center h-auto sm:h-80 gap-5 md:gap-16`}
 >
