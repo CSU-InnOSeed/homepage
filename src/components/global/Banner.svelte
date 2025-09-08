@@ -107,7 +107,7 @@
 	<header
 		transition:fly
 		id="banner"
-		class="flex justify-center items-center sm:block w-full h-[40vh] overflow-hidden relative"
+		class="flex justify-center items-center sm:block w-full h-[25vh] overflow-hidden relative"
 		style="background-image:url({src}); background-size:contain; background-position: center;"
 	>
 		<div style="position:absolute;inset:0;background:rgba(255,255,255,0.6);z-index:1;" />

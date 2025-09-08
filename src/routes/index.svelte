@@ -145,8 +145,13 @@
 		{/each}
 	</div>
 
+	<img
+		src="index/hezhao.jpeg"
+		alt="中南大学InnOSeed团队合照"
+		class="my-10 rounded-lg shadow-lg w-full max-w-3xl mx-auto"
+	/>
 	<!-- 竞赛成果卡片 -->
-	<Card class="flex flex-col md:flex-row md:justify-between items-center">
+	<Card class="flex flex-col md:flex-row md:justify-between items-center mb-0">
 		<CardTitleBlock>
 			<div transition:fade class="flex justify-center items-center">
 				<Img src="index/undraw_certificate_cqps.svg" alt="竞赛成果" clazz="w-32 h-32" />
@@ -179,8 +184,11 @@
 				</div>
 				<div class="w-full text-center text-xs md:text-sm text-gray-500 mt-3">2019年至2025年间</div>
 			</div>
-			<div class="w-full mt-1 flex justify-center">
-				<div class="w-full max-w-3xl px-3">
+		</CardContextBlock>
+		
+	</Card>
+	<!-- <div class="w-full flex justify-center mt-[-3rem]">
+				<div class="w-full max-w-5xl px-3">
 					<div class="relative overflow-hidden">
 						<div class="marquee" aria-label="awards marquee">
 							<div class="marquee-track" role="list">
@@ -196,14 +204,7 @@
 						</div>
 					</div>
 				</div>
-			</div>
-		</CardContextBlock>
-	</Card>
-	<img
-		src="index/hezhao.jpeg"
-		alt="中南大学InnOSeed团队合照"
-		class="my-10 rounded-lg shadow-lg w-full max-w-4xl mx-auto"
-	/>
+			</div> -->
 	<Card class="flex flex-col md:flex-row-reverse md:justify-between items-center">
 		<CardTitleBlock>
 			<div transition:fade class="flex justify-center items-center">
