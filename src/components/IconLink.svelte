@@ -1,5 +1,5 @@
 <script>
-	import Img from "./img/Img.svelte";
+	import Img from './img/Img.svelte';
 	export let imgUrl = '';
 	export let href = '';
 </script>

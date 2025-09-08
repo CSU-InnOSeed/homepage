@@ -1,20 +1,21 @@
 <script lang="ts">
-	import { fly,fade } from 'svelte/transition';
+	import { fly, fade } from 'svelte/transition';
 	import { InformationCircleIcon } from '@rgossiaux/svelte-heroicons/outline';
 	import MatchTable from '@/components/apply/MatchTable.svelte';
 	import ToolTip from '@/components/global/ToolTip.svelte';
-    import {createEventDispatcher, onMount} from 'svelte';
-    const dispatch = createEventDispatcher();	let ifShowMatchTable = true;
+	import { createEventDispatcher, onMount } from 'svelte';
+	const dispatch = createEventDispatcher();
+	let ifShowMatchTable = true;
 	let matchComplete = false;
 	let loading = false;
 	let personalCode = '';
 	let showCopySuccess = false;
 
-	function showMatchTable(){
+	function showMatchTable() {
 		ifShowMatchTable = true;
 	}
 
-	function match(event){
+	function match(event) {
 		loading = true;
 		ifShowMatchTable = false;
 		matchComplete = false;
@@ -40,22 +41,35 @@
 		}
 	}
 
-	function nextStep(){
+	function nextStep() {
 		dispatch('nextStep', {});
 	}
 </script>
 
 {#if !ifShowMatchTable}
 	<div transition:fly>
-		<div style="display: flex;align-items: center; margin-bottom: 20px;" class="justify-center gap-4">
-			<div id="button" class="pick-view-match-button flex justify-center gap-1" on:click={showMatchTable}>
-				<ToolTip  text="根据选择结果生成个性标签" position="left">
-					<InformationCircleIcon class="w-5 h-5 cursor-pointer hover:text-blue-500 transition duration-300 ease-linear" />
+		<div
+			style="display: flex;align-items: center; margin-bottom: 20px;"
+			class="justify-center gap-4"
+		>
+			<div
+				id="button"
+				class="pick-view-match-button flex justify-center gap-1"
+				on:click={showMatchTable}
+			>
+				<ToolTip text="根据选择结果生成个性标签" position="left">
+					<InformationCircleIcon
+						class="w-5 h-5 cursor-pointer hover:text-blue-500 transition duration-300 ease-linear"
+					/>
 				</ToolTip>
-					个性标签
+				个性标签
 			</div>
 		</div>
-		<div class="ml-10 mr-10 flex flex-col justify-center items-center gap-10 md:flex-row md:flex-wrap transition-all duration-300 {loading?'opacity-0':''}">
+		<div
+			class="ml-10 mr-10 flex flex-col justify-center items-center gap-10 md:flex-row md:flex-wrap transition-all duration-300 {loading
+				? 'opacity-0'
+				: ''}"
+		>
 			{#if matchComplete}
 				<div class="code-display">
 					<h2>您的个性标签：</h2>
@@ -69,30 +83,31 @@
 			{/if}
 		</div>
 	</div>
-	{:else}
-		<div transition:fly={{duration:700, y:3000}}>
-			<MatchTable on:closeMatchTable={()=> ifShowMatchTable = !ifShowMatchTable} on:match={match}/>
-		</div>
+{:else}
+	<div transition:fly={{ duration: 700, y: 3000 }}>
+		<MatchTable
+			on:closeMatchTable={() => (ifShowMatchTable = !ifShowMatchTable)}
+			on:match={match}
+		/>
+	</div>
 {/if}
 
-
-
 <style lang="scss">
-	.pick-view-match-button{
+	.pick-view-match-button {
 		width: 150px;
 		height: 40px;
 		border-radius: 5px;
 		background-color: white;
-		color: #165DFF;
-		border: 1px solid #165DFF;
+		color: #165dff;
+		border: 1px solid #165dff;
 		display: flex;
 		justify-content: center;
 		align-items: center;
 		cursor: pointer;
-        transition: all ease-in-out 0.2s;
+		transition: all ease-in-out 0.2s;
 
-		&:hover{
-			background-color: #165DFF;
+		&:hover {
+			background-color: #165dff;
 			color: white;
 		}
 	}
@@ -102,16 +117,16 @@
 		padding: 20px;
 		background-color: #f9f9f9;
 		border-radius: 10px;
-		box-shadow: 0 0 10px rgba(0,0,0,0.1);
+		box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 	}
 
 	.code-box {
 		font-size: 18px;
 		font-weight: bold;
-		color: #165DFF;
+		color: #165dff;
 		background-color: white;
 		padding: 10px;
-		border: 1px solid #165DFF;
+		border: 1px solid #165dff;
 		border-radius: 5px;
 		margin: 10px 0;
 		word-break: break-all;
@@ -135,7 +150,7 @@
 	.next-button {
 		margin-top: 20px;
 		padding: 10px 20px;
-		background-color: #165DFF;
+		background-color: #165dff;
 		color: white;
 		border: none;
 		border-radius: 5px;
@@ -149,7 +164,13 @@
 	}
 
 	@keyframes fadeIn {
-		from { opacity: 0; transform: translateY(-10px); }
-		to { opacity: 1; transform: translateY(0); }
+		from {
+			opacity: 0;
+			transform: translateY(-10px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
 	}
 </style>

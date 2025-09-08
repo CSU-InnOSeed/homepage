@@ -15,18 +15,19 @@
 	export let str: string = '';
 	let copied = false;
 
-	const note = "hey, buddy, here's a little reward for your CuriOsity. \
+	const note =
+		"hey, buddy, here's a little reward for your CuriOsity. \
 	keep it hush-hush from others—i could be aNy interviewer, or maybe juSt a mystery guest. \
 	sO, go ahead and pick another interviewer. \
-	Let's divE into the interviewe together !"
+	Let's divE into the interviewe together !";
 
 	function copyToClipboard() {
 		const text = note; // 设置要复制的文本
 		navigator.clipboard.writeText(text).then(
 			() =>
-			(cancelLast = some(() => {
-				copied = false;
-			}))
+				(cancelLast = some(() => {
+					copied = false;
+				}))
 		);
 		pipe(
 			cancelLast,
@@ -39,7 +40,6 @@
 			UR quite good at this .Oops, there are some words on my head \
 			\n \n 	'
 		);
-		
 	}
 </script>
 
