@@ -30,7 +30,7 @@
 			class="font-serif tracking-widest font-bold text-3xl sm:text-4xl 
 		bg-gradient-to-r from-blue-500 to-green-500 bg-clip-text text-transparent text-center"
 		>
-			中南大学<span class="bitcount">InnOSeed</span>潇湘实验室
+			<span class="bitcount">InnOSeed Lab</span>
 		</p>
 		<div>
 			<Typewriter

@@ -48,19 +48,19 @@
 </script>
 
 <div class="match-table" transition:fly={{ duration: 300 }}>
-	<div class="flex justify-between items-center w-full">
+	<div class="flex justify-between items-center w-full" style="margin-bottom: 20px;">
 		<div class="flex items-center gap-1" style="width: 200px;">
 			<!-- <ToolTip position="bottom">
             </ToolTip>
             <div class="transition duration-100 ease-linear">契合度匹配</div> -->
 		</div>
 		<div class="flex items-center gap-1">
-			<ToolTip text="我们会根据你选择的结果，调整面试官优先级" position="left">
+			<ToolTip text="我们会根据你选择的结果，生成个性标签" position="left">
 				<InformationCircleIcon
 					class="w-5 h-5 cursor-pointer hover:text-blue-500 transition duration-300 ease-linear"
 				/>
 			</ToolTip>
-			<div style="color: #4E5969">请选择你的个人选路 - 技术方向 - 兴趣爱好 - 未来道路</div>
+			<div style="color: #4E5969;">请选择你的个人选路 - 技术方向 - 兴趣爱好 - 未来道路（可多选）</div>
 		</div>
 		<div style="width: 200px;" />
 		<!--    <ToolTip text="关闭窗口" position="left">-->
@@ -69,7 +69,7 @@
 		<!--        </div>-->
 		<!--    </ToolTip>-->
 	</div>
-	<div class="card-area">
+	<div class="card-area w-[62%] mx-auto">
 		{#each options as option, index}
 			<div class="option-group">
 				<h3 class="group-title">{option.title}</h3>
@@ -163,8 +163,9 @@
 
 	.group-title {
 		text-align: center;
-		color: #4e5969;
-		font-size: 18px;
-		margin-bottom: 10px;
+		// color: #00000000;
+		font-size: 20px;
+		margin-bottom: 0px;
+		margin-top: 5px;
 	}
 </style>

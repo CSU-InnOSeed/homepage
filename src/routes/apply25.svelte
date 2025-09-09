@@ -41,7 +41,7 @@
 		});
 
 		pipe(
-			local.get<section[]>('apply23'),
+			local.get<section[]>('apply25'),
 			getOrElse(() => [
 				{
 					tag: '了解流程',
@@ -71,7 +71,7 @@
 	});
 
 	afterUpdate(() => {
-		local.storeWithKey('apply23', sections);
+		local.storeWithKey('apply25', sections);
 	});
 </script>
 

@@ -38,9 +38,9 @@
 					</div>
 				</CardTitleBlock>
 				<CardContextBlock>
-					<a href="/">
-						<button disabled class="z-10 bg-blue-500 w-32 h-10 rounded-3xl text-white">
-							9月10日开放
+					<a href="/apply25">
+						<button class="z-10 bg-blue-500 w-32 h-10 rounded-3xl text-white">
+							申请
 						</button>
 					</a>
 				</CardContextBlock>

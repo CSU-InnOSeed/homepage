@@ -15,7 +15,7 @@
 >
 	<div class="mt-6 flex flex-wrap gap-1 justify-center">
 		{#each options as item, index}
-			<div style="display: flex;flex-direction: column;margin: 5px">
+			<div style="display: flex;flex-direction: column;margin: 4px">
 				<div
 					style="display: flex;; align-items: center;justify-content:center;background-color: {item.selected
 						? item.color.selectedColor
