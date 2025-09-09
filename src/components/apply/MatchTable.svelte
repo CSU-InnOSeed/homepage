@@ -60,7 +60,7 @@
 					class="w-5 h-5 cursor-pointer hover:text-blue-500 transition duration-300 ease-linear"
 				/>
 			</ToolTip>
-			<div style="color: #4E5969">请选择你的技术方向 - 兴趣爱好 - 未来道路</div>
+			<div style="color: #4E5969">请选择你的个人选路 - 技术方向 - 兴趣爱好 - 未来道路</div>
 		</div>
 		<div style="width: 200px;" />
 		<!--    <ToolTip text="关闭窗口" position="left">-->
