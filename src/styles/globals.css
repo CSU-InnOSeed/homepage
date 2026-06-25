@@ -14,7 +14,7 @@
   --ink-dark:   #1F2937;          /* main text on light */
   --ink-mid:    #374151;
   --ink-muted:  #6B7280;          /* secondary text */
-  --ink-faint:  #9CA3AF;          /* meta text */
+  --ink-faint:  #6B7280;          /* meta text (was #9CA3AF — 2.85:1 fail AA, now matches --ink-muted at 5.74:1) */
   --rule:       #E5E7EB;          /* hairlines */
 
   /* Primary accent — bright blue from innoseed.club */
@@ -1210,3 +1210,56 @@ section { position: relative; }
 }
 
 .hidden { display: none !important; }
+
+/* ===================== A11Y ===================== */
+
+/* Skip-link: visually hidden until focused, then jumps past the nav. */
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: 12px;
+  z-index: 100;
+  padding: 12px 18px;
+  background: var(--brand);
+  color: #fff;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  font-size: 14px;
+  text-decoration: none;
+  transition: top 0.2s ease;
+}
+.skip-link:focus,
+.skip-link:focus-visible {
+  top: 12px;
+  outline: 3px solid var(--accent-amber);
+  outline-offset: 2px;
+}
+
+/* Keyboard focus rings — only when navigating by keyboard.
+   Mouse users get the existing :hover underlines on nav links, etc. */
+:focus-visible {
+  outline: 3px solid var(--brand);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+.btn:focus-visible,
+.icon-link:focus-visible,
+.recruit-cta:focus-visible {
+  outline-offset: 4px;
+}
+.nav-toggle:focus-visible {
+  outline-offset: 2px;
+  border-color: var(--brand);
+}
+
+/* <main> when focused via skip-link: remove default focus styling since
+   the skip-link itself signals focus, but allow :focus-visible to draw
+   a subtle ring if the user explicitly tabs into the main landmark. */
+#main:focus {
+  outline: none;
+}
+#main:focus-visible {
+  outline: 3px dashed var(--brand);
+  outline-offset: -3px;
+  border-radius: 0;
+}
