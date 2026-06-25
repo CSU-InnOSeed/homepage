@@ -1,10 +1,6 @@
-# Vercel
-.vercel
-
-# macOS
+node_modules
+dist
 .DS_Store
-
-# Editors
-.idea/
-.vscode/
-*.swp
+*.log
+.vite
+.cache
