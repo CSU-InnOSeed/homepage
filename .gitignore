@@ -1,6 +1,32 @@
-node_modules
-dist
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+
+# Vite
+.vite/
+.cache/
+
+# Vercel project metadata (per .vercel/README.txt)
+.vercel/
+
+# OS
 .DS_Store
+Thumbs.db
+
+# Editors
+.idea/
+.vscode/
+*.swp
+
+# Logs
 *.log
-.vite
-.cache
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# Playwright
+test-results/
+playwright-report/
+playwright/.cache/
