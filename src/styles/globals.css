@@ -554,7 +554,8 @@ section { position: relative; }
   z-index: 1;
   transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
 }
-.pillar-icon img { width: 48px; height: 48px; object-fit: contain; }
+.pillar-icon-svg { display: inline-flex; width: 48px; height: 48px; }
+.pillar-icon-svg svg { width: 100%; height: 100%; display: block; }
 .pillar:hover .pillar-icon { transform: rotate(-6deg) scale(1.05); }
 
 .pillar-bottom { display: flex; flex-direction: column; gap: 8px; margin-top: auto; position: relative; z-index: 1; }

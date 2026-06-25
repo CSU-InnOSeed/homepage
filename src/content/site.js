@@ -76,28 +76,24 @@ export const PILLARS = [
     key: 'compete',
     en: 'Compete',
     name: '竞赛',
-    icon: '/imgs/icon-compete.svg',
     desc: '参与竞赛，培养综合素质——以赛代练，逼出最好的自己。',
   },
   {
     key: 'research',
     en: 'Research',
     name: '科研',
-    icon: '/imgs/icon-research.svg',
     desc: '纵深发展，探求真理与奥秘——在某一寸土地上挖到深处。',
   },
   {
     key: 'startup',
     en: 'Startup',
     name: '创业',
-    icon: '/imgs/icon-startup.svg',
     desc: '进入市场，点燃创业理想——把想法第一次推到现实里检验。',
   },
   {
     key: 'bonds',
     en: 'Bonds',
     name: '志合者',
-    icon: '/imgs/icon-bonds.svg',
     desc: '莫愁前路无知己——找到一群同路人，比任何奖项都更难得。',
   },
 ];
