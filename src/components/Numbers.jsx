@@ -1,45 +1,7 @@
 import { useRef } from 'react';
 import useReveal from '../hooks/useReveal.js';
 import useCountUp from '../hooks/useCountUp.js';
-
-const STATS = [
-  {
-    key: 'c-purple',
-    label: 'National / Intl. 1st Prize',
-    target: 10,
-    suffix: '',
-    unit: '人次',
-    meta: '国家 / 国际级一等奖\n含金量最高的那一档',
-    period: '2019 — 2025',
-  },
-  {
-    key: 'c-amber',
-    label: 'National Scholarship',
-    target: 13,
-    suffix: '',
-    unit: '人次',
-    meta: '国家奖学金\n学业与综合素质的双重肯定',
-    period: '累计',
-  },
-  {
-    key: 'c-green',
-    label: 'National Honors',
-    target: 64,
-    suffix: '',
-    unit: '项',
-    meta: '国家级荣誉\n含竞赛、科研、创业多个赛道',
-    period: '累计',
-  },
-  {
-    key: 'c-cyan',
-    label: 'Awards In Total',
-    target: 140,
-    suffix: '+',
-    unit: '',
-    meta: '校级以上荣誉\n每一份都不该被忽略',
-    period: '2019 — 2025',
-  },
-];
+import { NUMBERS_HEAD, STATS } from '../content/site.js';
 
 export default function Numbers() {
   const eyebrowRef = useRef(null);
@@ -52,9 +14,9 @@ export default function Numbers() {
       <div className="container numbers-inner">
         <div className="numbers-head">
           <div>
-            <span ref={eyebrowRef} className="eyebrow reveal">03 — By The Numbers</span>
+            <span ref={eyebrowRef} className="eyebrow reveal">{NUMBERS_HEAD.eyebrow}</span>
             <h2 ref={headRef} className="reveal" data-delay="1">
-              不靠口号，<br /><em>靠这组数字。</em>
+              {NUMBERS_HEAD.headline[0]}<br /><em>{NUMBERS_HEAD.headline[1]}</em>
             </h2>
           </div>
         </div>
@@ -64,8 +26,8 @@ export default function Numbers() {
           ))}
         </div>
         <div className="numbers-mix">
-          <span>04 — Grad School / Exchange</span>
-          <span>5 清华 · 2 北大 · 1 斯坦福 · 3 QS 前 100 交换</span>
+          <span>{NUMBERS_HEAD.footerLabel}</span>
+          <span>{NUMBERS_HEAD.footerText}</span>
         </div>
       </div>
     </section>
@@ -88,10 +50,10 @@ function NumCard({ stat, idx }) {
         {stat.unit && <span className="unit">{stat.unit}</span>}
       </div>
       <p className="num-meta">
-        {stat.meta.split('\n').map((line, i) => (
+        {stat.meta.map((line, i) => (
           <span key={i}>
             {line}
-            {i < stat.meta.split('\n').length - 1 && <br />}
+            {i < stat.meta.length - 1 && <br />}
           </span>
         ))}
       </p>

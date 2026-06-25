@@ -1,15 +1,7 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import useScrolled from '../hooks/useScrolled.js';
 import useSmoothAnchorScroll from '../hooks/useSmoothAnchorScroll.js';
-
-const NAV_LINKS = [
-  { href: '#manifesto', label: '关于' },
-  { href: '#pillars', label: '方向' },
-  { href: '#numbers', label: '成果' },
-  { href: '#members', label: '代表' },
-  { href: 'https://innoseed.club/events', label: '活动', external: true },
-  { href: 'https://innoseed.club/recruit', label: '招新', external: true },
-];
+import { NAV_LINKS } from '../content/site.js';
 
 /**
  * Nav — fixed header with brand mark + link row.

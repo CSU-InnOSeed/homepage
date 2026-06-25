@@ -1,26 +1,6 @@
 import { useRef } from 'react';
 import useReveal from '../hooks/useReveal.js';
-
-const PEOPLE = [
-  {
-    tag: '升学代表',
-    name: '苗子阳',
-    title: '中南大学年度人物 · 优秀学生标兵',
-    items: ['中南大学年度人物', '优秀学生标兵', '保研至中南大学'],
-  },
-  {
-    tag: '留学代表',
-    name: '常佳宇',
-    title: 'RoboCup 世界一等奖 · 斯坦福大学深造',
-    items: ['RoboCup 世界一等奖', '前往斯坦福大学深造'],
-  },
-  {
-    tag: '竞赛代表',
-    name: '颜思宇',
-    title: '国家级竞赛奖项 12 项 · 省级 20 余项',
-    items: ['国家级竞赛奖项 12 项', '省级奖项 20 余项', '获省级竞赛最高荣誉'],
-  },
-];
+import { MEMBERS } from '../content/site.js';
 
 export default function Members() {
   const eyebrowRef = useRef(null);
@@ -45,7 +25,7 @@ export default function Members() {
           </p>
         </div>
         <div className="members-grid">
-          {PEOPLE.map((p, i) => (
+          {MEMBERS.map((p, i) => (
             <MemberCard key={p.name} person={p} idx={i + 1} />
           ))}
         </div>
