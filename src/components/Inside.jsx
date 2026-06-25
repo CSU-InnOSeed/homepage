@@ -12,13 +12,24 @@ export default function Inside() {
     <section className="inside">
       <div className="container inside-grid">
         <div ref={imageRef} className="inside-image reveal">
-          <img
-            src="/imgs/group-photo.jpeg"
-            alt="在 InnOSeed 做你想做的"
-            onError={(e) => {
-              e.currentTarget.style.display = 'none';
-            }}
-          />
+          <picture>
+            <source
+              type="image/webp"
+              srcSet="/imgs/group-photo-480.webp 480w, /imgs/group-photo-800.webp 800w, /imgs/group-photo-1200.webp 1200w"
+              sizes="(max-width: 880px) 100vw, 50vw"
+            />
+            <img
+              src="/imgs/group-photo-1200.jpg"
+              srcSet="/imgs/group-photo-480.jpg 480w, /imgs/group-photo-800.jpg 800w, /imgs/group-photo-1200.jpg 1200w"
+              sizes="(max-width: 880px) 100vw, 50vw"
+              alt="在 InnOSeed 做你想做的"
+              loading="lazy"
+              decoding="async"
+              onError={(e) => {
+                e.currentTarget.style.display = 'none';
+              }}
+            />
+          </picture>
         </div>
         <div ref={textRef} className="inside-text reveal" data-delay="1">
           <span className="eyebrow">{INSIDE.eyebrow}</span>

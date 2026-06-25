@@ -25,14 +25,23 @@ export default function Hero() {
   return (
     <section className="hero" id="top">
       <div className="hero-media">
-        <img
-          ref={imgRef}
-          src="/imgs/banner.jpg"
-          alt="InnOSeed Lab"
-          onError={(e) => {
-            e.currentTarget.style.display = 'none';
-          }}
-        />
+        <picture>
+          <source
+            type="image/webp"
+            srcSet="/imgs/banner-480.webp 480w, /imgs/banner-960.webp 960w, /imgs/banner-1440.webp 1440w"
+            sizes="100vw"
+          />
+          <img
+            ref={imgRef}
+            src="/imgs/banner-1440.jpg"
+            srcSet="/imgs/banner-480.jpg 480w, /imgs/banner-960.jpg 960w, /imgs/banner-1440.jpg 1440w"
+            sizes="100vw"
+            alt="InnOSeed Lab"
+            onError={(e) => {
+              e.currentTarget.style.display = 'none';
+            }}
+          />
+        </picture>
       </div>
       <div className="container hero-inner">
         <div ref={tagRef} className="hero-tag reveal">
