@@ -304,7 +304,7 @@ export const RECRUIT: RecruitData = {
   headline: { lead: '加 入', accent: 'InnOSeed' },
   body: '坚持小而精的发展路线，每届只固定招收 8 — 9 人，招生对象面向全校。我们没有硬性的招生标准。',
   meta: '— 只希望能够和有着不同想法的你相遇。',
-  cta: { label: '立即申请 · Apply Now', arrow: '→', href: 'mailto:contact@innoseed.club' },
+  cta: { label: '立即申请 · Apply Now', arrow: '→', href: '/apply' },
 };
 
 export const FOOTER: FooterData = {
