@@ -45,8 +45,19 @@ export async function checkHeroH1Visible({ page }) {
   await page.waitForLoadState('networkidle');
   const h1 = page.locator('.hero h1');
   await expect(h1).toBeVisible();
-  const opacity = await h1.evaluate((el) => parseFloat(getComputedStyle(el).opacity));
-  expect(opacity).toBeGreaterThan(0.99);
+  // useReveal fires via IntersectionObserver + 1.1s CSS transition. We
+  // wait for the .in class to be applied AND for opacity to climb above
+  // 0.95 — the original 0.99 threshold was tight enough to flake on
+  // mid-transition frames in headless Chromium.
+  await page.waitForFunction(
+    () => {
+      const el = document.querySelector('.hero h1');
+      if (!el || !el.classList.contains('in')) return false;
+      return parseFloat(getComputedStyle(el).opacity) > 0.95;
+    },
+    null,
+    { timeout: 4000 }
+  );
 }
 
 export async function checkNavSmoothScroll({ page }) {
