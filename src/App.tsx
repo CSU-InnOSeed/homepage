@@ -1,14 +1,14 @@
 import { useRef } from 'react';
-import Nav from './components/Nav.jsx';
-import Hero from './components/Hero.jsx';
-import Marquee from './components/Marquee.jsx';
-import Manifesto from './components/Manifesto.jsx';
-import Pillars from './components/Pillars.jsx';
-import Numbers from './components/Numbers.jsx';
-import Members from './components/Members.jsx';
-import Inside from './components/Inside.jsx';
-import Recruit from './components/Recruit.jsx';
-import Footer from './components/Footer.jsx';
+import Nav from './components/Nav';
+import Hero from './components/Hero';
+import Marquee from './components/Marquee';
+import Manifesto from './components/Manifesto';
+import Pillars from './components/Pillars';
+import Numbers from './components/Numbers';
+import Members from './components/Members';
+import Inside from './components/Inside';
+import Recruit from './components/Recruit';
+import Footer from './components/Footer';
 
 /**
  * App — composes the landing page sections in order.
@@ -24,12 +24,14 @@ import Footer from './components/Footer.jsx';
  *     it programmatically focusable but not in the tab order.
  */
 export default function App() {
-  const mainRef = useRef(null);
+  const mainRef = useRef<HTMLElement | null>(null);
 
-  const handleSkip = (e) => {
+  const handleSkip = () => {
     // Move focus to main for screen readers; smooth-scroll is handled by
     // useSmoothAnchorScroll on the document.
-    if (mainRef.current) mainRef.current.focus({ preventScroll: true });
+    if (mainRef.current) {
+      mainRef.current.focus({ preventScroll: true });
+    }
   };
 
   return (

@@ -39,10 +39,21 @@ jobs:
         run: pnpm install --frozen-lockfile
         # esbuild postinstall runs here (approved via pnpm-workspace.yaml).
 
+      - name: Typecheck (src)
+        run: pnpm typecheck
+        # Strict TS pass — surfaces type regressions in the React
+        # source tree before the build / e2e steps spend time on
+        # a broken source tree.
+
+      - name: Typecheck (vite.config.ts)
+        run: pnpm exec tsc -p tsconfig.node.json
+        # vite.config.ts uses Node types, so it lives in a separate
+        # project (tsconfig.node.json) and gets its own pass.
+
       - name: Build
         run: pnpm build
-        # Surfaces any production-build regression before the e2e step
-        # spends time booting Playwright against a broken artifact.
+        # `tsc --noEmit && vite build` — build runs typecheck again
+        # as a safety net if the typecheck step was skipped.
 
       - name: Install Playwright browsers
         run: pnpm exec playwright install --with-deps chromium

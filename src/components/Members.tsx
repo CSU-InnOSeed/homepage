@@ -1,11 +1,11 @@
 import { useRef } from 'react';
-import useReveal from '../hooks/useReveal.js';
-import { MEMBERS } from '../content/site.js';
+import useReveal from '../hooks/useReveal';
+import { MEMBERS, type Member } from '../content/site';
 
 export default function Members() {
-  const eyebrowRef = useRef(null);
-  const headRef = useRef(null);
-  const descRef = useRef(null);
+  const eyebrowRef = useRef<HTMLSpanElement | null>(null);
+  const headRef = useRef<HTMLHeadingElement | null>(null);
+  const descRef = useRef<HTMLParagraphElement | null>(null);
   useReveal(eyebrowRef);
   useReveal(headRef);
   useReveal(descRef);
@@ -34,8 +34,13 @@ export default function Members() {
   );
 }
 
-function MemberCard({ person, idx }) {
-  const ref = useRef(null);
+interface MemberCardProps {
+  person: Member;
+  idx: number;
+}
+
+function MemberCard({ person, idx }: MemberCardProps) {
+  const ref = useRef<HTMLElement | null>(null);
   useReveal(ref);
   return (
     <article ref={ref} className="member reveal" data-delay={String(idx)}>
@@ -44,7 +49,7 @@ function MemberCard({ person, idx }) {
       <p className="member-title">{person.title}</p>
       <div className="member-divider" />
       <ul className="member-list">
-        {person.items.map((it) => (
+        {person.items.map((it: string) => (
           <li key={it}>{it}</li>
         ))}
       </ul>

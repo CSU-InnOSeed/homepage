@@ -1,6 +1,6 @@
-import { useRef } from 'react';
-import useReveal from '../hooks/useReveal.js';
-import { PILLARS } from '../content/site.js';
+import { useRef, type ReactElement } from 'react';
+import useReveal from '../hooks/useReveal';
+import { PILLARS, type Pillar, type PillarKey } from '../content/site';
 
 // Inline pillar icons (extracted from public/imgs/icon-*.svg).
 // Each is a single-path SVG from the original innoseed.club brand kit;
@@ -8,7 +8,7 @@ import { PILLARS } from '../content/site.js';
 // `currentColor` if we ever want to drop the per-path fill.
 //
 // Decorative — pillar name is in text alongside, so aria-hidden.
-const PILLAR_ICONS = {
+const PILLAR_ICONS: Record<PillarKey, ReactElement> = {
   compete: (
     <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
       <path
@@ -64,9 +64,9 @@ const PILLAR_ICONS = {
 };
 
 export default function Pillars() {
-  const eyebrowRef = useRef(null);
-  const headRef = useRef(null);
-  const descRef = useRef(null);
+  const eyebrowRef = useRef<HTMLSpanElement | null>(null);
+  const headRef = useRef<HTMLHeadingElement | null>(null);
+  const descRef = useRef<HTMLParagraphElement | null>(null);
   useReveal(eyebrowRef);
   useReveal(headRef);
   useReveal(descRef);
@@ -96,8 +96,13 @@ export default function Pillars() {
   );
 }
 
-function PillarCard({ pillar, idx }) {
-  const ref = useRef(null);
+interface PillarCardProps {
+  pillar: Pillar;
+  idx: number;
+}
+
+function PillarCard({ pillar, idx }: PillarCardProps) {
+  const ref = useRef<HTMLElement | null>(null);
   useReveal(ref);
   return (
     <article

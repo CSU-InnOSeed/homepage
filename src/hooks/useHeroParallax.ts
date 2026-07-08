@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, type RefObject } from 'react';
 
 /**
  * useHeroParallax — subtle parallax + scale on the hero media while the
@@ -7,8 +7,10 @@ import { useEffect, useRef } from 'react';
  * Mirrors the original vanilla effect; uses rAF + a passive scroll listener.
  * Disabled below 720px width to spare mobile.
  */
-export default function useHeroParallax() {
-  const imgRef = useRef(null);
+export default function useHeroParallax(): RefObject<HTMLImageElement> {
+  // useRef<T>(null!) makes TS infer RefObject<T> (not RefObject<T | null>),
+  // which is what the <img ref={…}> prop expects in React 18's types.
+  const imgRef = useRef<HTMLImageElement>(null!);
 
   useEffect(() => {
     const img = imgRef.current;

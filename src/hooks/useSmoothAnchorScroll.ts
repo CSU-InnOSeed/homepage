@@ -1,22 +1,29 @@
-import { useEffect } from 'react';
+import { useEffect, type RefObject } from 'react';
 
 /**
  * useSmoothAnchorScroll — intercept clicks on <a href="#…"> and scroll smoothly
  * with a 60px top offset so the section clears the fixed nav.
  *
- * Attaches a delegated listener on `containerRef` (defaults to document).
- * Skips links that:
+ * Attaches a delegated listener on `containerRef`. If no ref is supplied
+ * the listener attaches to `document` (the default). Skips links that:
  *   - have no/empty hash
  *   - are external (target=_blank etc.)
  *   - are modified (cmd/ctrl/middle-click) — let the browser handle them.
  */
-export default function useSmoothAnchorScroll(containerRef = { current: document }) {
+export default function useSmoothAnchorScroll(
+  containerRef?: RefObject<HTMLElement | null>
+): void {
   useEffect(() => {
-    const root = containerRef.current;
+    const root: HTMLElement | Document = containerRef?.current ?? document;
     if (!root) return undefined;
 
-    const onClick = (e) => {
-      const a = e.target.closest('a[href^="#"]');
+    const onClick = (e: Event) => {
+      // We only registered for `click` events, but TS sees `addEventListener`
+      // expecting an EventListener (e: Event). Narrow to MouseEvent first.
+      if (!(e instanceof MouseEvent)) return;
+      const target = e.target as Element | null;
+      if (!target) return;
+      const a = target.closest('a[href^="#"]') as HTMLAnchorElement | null;
       if (!a) return;
       if (e.defaultPrevented) return;
       if (e.button !== 0) return; // not a primary click
@@ -24,11 +31,11 @@ export default function useSmoothAnchorScroll(containerRef = { current: document
 
       const id = a.getAttribute('href');
       if (!id || id === '#') return;
-      const target = document.querySelector(id);
-      if (!target) return;
+      const anchor = document.querySelector(id);
+      if (!anchor) return;
 
       e.preventDefault();
-      const y = target.getBoundingClientRect().top + window.scrollY - 60;
+      const y = anchor.getBoundingClientRect().top + window.scrollY - 60;
       window.scrollTo({ top: y, behavior: 'smooth' });
     };
 

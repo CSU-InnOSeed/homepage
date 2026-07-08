@@ -1,14 +1,14 @@
 import { useRef } from 'react';
-import useReveal from '../hooks/useReveal.js';
-import { MANIFESTO } from '../content/site.js';
+import useReveal from '../hooks/useReveal';
+import { MANIFESTO } from '../content/site';
 
 export default function Manifesto() {
-  const eyebrowRef = useRef(null);
-  const headRef = useRef(null);
+  const eyebrowRef = useRef<HTMLSpanElement | null>(null);
+  const headRef = useRef<HTMLHeadingElement | null>(null);
   // Static number of paragraphs — declare refs explicitly (Rules of Hooks).
-  const p1Ref = useRef(null);
-  const p2Ref = useRef(null);
-  const p3Ref = useRef(null);
+  const p1Ref = useRef<HTMLParagraphElement | null>(null);
+  const p2Ref = useRef<HTMLParagraphElement | null>(null);
+  const p3Ref = useRef<HTMLParagraphElement | null>(null);
 
   useReveal(eyebrowRef);
   useReveal(headRef, { threshold: 0.15 });

@@ -1,4 +1,4 @@
-import { MARQUEE_ITEMS } from '../content/site.js';
+import { MARQUEE_ITEMS } from '../content/site';
 
 /**
  * Marquee — infinitely scrolling strip.

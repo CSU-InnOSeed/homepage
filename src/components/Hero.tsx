@@ -1,7 +1,7 @@
 import { useRef } from 'react';
-import useReveal from '../hooks/useReveal.js';
-import useHeroParallax from '../hooks/useHeroParallax.js';
-import { HERO } from '../content/site.js';
+import useReveal from '../hooks/useReveal';
+import useHeroParallax from '../hooks/useHeroParallax';
+import { HERO } from '../content/site';
 
 /**
  * Hero — first viewport.
@@ -12,10 +12,10 @@ import { HERO } from '../content/site.js';
  */
 export default function Hero() {
   const imgRef = useHeroParallax();
-  const tagRef = useRef(null);
-  const h1Ref = useRef(null);
-  const subRef = useRef(null);
-  const ctaRef = useRef(null);
+  const tagRef = useRef<HTMLDivElement | null>(null);
+  const h1Ref = useRef<HTMLHeadingElement | null>(null);
+  const subRef = useRef<HTMLParagraphElement | null>(null);
+  const ctaRef = useRef<HTMLDivElement | null>(null);
 
   useReveal(tagRef);
   useReveal(h1Ref);

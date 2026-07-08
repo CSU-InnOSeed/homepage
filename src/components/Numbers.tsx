@@ -1,11 +1,11 @@
 import { useRef } from 'react';
-import useReveal from '../hooks/useReveal.js';
-import useCountUp from '../hooks/useCountUp.js';
-import { NUMBERS_HEAD, STATS } from '../content/site.js';
+import useReveal from '../hooks/useReveal';
+import useCountUp from '../hooks/useCountUp';
+import { NUMBERS_HEAD, STATS, type Stat } from '../content/site';
 
 export default function Numbers() {
-  const eyebrowRef = useRef(null);
-  const headRef = useRef(null);
+  const eyebrowRef = useRef<HTMLSpanElement | null>(null);
+  const headRef = useRef<HTMLHeadingElement | null>(null);
   useReveal(eyebrowRef);
   useReveal(headRef);
 
@@ -34,9 +34,14 @@ export default function Numbers() {
   );
 }
 
-function NumCard({ stat, idx }) {
-  const cardRef = useRef(null);
-  const counterRef = useRef(null);
+interface NumCardProps {
+  stat: Stat;
+  idx: number;
+}
+
+function NumCard({ stat, idx }: NumCardProps) {
+  const cardRef = useRef<HTMLDivElement | null>(null);
+  const counterRef = useRef<HTMLSpanElement | null>(null);
   useReveal(cardRef);
   useCountUp(counterRef, { target: stat.target, suffix: stat.suffix });
   return (

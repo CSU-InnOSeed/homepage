@@ -2,11 +2,8 @@ import { useEffect, useState } from 'react';
 
 /**
  * useScrolled — true when window.scrollY > threshold.
- *
- * @param {number} [threshold=60]
- * @returns {boolean}
  */
-export default function useScrolled(threshold = 60) {
+export default function useScrolled(threshold = 60): boolean {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {

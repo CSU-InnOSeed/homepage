@@ -1,21 +1,27 @@
-import { useEffect } from 'react';
+import { useEffect, type RefObject } from 'react';
 
-const easeOutQuart = (t) => 1 - Math.pow(1 - t, 4);
+const easeOutQuart = (t: number): number => 1 - Math.pow(1 - t, 4);
+
+export interface CountUpConfig {
+  /** Final integer value. */
+  target: number;
+  /** e.g. '+'. */
+  suffix?: string;
+  /** ms. */
+  duration?: number;
+  threshold?: number;
+}
 
 /**
  * useCountUp — count from 0 to a target value with an ease-out curve.
  *
  * Animates textContent on the ref'd element using requestAnimationFrame.
  * Fires once when the element enters the viewport, then disconnects.
- *
- * @param {React.RefObject} ref
- * @param {object} cfg
- * @param {number} cfg.target — final integer value.
- * @param {string} [cfg.suffix] — e.g. '+'.
- * @param {number} [cfg.duration=2200] — ms.
- * @param {number} [cfg.threshold=0.4]
  */
-export default function useCountUp(ref, { target, suffix = '', duration = 2200, threshold = 0.4 }) {
+export default function useCountUp(
+  ref: RefObject<HTMLElement | null>,
+  { target, suffix = '', duration = 2200, threshold = 0.4 }: CountUpConfig
+): void {
   useEffect(() => {
     const el = ref.current;
     if (!el) return undefined;
@@ -23,7 +29,7 @@ export default function useCountUp(ref, { target, suffix = '', duration = 2200, 
     const animate = () => {
       el.textContent = '0';
       const startTs = performance.now();
-      const tick = (now) => {
+      const tick = (now: number) => {
         const t = Math.min((now - startTs) / duration, 1);
         const v = Math.round(target * easeOutQuart(t));
         el.textContent = `${v}${suffix}`;

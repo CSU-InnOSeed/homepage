@@ -1,13 +1,13 @@
 import { useRef } from 'react';
-import useReveal from '../hooks/useReveal.js';
-import { RECRUIT } from '../content/site.js';
+import useReveal from '../hooks/useReveal';
+import { RECRUIT } from '../content/site';
 
 export default function Recruit() {
-  const eyebrowRef = useRef(null);
-  const headRef = useRef(null);
-  const pRef = useRef(null);
-  const metaRef = useRef(null);
-  const ctaRef = useRef(null);
+  const eyebrowRef = useRef<HTMLSpanElement | null>(null);
+  const headRef = useRef<HTMLHeadingElement | null>(null);
+  const pRef = useRef<HTMLParagraphElement | null>(null);
+  const metaRef = useRef<HTMLParagraphElement | null>(null);
+  const ctaRef = useRef<HTMLAnchorElement | null>(null);
   useReveal(eyebrowRef);
   useReveal(headRef);
   useReveal(pRef);

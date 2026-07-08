@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
-import useScrolled from '../hooks/useScrolled.js';
-import useSmoothAnchorScroll from '../hooks/useSmoothAnchorScroll.js';
-import { NAV_LINKS } from '../content/site.js';
+import useScrolled from '../hooks/useScrolled';
+import useSmoothAnchorScroll from '../hooks/useSmoothAnchorScroll';
+import { NAV_LINKS } from '../content/site';
 
 /**
  * Nav — fixed header with brand mark + link row.
@@ -12,7 +12,7 @@ import { NAV_LINKS } from '../content/site.js';
  */
 export default function Nav() {
   const scrolled = useScrolled(60);
-  const navRef = useRef(null);
+  const navRef = useRef<HTMLElement | null>(null);
   const [open, setOpen] = useState(false);
 
   // Smooth-scroll delegation (works for both desktop link row and mobile panel).
@@ -23,7 +23,7 @@ export default function Nav() {
   useEffect(() => {
     if (typeof window === 'undefined') return undefined;
     const mq = window.matchMedia('(min-width: 721px)');
-    const onChange = (e) => {
+    const onChange = (e: MediaQueryListEvent) => {
       if (e.matches) setOpen(false);
     };
     mq.addEventListener('change', onChange);
@@ -33,7 +33,7 @@ export default function Nav() {
   // Esc closes the panel.
   useEffect(() => {
     if (!open) return undefined;
-    const onKey = (e) => {
+    const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') setOpen(false);
     };
     window.addEventListener('keydown', onKey);

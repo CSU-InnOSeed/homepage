@@ -1,10 +1,10 @@
 import { useRef } from 'react';
-import useReveal from '../hooks/useReveal.js';
-import { INSIDE } from '../content/site.js';
+import useReveal from '../hooks/useReveal';
+import { INSIDE } from '../content/site';
 
 export default function Inside() {
-  const imageRef = useRef(null);
-  const textRef = useRef(null);
+  const imageRef = useRef<HTMLDivElement | null>(null);
+  const textRef = useRef<HTMLDivElement | null>(null);
   useReveal(imageRef);
   useReveal(textRef);
 
@@ -62,7 +62,11 @@ export default function Inside() {
   );
 }
 
-function IconFor({ href }) {
+interface IconForProps {
+  href: string;
+}
+
+function IconFor({ href }: IconForProps) {
   if (href.includes('csdn')) {
     return (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">

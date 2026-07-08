@@ -30,3 +30,7 @@ pnpm-debug.log*
 test-results/
 playwright-report/
 playwright/.cache/
+
+# TypeScript
+*.tsbuildinfo
+vite.config.d.ts

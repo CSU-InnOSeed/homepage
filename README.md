@@ -5,25 +5,27 @@ Awwwards editorial 的设计语言、Fraunces 大字、numbered eyebrow、marque
 
 ## Stack
 
-- **React 18** — 组件化，每个 section 一个文件
-- **Vite 5** — dev server + 生产打包
+- **React 18** + **TypeScript 5.6** — 组件化，每个 section 一个文件，全 `strict` 模式
+- **Vite 5** — dev server + 生产打包，配置文件也是 `vite.config.ts`
 - **CSS** — `src/styles/globals.css`（design tokens / 关键帧 / 媒体查询）
-- **Hooks** — `useReveal` / `useCountUp` / `useScrolled` / `useSmoothAnchorScroll` / `useHeroParallax`
+- **Hooks** — `useReveal` / `useCountUp` / `useScrolled` / `useSmoothAnchorScroll` / `useHeroParallax`（全 `RefObject<T | null>` 签名）
 - **图片** — `public/imgs/`（Vite 原生静态资源），运行时走 `/imgs/...`
-- **Playwright** — 20 个 e2e 烟雾测试（desktop + mobile）
+- **Playwright** — 29 个 e2e 烟雾测试（desktop + mobile + iPhone SE 1）
 
 ## 结构
 
 ```
 innoseed-landing/
-├── .github/workflows/ci.yml      ← GitHub Actions: build + Playwright on PR
+├── .github/workflows/ci.yml      ← GitHub Actions: typecheck + build + Playwright
 ├── index.html                    ← Vite 入口（meta + Google Fonts + favicon + OG + preload）
 ├── package.json
 ├── pnpm-workspace.yaml           ← pnpm 11 allowBuilds: esbuild
 ├── playwright.config.js          ← Playwright 配置（spec-internal viewport）
 ├── spec.md                       ← v4 设计稿 + 决策记录 + roadmap
+├── tsconfig.json                 ← 主项目 strict TS（src/）
+├── tsconfig.node.json            ← vite.config.ts 专用（Node types）
 ├── vercel.json                   ← outputDirectory: dist
-├── vite.config.js                ← React + 条件注入 analytics 脚本
+├── vite.config.ts                ← React + 条件注入 analytics 脚本
 ├── public/
 │   ├── 404.html                  ← 自定义 404
 │   └── imgs/                     ← banner / favicon / group-photo (WebP + JPEG variants)
@@ -31,12 +33,13 @@ innoseed-landing/
 │   ├── build-og-cover.py         ← 用 PIL 生成 1200×630 OG 图
 │   └── optimize-images.py        ← 批量生成 WebP + 多宽度 JPEG
 ├── src/
-│   ├── main.jsx
-│   ├── App.jsx                   ← 装配 + skip-link + main landmark
+│   ├── main.tsx
+│   ├── App.tsx                   ← 装配 + skip-link + main landmark
 │   ├── styles/globals.css        ← design tokens + 全套移动端媒体查询
-│   ├── hooks/                    ← 5 个交互 hook
-│   ├── content/site.js           ← 全部文案 / 数据集中
-│   └── components/               ← Nav / Hero / Marquee / Manifesto / Pillars / Numbers / Members / Inside / Recruit / Footer
+│   ├── hooks/                    ← 5 个交互 hook（带 TS 类型签名）
+│   ├── content/site.ts           ← 全部文案 / 数据 + 导出 interface
+│   ├── components/               ← Nav / Hero / Marquee / Manifesto / Pillars / Numbers / Members / Inside / Recruit / Footer (全 .tsx)
+│   └── vite-env.d.ts             ← Vite client types + fetchpriority 增强
 ├── e2e/
 │   ├── _shared.js                ← 跨断点共享断言
 │   ├── desktop.spec.js           ← 1440×900 viewport
@@ -50,14 +53,15 @@ innoseed-landing/
 ```bash
 pnpm install                      # 装依赖（esbuild postinstall 走 pnpm-workspace.yaml 白名单）
 pnpm dev                          # http://127.0.0.1:8765
-pnpm build                        # 出 dist/
+pnpm typecheck                    # tsc --noEmit（strict）
+pnpm build                        # tsc --noEmit && vite build → dist/
 pnpm preview                      # 本地预览 dist/
 
 # Playwright
 pnpm test:e2e:install             # 一次性装 chromium
 pnpm test:e2e                     # 29 个烟雾测试，~12s
 pnpm test:e2e:headed              # 可见浏览器跑（debug 用）
-pnpm test:e2e:ui                  # Playwright 自带 UI 调试
+pnpm test:e2e:ui                  ← Playwright 自带 UI 调试
 ```
 
 ## Analytics（Plausible / Umami 接入）
@@ -104,7 +108,7 @@ Vercel 项目 `prj_5AZiomgjCi7Wkf5K1MdgdBD8PEHb`（`vercel.json` 指明 `outputD
 4. Vercel 控制台 `Settings → Git → Connect` 选这个 repo
 5. 之后每次 `git push` 自动 build + 部署
 
-`.github/workflows/ci.yml` 会在 PR + main 上跑 `pnpm install` + `pnpm build` + `pnpm test:e2e`，失败时上传 Playwright report 作为 artifact。
+`.github/workflows/ci.yml` 会在 PR + main 上跑 `pnpm typecheck`（src + vite.config）+ `pnpm build` + `pnpm test:e2e`，失败时上传 Playwright report 作为 artifact。
 
 ## v1 → v2 → v3 → v4
 

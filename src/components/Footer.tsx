@@ -1,9 +1,9 @@
 import { useRef } from 'react';
-import useSmoothAnchorScroll from '../hooks/useSmoothAnchorScroll.js';
-import { FOOTER } from '../content/site.js';
+import useSmoothAnchorScroll from '../hooks/useSmoothAnchorScroll';
+import { FOOTER } from '../content/site';
 
 export default function Footer() {
-  const containerRef = useRef(null);
+  const containerRef = useRef<HTMLDivElement | null>(null);
   useSmoothAnchorScroll(containerRef);
 
   return (

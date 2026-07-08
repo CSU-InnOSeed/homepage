@@ -14,7 +14,127 @@
  *     can pick the shape once and map it.
  */
 
-export const META = {
+// ─── Types ─────────────────────────────────────────────────────────────
+
+export type PillarKey = 'compete' | 'research' | 'startup' | 'bonds';
+
+export interface Pillar {
+  key: PillarKey;
+  en: string;
+  name: string;
+  desc: string;
+}
+
+export interface Stat {
+  key: string;
+  label: string;
+  target: number;
+  suffix: string;
+  unit: string;
+  meta: string[];
+  period: string;
+}
+
+export interface Member {
+  tag: string;
+  name: string;
+  title: string;
+  items: string[];
+}
+
+export interface NavLink {
+  href: string;
+  label: string;
+  external?: boolean;
+}
+
+export interface FooterLink {
+  href?: string;
+  label: string;
+  external?: boolean;
+  plain?: boolean;
+}
+
+export interface ManifestoBody {
+  html: string;
+}
+
+export interface Headline {
+  text?: string;
+  lead?: string;
+  trail?: string;
+}
+
+export interface ManifestoData {
+  eyebrow: string;
+  headline: string[];
+  body: ManifestoBody[];
+}
+
+export interface HeroCta {
+  label: string;
+  arrow: string;
+  href: string;
+}
+
+export interface HeroData {
+  tag: string;
+  lead: string;
+  headlineRows: Headline[];
+  sub: string;
+  primaryCta: HeroCta;
+  secondaryCta: HeroCta;
+}
+
+export interface RecruitData {
+  eyebrow: string;
+  headline: { lead: string; accent: string };
+  body: string;
+  meta: string;
+  cta: HeroCta;
+}
+
+export interface InsideLink {
+  href: string;
+  label: string;
+}
+
+export interface InsideData {
+  eyebrow: string;
+  headline: string[];
+  paragraphs: string[];
+  links: InsideLink[];
+}
+
+export interface NumbersHead {
+  eyebrow: string;
+  headline: string[];
+  footerLabel: string;
+  footerText: string;
+}
+
+export interface FooterData {
+  brand: string;
+  tagline: string[];
+  copyright: string;
+  navHeading: string;
+  navLinks: NavLink[];
+  contactHeading: string;
+  contactLinks: FooterLink[];
+  bottomLinks: NavLink[];
+}
+
+export interface MetaData {
+  title: string;
+  description: string;
+  themeColor: string;
+  ogImage: string;
+  ogImageAlt: string;
+}
+
+// ─── Data ──────────────────────────────────────────────────────────────
+
+export const META: MetaData = {
   title: 'InnOSeed Lab · 中南大学计算机学院',
   description:
     'InnOSeed Lab — 中南大学计算机学院的创新实验室。我们更像俱乐部，属于 different thinkers 的俱乐部。',
@@ -23,7 +143,7 @@ export const META = {
   ogImageAlt: 'InnOSeed Lab — Different Thinkers 的俱乐部',
 };
 
-export const NAV_LINKS = [
+export const NAV_LINKS: NavLink[] = [
   { href: '#manifesto', label: '关于' },
   { href: '#pillars', label: '方向' },
   { href: '#numbers', label: '成果' },
@@ -32,7 +152,7 @@ export const NAV_LINKS = [
   { href: 'https://innoseed.club/recruit', label: '招新', external: true },
 ];
 
-export const HERO = {
+export const HERO: HeroData = {
   tag: 'CSU InnOSeed Lab · est. 2019',
   lead: '我们更像俱乐部，属于 different thinkers 的俱乐部。',
   // 3 fixed rows; row 2 wraps its first word in <em> for the italic accent.
@@ -47,13 +167,13 @@ export const HERO = {
   secondaryCta: { label: '申请加入', arrow: '↗', href: '#recruit' },
 };
 
-export const MARQUEE_ITEMS = [
+export const MARQUEE_ITEMS: string[] = [
   'Different Thinkers',
   '竞赛 · 科研 · 创业 · 志合者',
   '中南大学 · 计算机学院',
 ];
 
-export const MANIFESTO = {
+export const MANIFESTO: ManifestoData = {
   eyebrow: '01 — Manifesto',
   headline: ['一 所', '不 太 一 样', '的 实 验 室。'],
   body: [
@@ -71,7 +191,7 @@ export const MANIFESTO = {
   ],
 };
 
-export const PILLARS = [
+export const PILLARS: Pillar[] = [
   {
     key: 'compete',
     en: 'Compete',
@@ -98,14 +218,14 @@ export const PILLARS = [
   },
 ];
 
-export const NUMBERS_HEAD = {
+export const NUMBERS_HEAD: NumbersHead = {
   eyebrow: '03 — By The Numbers',
   headline: ['不靠口号，', '靠这组数字。'],
   footerLabel: '04 — Grad School / Exchange',
   footerText: '5 清华 · 2 北大 · 1 斯坦福 · 3 QS 前 100 交换',
 };
 
-export const STATS = [
+export const STATS: Stat[] = [
   {
     key: 'c-purple',
     label: 'National / Intl. 1st Prize',
@@ -144,7 +264,7 @@ export const STATS = [
   },
 ];
 
-export const MEMBERS = [
+export const MEMBERS: Member[] = [
   {
     tag: '升学代表',
     name: '苗子阳',
@@ -165,7 +285,7 @@ export const MEMBERS = [
   },
 ];
 
-export const INSIDE = {
+export const INSIDE: InsideData = {
   eyebrow: '05 — Inside The Lab',
   headline: ['在 InnOSeed', '做你想做的。'],
   paragraphs: [
@@ -179,7 +299,7 @@ export const INSIDE = {
   ],
 };
 
-export const RECRUIT = {
+export const RECRUIT: RecruitData = {
   eyebrow: '06 — Join Us',
   headline: { lead: '加 入', accent: 'InnOSeed' },
   body: '坚持小而精的发展路线，每届只固定招收 8 — 9 人，招生对象面向全校。我们没有硬性的招生标准。',
@@ -187,7 +307,7 @@ export const RECRUIT = {
   cta: { label: '立即申请 · Apply Now', arrow: '→', href: 'mailto:contact@innoseed.club' },
 };
 
-export const FOOTER = {
+export const FOOTER: FooterData = {
   brand: 'InnOSeed',
   tagline: ['中南大学计算机学院 · 一个以种子为名的实验室。', 'different thinkers 的俱乐部。'],
   copyright: '© 2025 InnOSeed Lab. 保留所有权利.',
