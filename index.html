@@ -37,14 +37,34 @@
     <!-- Favicon: original site green dot cluster -->
     <link rel="icon" type="image/png" href="/imgs/favicon.png" />
 
-    <!-- Preload hero image (above-fold LCP candidate) -->
-    <link rel="preload" as="image" href="/imgs/banner.jpg" />
+    <!-- Preload hero image (above-fold LCP candidate).
+         imagesrcset + imagesizes lets the browser pick the variant that
+         matches its viewport: phones preload 480w (~18 KB), desktop
+         preloads 1440w (~84 KB). Chrome/Edge/Firefox support this; older
+         Safari falls back to the 480w WebP href. -->
+    <link
+      rel="preload"
+      as="image"
+      type="image/webp"
+      href="/imgs/banner-480.webp"
+      imagesrcset="/imgs/banner-480.webp 480w, /imgs/banner-960.webp 960w, /imgs/banner-1440.webp 1440w"
+      imagesizes="100vw"
+      fetchpriority="high"
+    />
 
-    <!-- Google Fonts: Fraunces (display serif), Inter (sans), Noto Serif SC / Noto Sans SC -->
+    <!-- Google Fonts: only the weights we actually use.
+         Fraunces: italic 700 (hero h1 em), 800 (display headlines + footer),
+                   900 (members/numbers h2 etc.)
+         Inter: 400 / 500 / 600 / 700 (body, nav, btn, eyebrow)
+         Noto Serif SC: 500 (manifesto lead), 900 (h2 sections)
+         Noto Sans SC: 400 / 500 / 700 (body, subtitle, recruit)
+         The CSS font-family chain puts system Chinese fonts (PingFang SC,
+         Microsoft YaHei, system-ui) BEFORE Noto SC, so most visitors never
+         pay the Noto SC download cost. -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;0,9..144,800;0,9..144,900;1,9..144,700&family=Inter:wght@300;400;500;600;700&family=Noto+Serif+SC:wght@500;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,800;0,9..144,900;1,9..144,700&family=Inter:wght@400;500;600;700&family=Noto+Serif+SC:wght@500;900&family=Noto+Sans+SC:wght@400;500;700&display=swap"
       rel="stylesheet"
     />
   </head>

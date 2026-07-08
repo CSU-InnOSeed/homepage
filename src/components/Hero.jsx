@@ -37,6 +37,10 @@ export default function Hero() {
             srcSet="/imgs/banner-480.jpg 480w, /imgs/banner-960.jpg 960w, /imgs/banner-1440.jpg 1440w"
             sizes="100vw"
             alt="InnOSeed Lab"
+            // Matches the <link rel=preload> in index.html — the
+            // browser uses the same variant the preloader primed.
+            fetchpriority="high"
+            decoding="async"
             onError={(e) => {
               e.currentTarget.style.display = 'none';
             }}

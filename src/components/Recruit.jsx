@@ -16,7 +16,25 @@ export default function Recruit() {
 
   return (
     <section className="recruit" id="recruit">
-      <div className="recruit-bg" />
+      <picture className="recruit-bg" aria-hidden="true">
+        <source
+          type="image/webp"
+          srcSet="/imgs/group-photo-480.webp 480w, /imgs/group-photo-800.webp 800w, /imgs/group-photo-1200.webp 1200w"
+          sizes="100vw"
+        />
+        <img
+          src="/imgs/group-photo-1200.jpg"
+          srcSet="/imgs/group-photo-480.jpg 480w, /imgs/group-photo-800.jpg 800w, /imgs/group-photo-1200.jpg 1200w"
+          sizes="100vw"
+          alt=""
+          loading="lazy"
+          decoding="async"
+          // The previous <div>+background-image shipped a 371 KB JPEG to
+          // every viewport including phones. The <picture> above picks
+          // the smallest variant that still covers the background; the
+          // largest variant is 105 KB WebP (was 371 KB JPEG).
+        />
+      </picture>
       <div className="container recruit-inner">
         <span ref={eyebrowRef} className="eyebrow reveal">{RECRUIT.eyebrow}</span>
         <h2 ref={headRef} className="reveal" data-delay="1">
