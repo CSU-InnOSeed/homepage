@@ -98,17 +98,62 @@ Vercel 端：在项目 Settings → Environment Variables 里设 `VITE_ANALYTICS
 
 ## 部署
 
-Vercel 项目 `prj_5AZiomgjCi7Wkf5K1MdgdBD8PEHb`（`vercel.json` 指明 `outputDirectory: dist`）。
+Vercel 项目 `prj_5AZiomgjCi7Wkf5K1MdgdBD8PEHb`（`vercel.json` 指明 `outputDirectory: dist` + SPA rewrite）。
 当前用 `VERCEL_TOKEN` 直接 `vercel deploy --prod` 推。
 
 要走 git push 自动部署：
-1. 在 GitHub 新建 repo
-2. `git remote add origin https://github.com/<user>/innoseed-landing.git`
-3. `git push -u origin main`
+1. 在 GitHub 新建 repo（已完成：`CSU-InnOSeed/homepage`，main = v4 React）
+2. `git remote add origin https://github.com/CSU-InnOSeed/homepage.git`
+3. `git push -u origin main`（第一次可能需要 `--force-with-lease`）
 4. Vercel 控制台 `Settings → Git → Connect` 选这个 repo
 5. 之后每次 `git push` 自动 build + 部署
 
 `.github/workflows/ci.yml` 会在 PR + main 上跑 `pnpm typecheck`（src + vite.config）+ `pnpm build` + `pnpm test:e2e`，失败时上传 Playwright report 作为 artifact。
+
+## /apply 招新流程
+
+`/apply` 是独立 React Router 路由，4 步引导候选人完成标签选择 + 提交：
+
+```
+01 Guide              → 介绍 + 跳转飞书表单投简历
+02 Pick Interviewer   → 按契合度排序的 9 位面试官网格
+03 Application        → 4 类标签多选 (Mini Camp 分路 / 技术 / 兴趣 / 未来)
+04 Done               → 服务器分配 10 位 reference code（点击复制）
+```
+
+**个性标签代码**：`encodeTagCode` / `decodeTagCode` 用 base64 编码选中的 tag 索引，跟 SvelteKit 旧版 `innoseed.club/apply25` 的格式完全一致 —— 用户粘贴旧代码可自动恢复选择。
+
+**后端**：`/api/apply`（Vercel Function）。当前是 stub —— 校验 payload、生成 10 位 server code、log 到 stdout。生产环境要接飞书多维表格作为持久化，参考 `api/apply.ts` 里的 `_persistToFeishuBitable` 实现 + 配 4 个 Vercel env vars（`FEISHU_APP_ID` / `FEISHU_APP_SECRET` / `FEISHU_BITABLE_TOKEN` / `FEISHU_TABLE_ID`）。
+
+vite preview 不跑 Vercel Functions，所以 e2e 用 `page.route` mock 掉 `/api/apply`。
+
+## 域名恢复（innoseed.club → Vercel）
+
+`innoseed.club` 当前 404。需要把 DNS 指到 Vercel：
+
+**Step 1 — Vercel 加 custom domain**
+
+1. 打开 https://vercel.com/dashboard → `innoseed-landing` project → Settings → Domains
+2. 添加 `innoseed.club` 和 `www.innoseed.club`
+3. Vercel 会给出要配的 DNS 记录（一般是 A `76.76.21.21` + CNAME `cname.vercel-dns.com`）
+
+**Step 2 — DNS provider 加记录**
+
+根据域名托管商操作：
+- **Cloudflare** — 选 `DNS only`（关掉 orange-cloud proxy，Vercel 不喜欢 CF proxy 介入 SSL）
+- **阿里云 / 腾讯云** — 按 Vercel 给的 A / CNAME 填
+
+**Step 3 — 等 DNS 传播 + Vercel 颁 SSL**（5–30 分钟）
+
+**Step 4 — 自动结果**
+
+- `innoseed.club` → 展示 v4 React 站点
+- `innoseed.club/apply` → React Router 路由的招新流程
+- `mailto:contact@innoseed.club` / `innoseed.club/events` / `innoseed.club/recruit` 等旧 SvelteKit 链接 → v4 anchor（#events / #recruit 等）
+
+**Step 5 — 可选：清理 Cloudflare Pages 集成**（之前 404 的 run 85805150382 触发的）
+
+去 Cloudflare dashboard → Pages → `homepage` project → Delete。SvelteKit 时代配的，v4 不再使用。
 
 ## v1 → v2 → v3 → v4
 
@@ -141,14 +186,20 @@ Vercel 项目 `prj_5AZiomgjCi7Wkf5K1MdgdBD8PEHb`（`vercel.json` 指明 `outputD
 | `189beaa` | test(mobile): iPhone SE 320×568 视口回归 + opacity threshold 放宽 |
 | `5c4f2b0` | chore(deps): typescript + @types/react / react-dom / node |
 | `49df623` | feat(ts): jsx→tsx + js→ts 全量迁移（strict types + module augmentation） |
+| `d63b68b` | chore(deps): react-router-dom + @vercel/node (招新路由 + function types) |
+| `8b804ac` | feat(apply): /apply 路由 + 4 步招新表单 + content 数据迁移 |
+| `49c9eb4` | feat(api): /api/apply serverless stub (飞书 Bitable 接入待配 env) |
+| `5d9c97e` | test: /apply 路由 e2e (5 specs, 含 page.route mock /api/apply) |
 
 ## 已知遗留（未做）
 
 详细见 `spec.md` §12 Roadmap。简版：
 - 字体内联 / 子集化（已降级到 system-first，但 Google Fonts 还是 external）
 - Hero 重新评估 video-led 方案
-- CMS 化（Sanity / Contentful）
+- CMS 化（Sanity / Contentful）—— 等 2026 招新结束、数据沉淀下来后再考虑
 - i18n 中英双语切换
 - Dark mode
-- 自定义域名（目前 `innoseed-landing.vercel.app`）
-- 真实联络表单（替代 mailto:）
+- innoseed.club 域名恢复（**步骤文档已就绪，跑就行**）
+- 飞书 Bitable 真实接入 /api/apply（env vars 待配）
+- 2025 招新面试官数据更新（当前是 2024 roster）
+- Recruit 板块的 `mailto` 在某些旧链接场景仍存在（站点外分享链接）
