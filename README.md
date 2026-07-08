@@ -139,6 +139,8 @@ Vercel 项目 `prj_5AZiomgjCi7Wkf5K1MdgdBD8PEHb`（`vercel.json` 指明 `outputD
 | `f125064` | feat(analytics): env-var-driven Plausible/Umami 脚本注入 |
 | `4c8e00c` | perf: 字体降级 + hero preload srcset + iOS safe-area + Recruit bg 响应式 |
 | `189beaa` | test(mobile): iPhone SE 320×568 视口回归 + opacity threshold 放宽 |
+| `5c4f2b0` | chore(deps): typescript + @types/react / react-dom / node |
+| `49df623` | feat(ts): jsx→tsx + js→ts 全量迁移（strict types + module augmentation） |
 
 ## 已知遗留（未做）
 
