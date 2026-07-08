@@ -19,11 +19,11 @@ innoseed-landing/
 ├── .github/workflows/ci.yml      ← GitHub Actions: build + Playwright on PR
 ├── index.html                    ← Vite 入口（meta + Google Fonts + favicon + OG + preload）
 ├── package.json
-├── pnpm-workspace.yaml           ← pnpm 11 onlyBuiltDependencies: esbuild
+├── pnpm-workspace.yaml           ← pnpm 11 allowBuilds: esbuild
 ├── playwright.config.js          ← Playwright 配置（spec-internal viewport）
 ├── spec.md                       ← v4 设计稿 + 决策记录 + roadmap
 ├── vercel.json                   ← outputDirectory: dist
-├── vite.config.js
+├── vite.config.js                ← React + 条件注入 analytics 脚本
 ├── public/
 │   ├── 404.html                  ← 自定义 404
 │   └── imgs/                     ← banner / favicon / group-photo (WebP + JPEG variants)
@@ -33,14 +33,15 @@ innoseed-landing/
 ├── src/
 │   ├── main.jsx
 │   ├── App.jsx                   ← 装配 + skip-link + main landmark
-│   ├── styles/globals.css
+│   ├── styles/globals.css        ← design tokens + 全套移动端媒体查询
 │   ├── hooks/                    ← 5 个交互 hook
 │   ├── content/site.js           ← 全部文案 / 数据集中
 │   └── components/               ← Nav / Hero / Marquee / Manifesto / Pillars / Numbers / Members / Inside / Recruit / Footer
 ├── e2e/
 │   ├── _shared.js                ← 跨断点共享断言
 │   ├── desktop.spec.js           ← 1440×900 viewport
-│   └── mobile.spec.js            ← 375×812 viewport (iPhone 14)
+│   ├── mobile.spec.js            ← 375×812 viewport (iPhone 14)
+│   └── iphone-se.spec.js         ← 320×568 viewport (iPhone SE 1) — 9 个回归测试
 └── dist/                         ← pnpm build 产物
 ```
 
@@ -54,10 +55,39 @@ pnpm preview                      # 本地预览 dist/
 
 # Playwright
 pnpm test:e2e:install             # 一次性装 chromium
-pnpm test:e2e                     # 20 个烟雾测试，~15s
+pnpm test:e2e                     # 29 个烟雾测试，~12s
 pnpm test:e2e:headed              # 可见浏览器跑（debug 用）
 pnpm test:e2e:ui                  # Playwright 自带 UI 调试
 ```
+
+## Analytics（Plausible / Umami 接入）
+
+`vite.config.js` 里有个内联插件 `inject-analytics`：build 时读两个 env var，
+有就往 `dist/index.html` 的 `</head>` 前塞一段 1x1 的 script tag；没有就完全不动。
+
+```bash
+# Plausible（最简）
+VITE_ANALYTICS_URL=https://plausible.io/js/script.js \
+VITE_ANALYTICS_DOMAIN=innoseed-landing.vercel.app \
+pnpm build
+```
+
+`VITE_ANALYTICS_DOMAIN` 不填会回退到 `VERCEL_PROJECT_PRODUCTION_URL`（Vercel 自动注入），
+再回退到 `innoseed-landing.vercel.app`。要换 Umami 把 URL 换成你自部署的 script
+就行，data-domain 行为 Plausible / Umami 都吃。
+
+dev 模式（`pnpm dev`）永远不会注入 —— analytics 只在 production build 里。
+
+Vercel 端：在项目 Settings → Environment Variables 里设 `VITE_ANALYTICS_URL` 和
+（可选的）`VITE_ANALYTICS_DOMAIN`，之后每次部署都自动带。
+
+## 性能策略
+
+- **字体降级**：Google Fonts URL 只保留 12 个实际用到的 weight；CSS `font-family` 链把系统中文（PingFang SC / Microsoft YaHei / system-ui）排在 Noto SC 前面。99% 的访客不会下载 Noto SC。
+- **首屏图 preload**：`index.html` 里的 hero preload 走 `imagesrcset` + `imagesizes`，手机拿 18 KB 480w WebP，桌面拿 84 KB 1440w WebP；`fetchpriority="high"` 标 LCP 候选。
+- **Below-fold 图 lazy**：`Inside` 和 `Recruit` 板块的图片都 `loading="lazy" decoding="async"`。
+- **iOS safe-area-inset**：`body` / `nav` / `hero-meta` / `footer` 都尊重 `env(safe-area-inset-*)`。
+- **小屏回归**：e2e/iphone-se.spec.js 覆盖 320×568（iPhone SE 1）—— 这个尺寸之前没测，hero h1 / 链接容易横向溢出。
 
 > pnpm 11 引入了 ignored-builds 强校验；`pnpm-workspace.yaml` 已声明允许 `esbuild` postinstall。
 > Vercel 端用的是 pnpm 10，所以这个限制只在本地。
@@ -100,14 +130,19 @@ Vercel 项目 `prj_5AZiomgjCi7Wkf5K1MdgdBD8PEHb`（`vercel.json` 指明 `outputD
 | `b4b97b4` | GitHub Actions workflow |
 | `35fbeec` | 清掉 v3 残留 zip + 预览图 |
 | `b2a6055` | .gitignore 补 Playwright / 编辑器条目 |
+| `040c865` | docs: README reflects v4 stack + commands + commit history |
+| `1deb35f` | chore: pnpm 11 `allowBuilds: esbuild` |
+| `f125064` | feat(analytics): env-var-driven Plausible/Umami 脚本注入 |
+| `4c8e00c` | perf: 字体降级 + hero preload srcset + iOS safe-area + Recruit bg 响应式 |
+| `189beaa` | test(mobile): iPhone SE 320×568 视口回归 + opacity threshold 放宽 |
 
 ## 已知遗留（未做）
 
 详细见 `spec.md` §12 Roadmap。简版：
-- 字体内联 / 子集化（Google Fonts 现在拉完整字库）
+- 字体内联 / 子集化（已降级到 system-first，但 Google Fonts 还是 external）
 - Hero 重新评估 video-led 方案
 - CMS 化（Sanity / Contentful）
 - i18n 中英双语切换
 - Dark mode
-- Vercel Analytics / Web Analytics
+- 自定义域名（目前 `innoseed-landing.vercel.app`）
 - 真实联络表单（替代 mailto:）
