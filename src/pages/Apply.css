@@ -133,33 +133,6 @@
 .apply-callout h2 { margin-top: 0; }
 .apply-callout .btn { align-self: flex-start; }
 
-.apply-outline {
-  list-style: none;
-  counter-reset: step;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  padding: 0;
-  margin: 0;
-}
-.apply-outline li {
-  counter-increment: step;
-  display: grid;
-  grid-template-columns: 32px 1fr;
-  gap: 12px;
-  align-items: baseline;
-  font-size: 15px;
-  color: var(--ink-mid);
-  line-height: 1.65;
-}
-.apply-outline li::before {
-  content: counter(step);
-  font-family: var(--ff-display);
-  font-style: italic;
-  font-size: 18px;
-  color: var(--brand);
-}
-
 .apply-cta-row {
   display: flex;
   flex-wrap: wrap;

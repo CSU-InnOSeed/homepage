@@ -163,13 +163,6 @@ function GuideStep({ onNext }: { onNext: () => void }) {
         </a>
       </div>
 
-      <h2>接下来你会经历</h2>
-      <ol className="apply-outline">
-        <li><strong>选面试官</strong> — 挑一位最想聊的人（契合度算法会按你的标签排序）</li>
-        <li><strong>填申请</strong> — Mini Camp 分路 + 技术 + 兴趣 + 未来，多选</li>
-        <li><strong>完成</strong> — 复制保存你的"个性标签代码"，作为后续的引用 ID</li>
-      </ol>
-
       <div className="apply-cta-row">
         <button type="button" className="btn btn-primary" onClick={onNext}>
           开始 →
