@@ -147,22 +147,6 @@ function GuideStep({ onNext }: { onNext: () => void }) {
         再填几行标签（Mini Camp 分路 / 技术 / 兴趣 / 未来），最后把生成的"个性标签"复制保存，作为后续匹配的引用。
       </p>
 
-      <div className="apply-callout">
-        <h2>Step 0 — 先投简历</h2>
-        <p>
-          在正式开始招新流程前，请先把简历投到飞书表单（必填，InnOSeed 通过简历 + 标签做综合评估）。
-          飞书表单提交后会回到这个页面继续走流程。
-        </p>
-        <a
-          className="btn btn-primary"
-          href="https://innoseed.feishu.cn/share/base/form/shrcn7jz8ZE5NhEImgPxFryKs7c"
-          target="_blank"
-          rel="noopener"
-        >
-          投递简历 (飞书表单) ↗
-        </a>
-      </div>
-
       <div className="apply-cta-row">
         <button type="button" className="btn btn-primary" onClick={onNext}>
           开始 →
@@ -290,9 +274,10 @@ function ApplicationStep({
         body: JSON.stringify({
           tagCode,
           interviewer: pickedInterviewer?.code ?? null,
-          // Also send the raw selections for downstream consumers that
-          // don't want to decode the code themselves.
-          selections: selected.map((arr, catIdx) =>
+          // Flatten per-category arrays into a single list of {category, tag}
+          // records — the API contract is one item per picked tag, not a
+          // nested array. flatMap drops empty per-category arrays naturally.
+          selections: selected.flatMap((arr, catIdx) =>
             arr.map((i) => ({
               category: APPLY_CATEGORIES[catIdx].key,
               tag: APPLY_CATEGORIES[catIdx].options[i].name,
@@ -372,6 +357,22 @@ function ApplicationStep({
       ))}
 
       {submitError && <p className="apply-error" role="alert">{submitError}</p>}
+
+      <div className="apply-callout">
+        <h2>Step 0 — 先投简历</h2>
+        <p>
+          在正式开始招新流程前，请先把简历投到飞书表单（必填，InnOSeed 通过简历 + 标签做综合评估）。
+          飞书表单提交后会回到这个页面继续走流程。
+        </p>
+        <a
+          className="btn btn-primary"
+          href="https://innoseed.feishu.cn/share/base/form/shrcn7jz8ZE5NhEImgPxFryKs7c"
+          target="_blank"
+          rel="noopener"
+        >
+          投递简历 (飞书表单) ↗
+        </a>
+      </div>
 
       <div className="apply-cta-row">
         <button type="button" className="btn btn-ghost" onClick={onBack} disabled={submitting}>

@@ -85,22 +85,45 @@ function resolveRequestId(request: VercelRequest): string {
 
 const TAG_CODE_RE = /^[A-Za-z0-9+/=_-]{4,}$/;
 const INTERVIEWER_CODE_RE = /^[A-Za-z0-9._-]{1,40}$/;
+const ALLOWED_CATEGORIES = new Set(['lane', 'tech', 'play', 'future']);
 
-function isApplyPayload(v: unknown): v is ApplyPayload {
-  if (typeof v !== 'object' || v === null) return false;
+/**
+ * Validate the request body. Returns null if valid, or a short string
+ * identifying the first field that failed — included in the structured
+ * log so the failure mode is greppable from the reqId alone.
+ *
+ * Contract: selections is a FLAT array of `{category, tag}` records,
+ * one per picked tag. Empty per-category buckets are simply absent.
+ * (Frontend uses flatMap() — see Apply.tsx submit().)
+ */
+function validateApplyPayload(v: unknown): string | null {
+  if (typeof v !== 'object' || v === null) return 'body is not an object';
   const p = v as Record<string, unknown>;
-  if (typeof p.tagCode !== 'string' || !TAG_CODE_RE.test(p.tagCode)) return false;
-  if (p.interviewer !== null && (typeof p.interviewer !== 'string' || !INTERVIEWER_CODE_RE.test(p.interviewer))) return false;
-  if (!Array.isArray(p.selections)) return false;
-  for (const sel of p.selections) {
-    if (typeof sel !== 'object' || sel === null) return false;
+  if (typeof p.tagCode !== 'string') return 'tagCode missing or not string';
+  if (!TAG_CODE_RE.test(p.tagCode)) return 'tagCode failed regex';
+  if (p.interviewer !== null && (typeof p.interviewer !== 'string' || !INTERVIEWER_CODE_RE.test(p.interviewer))) {
+    return 'interviewer not null and not a valid code';
+  }
+  if (!Array.isArray(p.selections)) return 'selections is not an array';
+  // Reject nested arrays — front-end regression: previously used
+  // .map((arr) => arr.map(...)) which produced [[…], [], […]] and
+  // passed the loose Array.isArray check but failed the per-item
+  // shape check below, surfacing as a confusing "Invalid payload".
+  if (p.selections.some((s) => Array.isArray(s))) {
+    return 'selections contains nested array (must be flat)';
+  }
+  for (let i = 0; i < p.selections.length; i++) {
+    const sel = p.selections[i];
+    if (typeof sel !== 'object' || sel === null) return `selections[${i}] not an object`;
     const s = sel as Record<string, unknown>;
-    if (typeof s.tag !== 'string' || s.tag.length === 0 || s.tag.length > 60) return false;
-    if (s.category !== 'lane' && s.category !== 'tech' && s.category !== 'play' && s.category !== 'future') {
-      return false;
+    if (typeof s.category !== 'string' || !ALLOWED_CATEGORIES.has(s.category)) {
+      return `selections[${i}].category invalid: ${String(s.category)}`;
+    }
+    if (typeof s.tag !== 'string' || s.tag.length === 0 || s.tag.length > 60) {
+      return `selections[${i}].tag invalid: ${JSON.stringify(s.tag)}`;
     }
   }
-  return true;
+  return null;
 }
 
 /**
@@ -166,11 +189,13 @@ export default async function handler(
   }
 
   const body: unknown = request.body;
-  if (!isApplyPayload(body)) {
-    log('reject_payload', { status: 400 });
-    response.status(400).json({ error: 'Invalid payload', reqId });
+  const validationError = validateApplyPayload(body);
+  if (validationError !== null) {
+    log('reject_payload', { status: 400, reason: validationError, body });
+    response.status(400).json({ error: 'Invalid payload', reason: validationError, reqId });
     return;
   }
+  const payload = body as ApplyPayload;
 
   const serverCode = generateServerCode();
 
@@ -181,9 +206,9 @@ export default async function handler(
     log('accepted', {
       status: 200,
       code: serverCode,
-      interviewer: body.interviewer,
-      tagCode: body.tagCode,
-      selectionsCount: body.selections.length,
+      interviewer: payload.interviewer,
+      tagCode: payload.tagCode,
+      selectionsCount: payload.selections.length,
       payloadBytes: JSON.stringify(body).length,
     });
     response.status(200).json({ code: serverCode, reqId });
