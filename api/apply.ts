@@ -48,6 +48,41 @@ interface ApplyPayload {
   }>;
 }
 
+/**
+ * Generate a short request-id (10 chars, Crockford base32).
+ * Used in structured logs so `vercel logs --filter reqId=<id>` finds
+ * the entire lifecycle of one POST in one shot.
+ */
+function newRequestId(): string {
+  const alphabet = '0123456789ABCDEFGHJKMNPQRSTVWXYZ';
+  const bytes = new Uint8Array(6);
+  crypto.getRandomValues(bytes);
+  let out = '';
+  let buffer = 0;
+  let bits = 0;
+  for (const b of bytes) {
+    buffer = (buffer << 8) | b;
+    bits += 8;
+    while (bits >= 5) {
+      bits -= 5;
+      out += alphabet[(buffer >> bits) & 0x1f];
+    }
+  }
+  return out.slice(0, 10);
+}
+
+/**
+ * Pull a request id from the inbound headers (so a retry / page reload
+ * keeps continuity in the logs), otherwise mint a fresh one.
+ */
+function resolveRequestId(request: VercelRequest): string {
+  const incoming = request.headers['x-vercel-id'] || request.headers['x-request-id'];
+  if (typeof incoming === 'string' && incoming.length > 0 && incoming.length <= 80) {
+    return incoming.replace(/[^A-Za-z0-9._-]/g, '').slice(0, 32);
+  }
+  return newRequestId();
+}
+
 const TAG_CODE_RE = /^[A-Za-z0-9+/=_-]{4,}$/;
 const INTERVIEWER_CODE_RE = /^[A-Za-z0-9._-]{1,40}$/;
 
@@ -96,32 +131,72 @@ export default async function handler(
   request: VercelRequest,
   response: VercelResponse
 ): Promise<void> {
+  const reqId = resolveRequestId(request);
+  const startedAt = Date.now();
+
+  // Echo the request id back so the client (and any proxy logs) can
+  // correlate this response with the log line.
+  response.setHeader('x-request-id', reqId);
+
+  // Structured access log — single line per request, easy to grep in
+  // Vercel runtime logs. Includes the build sha if Vercel injected it.
+  const log = (stage: string, extra: Record<string, unknown> = {}) => {
+    console.log(JSON.stringify({
+      ts: new Date().toISOString(),
+      reqId,
+      stage,
+      method: request.method,
+      ua: request.headers['user-agent'] ?? '',
+      ip:
+        (request.headers['x-forwarded-for'] as string | undefined)?.split(',')[0]?.trim() ?? '',
+      deployment: process.env.VERCEL_DEPLOYMENT_ID ?? '',
+      region: process.env.VERCEL_REGION ?? '',
+      durationMs: Date.now() - startedAt,
+      ...extra,
+    }));
+  };
+
+  log('start');
+
   if (request.method !== 'POST') {
     response.setHeader('Allow', 'POST');
-    response.status(405).json({ error: 'Method not allowed' });
+    log('reject_method', { status: 405 });
+    response.status(405).json({ error: 'Method not allowed', reqId });
     return;
   }
 
   const body: unknown = request.body;
   if (!isApplyPayload(body)) {
-    response.status(400).json({ error: 'Invalid payload' });
+    log('reject_payload', { status: 400 });
+    response.status(400).json({ error: 'Invalid payload', reqId });
     return;
   }
 
   const serverCode = generateServerCode();
 
-  // TODO(real-destination): swap this for the chosen store.
-  // The stub branch logs the structured payload + the new server code so
-  // you can confirm the shape end-to-end before wiring a real store.
-  console.log('[apply] received', {
-    code: serverCode,
-    interviewer: body.interviewer,
-    tagCode: body.tagCode,
-    selections: body.selections,
-    submittedAt: new Date().toISOString(),
-  });
-
-  response.status(200).json({ code: serverCode });
+  try {
+    // TODO(real-destination): swap this for the chosen store.
+    // The stub branch logs the structured payload + the new server code so
+    // you can confirm the shape end-to-end before wiring a real store.
+    log('accepted', {
+      status: 200,
+      code: serverCode,
+      interviewer: body.interviewer,
+      tagCode: body.tagCode,
+      selectionsCount: body.selections.length,
+      payloadBytes: JSON.stringify(body).length,
+    });
+    response.status(200).json({ code: serverCode, reqId });
+  } catch (err) {
+    // We don't expect the stub branch to throw, but the real
+    // _persistToFeishuBitable() can (token fetch / record write).
+    log('error', {
+      status: 500,
+      message: err instanceof Error ? err.message : String(err),
+      stack: err instanceof Error ? err.stack : undefined,
+    });
+    response.status(500).json({ error: 'Internal error', reqId });
+  }
 }
 
 // ────────────────────────────────────────────────────────────────────
