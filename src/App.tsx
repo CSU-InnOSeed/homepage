@@ -8,9 +8,12 @@ import Pillars from './components/Pillars';
 import Numbers from './components/Numbers';
 import Members from './components/Members';
 import Inside from './components/Inside';
+import Events from './components/Events';
 import Recruit from './components/Recruit';
 import Footer from './components/Footer';
 import Apply from './pages/Apply';
+import EventsPage from './pages/Events';
+import RecruitPage from './pages/Recruit';
 
 /**
  * App — composes the landing page sections in order, with an extra
@@ -18,7 +21,7 @@ import Apply from './pages/Apply';
  *
  * Sections on `/`:
  *   Nav → Hero → Marquee → Manifesto → Pillars
- *   → Numbers → Members → Inside → Recruit → Footer
+ *   → Numbers → Members → Inside → Events → Recruit → Footer
  *
  * Sections on `/apply`:
  *   Apply (4-step flow: Guide → PickInterviewer → Application → Done)
@@ -53,6 +56,26 @@ export default function App() {
           }
         />
         <Route
+          path="/events"
+          element={
+            <>
+              <Nav />
+              <EventsPage />
+              <Footer />
+            </>
+          }
+        />
+        <Route
+          path="/recruit"
+          element={
+            <>
+              <Nav />
+              <RecruitPage />
+              <Footer />
+            </>
+          }
+        />
+        <Route
           path="*"
           element={
             <>
@@ -65,6 +88,7 @@ export default function App() {
                 <Numbers />
                 <Members />
                 <Inside />
+                <Events />
                 <Recruit />
               </main>
               <Footer />
