@@ -241,36 +241,3 @@ export function encodeTagCode(selectedByCategory: number[][]): string {
   }
   return btoa(codeString);
 }
-
-/**
- * Decode a base64 string produced by `encodeTagCode` (or the SvelteKit
- * legacy version) into per-category index arrays. Returns null on
- * malformed input so the UI can show a clean error instead of crashing.
- */
-export function decodeTagCode(code: string): number[][] | null {
-  try {
-    const raw =
-      typeof atob === 'undefined'
-        ? Buffer.from(code, 'base64').toString('utf-8')
-        : atob(code);
-    if (!/^\d:[\d,]*(\;\d:[\d,]*)*$/.test(raw) && !/^\d:[\d,]*$/.test(raw)) {
-      // Allow single-category (e.g. "0:1,2") and multi-category ("0:1,2;1:3").
-      return null;
-    }
-    const buckets: number[][] = APPLY_CATEGORIES.map(() => []);
-    for (const part of raw.split(';')) {
-      const [catStr, idxStr] = part.split(':');
-      const cat = Number(catStr);
-      const indices = idxStr === '' ? [] : idxStr.split(',').map(Number);
-      if (Number.isNaN(cat) || indices.some(Number.isNaN)) return null;
-      if (cat < 0 || cat >= APPLY_CATEGORIES.length) return null;
-      for (const i of indices) {
-        if (i < 0 || i >= APPLY_CATEGORIES[cat].options.length) return null;
-        buckets[cat].push(i);
-      }
-    }
-    return buckets;
-  } catch {
-    return null;
-  }
-}

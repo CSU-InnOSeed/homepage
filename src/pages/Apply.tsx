@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import {
   APPLY_CATEGORIES,
   INTERVIEWERS,
-  decodeTagCode,
   encodeTagCode,
   type Interviewer,
 } from '../content/apply';
@@ -27,8 +26,6 @@ export default function Apply() {
     APPLY_CATEGORIES.map(() => [])
   );
   const [pickedInterviewer, setPickedInterviewer] = useState<Interviewer | null>(null);
-  const [pastedCode, setPastedCode] = useState('');
-  const [codeError, setCodeError] = useState('');
   // After the form is submitted (POST /api/apply succeeded), we capture
   // the server-assigned code so the Done step can show it.
   const [submittedCode, setSubmittedCode] = useState<string | null>(null);
@@ -44,18 +41,6 @@ export default function Apply() {
       return next;
     });
   }, []);
-
-  const onPasteCode = useCallback(() => {
-    const trimmed = pastedCode.trim();
-    if (!trimmed) return;
-    const decoded = decodeTagCode(trimmed);
-    if (!decoded) {
-      setCodeError('个性标签代码无法解析，请检查后重试');
-      return;
-    }
-    setSelected(decoded);
-    setCodeError('');
-  }, [pastedCode]);
 
   const stepIdx = STEPS.find((s) => s.key === step)?.idx ?? 0;
 
@@ -102,10 +87,6 @@ export default function Apply() {
           <ApplicationStep
             selected={selected}
             onToggle={toggleTag}
-            pastedCode={pastedCode}
-            onPastedCodeChange={setPastedCode}
-            onPasteCode={onPasteCode}
-            codeError={codeError}
             pickedInterviewer={pickedInterviewer}
             tagCode={tagCode}
             onBack={() => setStep('pick')}
@@ -122,8 +103,6 @@ export default function Apply() {
             onRestart={() => {
               setSelected(APPLY_CATEGORIES.map(() => []));
               setPickedInterviewer(null);
-              setPastedCode('');
-              setCodeError('');
               setSubmittedCode(null);
               setStep('guide');
             }}
@@ -239,10 +218,6 @@ function PickInterviewerStep({ selectedTags, picked, onPick, onBack, onNext }: P
 interface ApplyProps {
   selected: number[][];
   onToggle: (catIdx: number, tagIdx: number) => void;
-  pastedCode: string;
-  onPastedCodeChange: (s: string) => void;
-  onPasteCode: () => void;
-  codeError: string;
   pickedInterviewer: Interviewer | null;
   tagCode: string;
   onBack: () => void;
@@ -252,10 +227,6 @@ interface ApplyProps {
 function ApplicationStep({
   selected,
   onToggle,
-  pastedCode,
-  onPastedCodeChange,
-  onPasteCode,
-  codeError,
   pickedInterviewer,
   tagCode,
   onBack,
@@ -303,29 +274,8 @@ function ApplicationStep({
       <span className="eyebrow">03 — Application</span>
       <h1>选你的标签。</h1>
       <p className="apply-lead">
-        Mini Camp 分路必选一项；技术 / 兴趣 / 未来可多选。
-        想直接复用之前的"个性标签代码"？把它粘到下面这个框里就能恢复。
+        Mini Camp 分路必选一项；技术 / 兴趣 / 未来可多选，按熟练度从高到低排。
       </p>
-
-      <div className="apply-paste-row">
-        <label htmlFor="apply-paste" className="apply-paste-label">
-          粘贴个性标签代码（可选）
-        </label>
-        <div className="apply-paste-input">
-          <input
-            id="apply-paste"
-            type="text"
-            placeholder="MDoxLDI7MjozOzM6NA=="
-            value={pastedCode}
-            onChange={(e) => onPastedCodeChange(e.target.value)}
-            spellCheck={false}
-          />
-          <button type="button" className="btn btn-ghost apply-paste-btn" onClick={onPasteCode}>
-            解析并恢复
-          </button>
-        </div>
-        {codeError && <p className="apply-error">{codeError}</p>}
-      </div>
 
       {APPLY_CATEGORIES.map((cat, catIdx) => (
         <fieldset key={cat.key} className="apply-category">
@@ -357,22 +307,6 @@ function ApplicationStep({
       ))}
 
       {submitError && <p className="apply-error" role="alert">{submitError}</p>}
-
-      <div className="apply-callout">
-        <h2>Step 0 — 先投简历</h2>
-        <p>
-          在正式开始招新流程前，请先把简历投到飞书表单（必填，InnOSeed 通过简历 + 标签做综合评估）。
-          飞书表单提交后会回到这个页面继续走流程。
-        </p>
-        <a
-          className="btn btn-primary"
-          href="https://innoseed.feishu.cn/share/base/form/shrcn7jz8ZE5NhEImgPxFryKs7c"
-          target="_blank"
-          rel="noopener"
-        >
-          投递简历 (飞书表单) ↗
-        </a>
-      </div>
 
       <div className="apply-cta-row">
         <button type="button" className="btn btn-ghost" onClick={onBack} disabled={submitting}>
@@ -438,6 +372,22 @@ function DoneStep({
         <button type="button" className="btn btn-primary" onClick={onHome}>
           回到首页
         </button>
+      </div>
+
+      <div className="apply-callout">
+        <h2>下一步 — 投递简历</h2>
+        <p>
+          个性标签生成完成，接下来请把简历投到飞书表单（必填，InnOSeed 通过简历 + 标签做综合评估）。
+          飞书表单提交后我们会尽快与你联系。
+        </p>
+        <a
+          className="btn btn-primary"
+          href="https://innoseed.feishu.cn/share/base/form/shrcn7jz8ZE5NhEImgPxFryKs7c"
+          target="_blank"
+          rel="noopener"
+        >
+          投递简历 (飞书表单) ↗
+        </a>
       </div>
     </section>
   );

@@ -221,7 +221,7 @@ Vercel **自动注入** 给 build 的变量（runtime 也能在函数里 `proces
 04 Done               → 服务器分配 10 位 reference code（点击复制）
 ```
 
-**个性标签代码**：`encodeTagCode` / `decodeTagCode` 用 base64 编码选中的 tag 索引，跟 SvelteKit 旧版 `innoseed.club/apply25` 的格式完全一致 —— 用户粘贴旧代码可自动恢复选择。
+**个性标签代码**：`encodeTagCode` 用 base64 编码选中的 tag 索引，跟 SvelteKit 旧版 `innoseed.club/apply25` 的格式完全一致 —— 提交后服务器分配 10 位 reference code 也在同一种 base32 体系里，方便后续把新旧代码映射到同一份 lookup。
 
 **后端**：`/api/apply`（Vercel Function）。当前是 stub —— 校验 payload、生成 10 位 server code、单行 JSON 结构化日志。生产环境要接飞书多维表格作为持久化，参考 `api/apply.ts` 里的 `_persistToFeishuBitable` 实现 + 配 4 个 Vercel env vars（`FEISHU_APP_ID` / `FEISHU_APP_SECRET` / `FEISHU_BITABLE_TOKEN` / `FEISHU_TABLE_ID`）。
 
@@ -282,7 +282,7 @@ Vercel 项目 `prj_5AZiomgjCi7Wkf5K1MdgdBD8PEHb`（`vercel.json` 指明 `outputD
 04 Done               → 服务器分配 10 位 reference code（点击复制）
 ```
 
-**个性标签代码**：`encodeTagCode` / `decodeTagCode` 用 base64 编码选中的 tag 索引，跟 SvelteKit 旧版 `innoseed.club/apply25` 的格式完全一致 —— 用户粘贴旧代码可自动恢复选择。
+**个性标签代码**：`encodeTagCode` 用 base64 编码选中的 tag 索引，跟 SvelteKit 旧版 `innoseed.club/apply25` 的格式完全一致 —— 提交后服务器分配 10 位 reference code 也在同一种 base32 体系里，方便后续把新旧代码映射到同一份 lookup。
 
 **后端**：`/api/apply`（Vercel Function）。当前是 stub —— 校验 payload、生成 10 位 server code、log 到 stdout。生产环境要接飞书多维表格作为持久化，参考 `api/apply.ts` 里的 `_persistToFeishuBitable` 实现 + 配 4 个 Vercel env vars（`FEISHU_APP_ID` / `FEISHU_APP_SECRET` / `FEISHU_BITABLE_TOKEN` / `FEISHU_TABLE_ID`）。
 
