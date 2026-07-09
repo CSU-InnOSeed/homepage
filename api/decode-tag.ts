@@ -563,7 +563,20 @@ export default async function handler(
     const token = await getTenantToken(cfg);
     const fields = await readBitableRecord(cfg, token, recordId);
     const codeRaw = fields[cfg.fieldCode];
-    const code = typeof codeRaw === 'string' ? codeRaw.trim() : '';
+    // text_field_as_array=true 把 plain text 字段返回为 [{text, type}], 兼容两种形态:
+    //   1) 字符串 (旧版 API / 未来可能切换参数)
+    //   2) 数组第一项 .text
+    //   3) null/undefined/其他 → 空
+    let codeExtracted: unknown = codeRaw;
+    if (Array.isArray(codeRaw) && codeRaw.length > 0) {
+      const first = codeRaw[0];
+      if (first && typeof first === 'object' && 'text' in first && typeof (first as { text: unknown }).text === 'string') {
+        codeExtracted = (first as { text: string }).text;
+      } else {
+        codeExtracted = '';
+      }
+    }
+    const code = typeof codeExtracted === 'string' ? codeExtracted.trim() : '';
     if (!code) {
       log('no_code', { status: 200, recordId, field: cfg.fieldCode });
       response.status(200).json({ ok: true, skipped: 'no code in field', reqId });
