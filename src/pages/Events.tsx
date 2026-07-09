@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import Events from '../components/Events';
+import { EVENTS } from '../content/site';
 import useReveal from '../hooks/useReveal';
 
 /**
@@ -29,14 +30,11 @@ export default function EventsPage() {
             <span aria-hidden="true">/</span>
             <span aria-current="page">活动</span>
           </nav>
-          <span className="eyebrow">What&apos;s On</span>
+          <span className="eyebrow">{EVENTS.eyebrow}</span>
           <h1>
-            下一场 <em>InnOSeed</em>
+            {EVENTS.headline.lead} <em>{EVENTS.headline.accent}</em>
           </h1>
-          <p className="page-header-desc">
-            招新季工作坊、Mini Camp、行业参访、年度 Demo Day ——
-            在这里看见 InnOSeed 接下来要做的事,以及我们刚刚做完的事。
-          </p>
+          <p className="page-header-desc">{EVENTS.intro}</p>
         </div>
       </header>
       <Events />
