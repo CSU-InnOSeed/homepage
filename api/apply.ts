@@ -6,9 +6,17 @@
  *
  * Current state: STUB.
  *   - Validates the request body shape.
- *   - Generates a server-side reference code (base32 of random bytes).
+ *   - Re-derives the per-category tag indices from the flat `selections`
+ *     (so the returned code is guaranteed to round-trip — the frontend
+ *     sends both, but the server is the trust boundary).
+ *   - Composes a portable "apply code" containing BOTH the picked
+ *     interviewer and the tag selection — the same string the candidate
+ *     pastes into the 飞书 Bitable's "个性标签代码" field, which
+ *     /api/decode-tag then splits back into structured values.
+ *   - Generates a separate short 10-char base32 `lookupCode` for the
+ *     Bitable to use as a human-typable internal id.
  *   - Logs the full payload to stdout (visible in `vercel logs`).
- *   - Returns 200 + `{ code }`.
+ *   - Returns 200 + `{ code, lookupCode }`.
  *
  * To wire this to a real store, fill in one of the destinations below
  * and remove the dev-only "stub" branch. The signature
@@ -35,6 +43,12 @@
  */
 
 import type { VercelRequest, VercelResponse } from '@vercel/node';
+import {
+  APPLY_CATEGORIES,
+  encodeApplyCode,
+  encodeTagCode,
+  INTERVIEWERS,
+} from '../src/content/apply';
 
 interface ApplyPayload {
   /** Base64 tag-code produced by the client (matches the SvelteKit format). */
@@ -46,6 +60,29 @@ interface ApplyPayload {
     category: 'lane' | 'tech' | 'play' | 'future';
     tag: string;
   }>;
+}
+
+/**
+ * Fold the flat `selections` array back into the per-category
+ * `number[][]` shape that `encodeApplyCode` expects.
+ *
+ * Order is preserved within each bucket (frontend appends in click
+ * order), and unknown category / tag names are silently dropped —
+ * `validateApplyPayload` already bounded the inputs but a malicious
+ * client could still smuggle extras; we re-resolve against the
+ * canonical APPLY_CATEGORIES table so the server's encode is
+ * authoritative.
+ */
+function selectionsToIndices(selections: ApplyPayload['selections']): number[][] {
+  const indices: number[][] = APPLY_CATEGORIES.map(() => []);
+  for (const sel of selections) {
+    const catIdx = APPLY_CATEGORIES.findIndex((c) => c.key === sel.category);
+    if (catIdx < 0) continue;
+    const tagIdx = APPLY_CATEGORIES[catIdx].options.findIndex((o) => o.name === sel.tag);
+    if (tagIdx < 0) continue;
+    if (!indices[catIdx].includes(tagIdx)) indices[catIdx].push(tagIdx);
+  }
+  return indices;
 }
 
 /**
@@ -130,8 +167,14 @@ function validateApplyPayload(v: unknown): string | null {
  * Generate a 10-character server-side reference code. Base32 (Crockford
  * alphabet — no I/L/O/U to avoid visual ambiguity). 50 bits of entropy is
  * enough that collisions won't happen in any realistic 招新 volume.
+ *
+ * NOTE: the user's *portable* code is `encodeApplyCode(...)` — it
+ * carries the interviewer pick + tag selection. This base32 string is
+ * only a short human-typable handle, useful as the 飞书 Bitable's
+ * "primary key" column for admin eyes. The two are returned side by
+ * side: `code` (portable, decodeable) and `lookupCode` (short, opaque).
  */
-function generateServerCode(): string {
+function generateLookupCode(): string {
   const alphabet = '0123456789ABCDEFGHJKMNPQRSTVWXYZ'; // Crockford
   const bytes = new Uint8Array(7);
   crypto.getRandomValues(bytes);
@@ -197,7 +240,25 @@ export default async function handler(
   }
   const payload = body as ApplyPayload;
 
-  const serverCode = generateServerCode();
+  // The frontend's `interviewer` is a short handle (e.g. "Mr.Y"). We
+  // re-validate against the canonical INTERVIEWERS list so a tampered
+  // request can't smuggle a code that /api/decode-tag would fail to
+  // resolve. Null is fine (candidate skipped the pick step).
+  if (
+    payload.interviewer !== null &&
+    !INTERVIEWERS.some((iv) => iv.code === payload.interviewer)
+  ) {
+    log('reject_interviewer', {
+      status: 400,
+      interviewer: payload.interviewer,
+    });
+    response.status(400).json({ error: 'Unknown interviewer', reqId });
+    return;
+  }
+
+  const lookupCode = generateLookupCode();
+  const indices = selectionsToIndices(payload.selections);
+  const portableCode = encodeApplyCode(indices, payload.interviewer);
 
   try {
     // TODO(real-destination): swap this for the chosen store.
@@ -205,13 +266,13 @@ export default async function handler(
     // you can confirm the shape end-to-end before wiring a real store.
     log('accepted', {
       status: 200,
-      code: serverCode,
+      code: portableCode,
+      lookupCode,
       interviewer: payload.interviewer,
-      tagCode: payload.tagCode,
       selectionsCount: payload.selections.length,
       payloadBytes: JSON.stringify(body).length,
     });
-    response.status(200).json({ code: serverCode, reqId });
+    response.status(200).json({ code: portableCode, lookupCode, reqId });
   } catch (err) {
     // We don't expect the stub branch to throw, but the real
     // _persistToFeishuBitable() can (token fetch / record write).
