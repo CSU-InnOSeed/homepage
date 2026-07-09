@@ -27,14 +27,16 @@ export default function RecruitPage() {
             <span aria-hidden="true">/</span>
             <span aria-current="page">招新</span>
           </nav>
-          <span className="eyebrow">Join Us · 2025</span>
+          <span className="eyebrow">Join Us · 2026 招新筹备中</span>
           <h1>
             加 入 <em>InnOSeed</em>
           </h1>
           <p className="page-header-desc">
             坚持小而精的发展路线,每届只固定招收 8 — 9 人,招生对象面向全校。
             我们没有硬性的招生标准 ——
-            只希望能够和有着不同想法的你相遇。
+            只希望能够和有着不同想法的你相遇。<br />
+            <strong style={{ color: 'var(--brand)' }}>2026 招新时间表待定</strong> ——
+            下方流程展示的是 2025 招新(已结束),作为参考。
           </p>
         </div>
       </header>

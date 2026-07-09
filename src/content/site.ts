@@ -428,34 +428,37 @@ export const EVENTS: EventsData = {
  *
  * timeline 沿用 PILLARS 的 4 色 accent 给每个阶段配色。
  * faqs 短小精悍,每条不超过 2 行。
+ *
+ * 当前显示的是 2025 招新流程(已结束,作为参考)。
+ * 2026 招新时间表待定 — 访问者看到的是历史参考,实际时间以当年通知为准。
  */
 export const RECRUIT_EXTRAS: RecruitExtras = {
   timeline: [
     {
       phase: 'compete',
       index: 1,
-      when: '09 · 上旬',
+      when: '2025 · 09',
       title: '投递 + 简历初筛',
       desc: '提交个性标签代码,选择 1 位契合度最高的面试官。我们 3 天内回复是否进入下一轮。',
     },
     {
       phase: 'research',
       index: 2,
-      when: '09 · 中旬',
+      when: '2025 · 09',
       title: '1v1 面试 · 30 分钟',
       desc: '与你选的面试官一对一聊聊。问题不背题,重点看你怎么思考和怎么表达。',
     },
     {
       phase: 'startup',
       index: 3,
-      when: '10 · 上旬',
-      title: 'Mini Camp · 48 小时',
-      desc: '新生老成员混编,4 路分头做一个原型。这是我们判断"能不能一起做事"的最终环节。',
+      when: '2025 · 09',
+      title: 'Mini Camp · 一个白天',
+      desc: '候选人聚到一起,4 路分头(产品 / 技术 / 设计 / 创业)做一个原型 + 现场 Demo + 当场反馈。这是我们判断"能不能一起做事"的最终环节。',
     },
     {
       phase: 'bonds',
       index: 4,
-      when: '10 · 中旬',
+      when: '2025 · 09',
       title: '正式 offer',
       desc: 'Mini Camp 之后 3 天内发出 offer。从此刻起,InnOSeed 是你的另一个家。',
     },
@@ -471,7 +474,7 @@ export const RECRUIT_EXTRAS: RecruitExtras = {
     },
     {
       q: '每年招多少人?什么时候截止?',
-      a: '固定 8 — 9 人。每年 9 月初开放投递,10 月中旬截止。错过了就等下一年。',
+      a: '固定 8 — 9 人。具体时间以当年通知为准。',
     },
     {
       q: '招新期间我可以参加其他社团 / 实验室吗?',
@@ -479,7 +482,7 @@ export const RECRUIT_EXTRAS: RecruitExtras = {
     },
     {
       q: 'Mini Camp 是必须的吗?',
-      a: '是。它是 InnOSeed 招新流程的核心 —— 我们通过 48 小时一起做事判断你适不适合这里。',
+      a: '是。它是 InnOSeed 招新流程的核心 —— 我们通过一个白天的 Mini Camp 一起做事判断你适不适合这里。',
     },
   ],
 };
