@@ -397,23 +397,20 @@ export const FOOTER: FooterData = {
  *   camp   → research (深绿)
  *   open   → cyan     (青)
  *
- * 目前只列招新季相关的两件事 ——
- *   1. 招新开放日(09 中旬):招新流程入口
- *   2. 秋季 Mini Camp(10 上旬):招新流程的核心环节,跟招新同一批人同期
- *
- * 其他活动暂未上线,等真正办过再加,不要凭印象虚构时间和内容。
+ * 现状(2026 年 7 月):2025 秋季招新 + Mini Camp 已结束,统一标 'past'。
+ * 2026 招新形式还在定,等定了再加新条目,不要凭印象提前占位。
  *
  * 添加新活动:在这里加一条即可,渲染端 (Events.tsx) 会自动渲染。
  * 若需要更多自定义字段(报名链接/海报图),扩展 EventItem 接口。
  */
 export const EVENTS: EventsData = {
   eyebrow: '07 — What\'s On',
-  headline: { lead: '下一场', accent: 'InnOSeed' },
-  intro: '招新季开放日、秋季 Mini Camp —— 招新同期要办的两件事。',
+  headline: { lead: '上一届', accent: 'InnOSeed' },
+  intro: '上一届招新季(2025 秋季)已结束。2026 招新正在筹备中,形式待定 —— 关注我们获取最新信息。',
   items: [
     {
       key: 'recruit-2025-info',
-      status: 'upcoming',
+      status: 'past',
       type: 'open',
       typeLabel: '招新开放日',
       date: '2025 · 09 · 中旬',
@@ -421,11 +418,10 @@ export const EVENTS: EventsData = {
       subtitle: '30 分钟讲清楚 InnOSeed 在做什么 + 自由问答 + 现场投递简历通道',
       body: '面向全校大一到大三同学。当天会讲清楚招新流程、四个方向分别做什么、当年面试官阵容。流程上无需准备,只需带着好奇心来。',
       where: '中南大学校本部 · 计算机学院楼 B 楼 + 腾讯会议同步',
-      open: true,
     },
     {
       key: 'mini-camp-fall',
-      status: 'upcoming',
+      status: 'past',
       type: 'camp',
       typeLabel: 'Mini Camp',
       date: '2025 · 10 · 上旬',
