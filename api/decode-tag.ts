@@ -443,8 +443,15 @@ async function composeBitableFields(
       } else {
         taDetail = `${decoded.interviewerCode} → contact API found no match for "${entry.name}"`;
       }
+    } else if (token === null) {
+      // GET 调试模式: 没有 Feishu token, 无法调 contact API
+      taDetail = `${decoded.interviewerCode} → GET mode skips contact API; TA not filled`;
+    } else if (!entry) {
+      taDetail = `${decoded.interviewerCode} → not in INTERVIEWER_MAP; TA not filled`;
+    } else if (!entry.name) {
+      taDetail = `${decoded.interviewerCode} → INTERVIEWER_MAP entry has no name; TA not filled`;
     } else {
-      taDetail = `${decoded.interviewerCode} → no name in map and autoLookup disabled`;
+      taDetail = `${decoded.interviewerCode} → LOOKUP_BY_NAME=false; TA not filled`;
     }
   }
   return { fields, taSource, taDetail };
@@ -591,6 +598,36 @@ export default async function handler(
       return;
     }
     const composed = await composeBitableFields(decoded, cfg, token);
+    // 幂等保护: 如果 5 个目标字段已经和 desired 一致, 跳过 PUT, 避免重复触发
+    // Bitable 修改历史 (虽然不触发自动化循环, 但历史记录会变脏).
+    const isSamePayload = (a: unknown, b: unknown): boolean => JSON.stringify(a ?? null) === JSON.stringify(b ?? null);
+    const fieldsAlreadyMatch = (
+      isSamePayload(fields[cfg.fieldLane], composed.fields[cfg.fieldLane]) &&
+      isSamePayload(fields[cfg.fieldTech], composed.fields[cfg.fieldTech]) &&
+      isSamePayload(fields[cfg.fieldPlay], composed.fields[cfg.fieldPlay]) &&
+      isSamePayload(fields[cfg.fieldFuture], composed.fields[cfg.fieldFuture]) &&
+      isSamePayload(fields[cfg.fieldTa], composed.fields[cfg.fieldTa])
+    );
+    if (fieldsAlreadyMatch) {
+      log('noop_idempotent', {
+        status: 200,
+        recordId,
+        interviewer: decoded.interviewerCode,
+        taSource: composed.taSource,
+      });
+      response.status(200).json({
+        ok: true,
+        record_id: recordId,
+        skipped: 'idempotent: all 5 fields already match decoded payload',
+        decoded: {
+          interviewer: decoded.interviewerCode,
+          tagNames: decoded.tagNames,
+        },
+        taSource: composed.taSource,
+        reqId,
+      });
+      return;
+    }
     // 写回 — 不动 fieldCode, 不触发自动化循环
     await writeBitableRecord(cfg, token, recordId, composed.fields);
     log('ok', {
