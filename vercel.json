@@ -102,5 +102,11 @@
       "maxDuration": 10,
       "memory": 256
     }
-  }
+  },
+  "crons": [
+    {
+      "path": "/api/decode-tag",
+      "schedule": "*/5 * * * *"
+    }
+  ]
 }
