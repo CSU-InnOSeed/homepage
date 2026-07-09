@@ -13,9 +13,7 @@
  *
  *   The frontend (Apply.tsx) continues to import the canonical
  *   implementation from `src/content/apply.ts` — when the format
- *   changes, BOTH files must be updated. The header comment in
- *   `src/content/apply.ts#encodeApplyCode` and here cross-references
- *   the two locations.
+ *   changes, BOTH files must be updated.
  *
  * Format reminder:  "{ivCode}|{base64TagCode}"
  *   ivCode is optional; "_" is the placeholder for "no pick".

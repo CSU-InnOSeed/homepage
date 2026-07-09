@@ -28,7 +28,7 @@
  */
 
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { decodeApplyCode } from './_tagcode';
+import { decodeApplyCode } from './tagcode';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 

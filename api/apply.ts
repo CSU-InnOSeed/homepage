@@ -48,7 +48,7 @@ import {
   encodeApplyCode,
   encodeTagCode,
   INTERVIEWERS,
-} from './_tagcode';
+} from './tagcode';
 
 interface ApplyPayload {
   /** Base64 tag-code produced by the client (matches the SvelteKit format). */
