@@ -1,0 +1,49 @@
+edition: 1.0.0
+name: innoseed-decode-tag
+access: aliyun-mcig
+
+# 部署前需要先 `s config add` 配置阿里云 AccessKey
+# 然后用以下命令设置 secrets (从 .env 加载或直接命令行):
+#   export FEISHU_APP_ID=...  (6 个 env 变量)
+#   s deploy
+
+services:
+  decode-tag:
+    component: fc
+    props:
+      region: cn-hangzhou
+      service:
+        name: innoseed-decode-tag
+        internetAccess: true
+        description: Feishu Bitable tag decode webhook (replaces Vercel + Cloudflare)
+      function:
+        name: decode-tag
+        runtime: nodejs18
+        handler: handler.handler
+        memorySize: 128
+        timeout: 15
+        codeUri: ./code
+        environmentVariables:
+          FEISHU_APP_ID: ${env.FEISHU_APP_ID}
+          FEISHU_APP_SECRET: ${env.FEISHU_APP_SECRET}
+          FEISHU_BITABLE_TOKEN: ${env.FEISHU_BITABLE_TOKEN}
+          FEISHU_TABLE_ID: ${env.FEISHU_TABLE_ID}
+          DECODE_TAG_TOKEN: ${env.DECODE_TAG_TOKEN}
+          INTERVIEWER_MAP: ${env.INTERVIEWER_MAP}
+          LOOKUP_BY_NAME: "true"
+          BITABLE_FIELD_CODE: "个性标签"
+          BITABLE_FIELD_LANE: "Mini Camp选路"
+          BITABLE_FIELD_TECH: "技术特长"
+          BITABLE_FIELD_PLAY: "兴趣爱好"
+          BITABLE_FIELD_FUTURE: "未来道路"
+          BITABLE_FIELD_TA: "TA"
+      triggers:
+        - name: httpTrigger
+          type: http
+          config:
+            authType: anonymous
+            methods:
+              - GET
+              - POST
+            # 不设 customPaths, 用默认 /{serviceName}/{functionName}
+            # 即: https://{accountId}.cn-hangzhou.fc.aliyuncs.com/innoseed-decode-tag/decode-tag
