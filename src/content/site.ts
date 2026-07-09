@@ -395,10 +395,13 @@ export const FOOTER: FooterData = {
  *
  * type 字段使用与 PILLARS 一致的色板:
  *   camp   → research (深绿)
- *   talk   → bonds    (红)
- *   demo   → startup  (蓝)
- *   visit  → compete  (紫)
  *   open   → cyan     (青)
+ *
+ * 目前只列招新季相关的两件事 ——
+ *   1. 招新开放日(09 中旬):招新流程入口
+ *   2. 秋季 Mini Camp(10 上旬):招新流程的核心环节,跟招新同一批人同期
+ *
+ * 其他活动暂未上线,等真正办过再加,不要凭印象虚构时间和内容。
  *
  * 添加新活动:在这里加一条即可,渲染端 (Events.tsx) 会自动渲染。
  * 若需要更多自定义字段(报名链接/海报图),扩展 EventItem 接口。
@@ -406,7 +409,7 @@ export const FOOTER: FooterData = {
 export const EVENTS: EventsData = {
   eyebrow: '07 — What\'s On',
   headline: { lead: '下一场', accent: 'InnOSeed' },
-  intro: '招新季工作坊、Mini Camp、行业参访、年度 Demo Day —— 在这里看见 InnOSeed 接下来要做的事。',
+  intro: '招新季开放日、秋季 Mini Camp —— 招新同期要办的两件事。',
   items: [
     {
       key: 'recruit-2025-info',
@@ -415,7 +418,7 @@ export const EVENTS: EventsData = {
       typeLabel: '招新开放日',
       date: '2025 · 09 · 中旬',
       title: '2025 秋季招新 · 宣讲 + 茶歇',
-      subtitle: '30 分钟讲清楚 InnOSeseed 在做什么 + 自由问答 + 现场投递简历通道',
+      subtitle: '30 分钟讲清楚 InnOSeed 在做什么 + 自由问答 + 现场投递简历通道',
       body: '面向全校大一到大三同学。当天会讲清楚招新流程、四个方向分别做什么、当年面试官阵容。流程上无需准备,只需带着好奇心来。',
       where: '中南大学校本部 · 计算机学院楼 B 楼 + 腾讯会议同步',
       open: true,
@@ -430,50 +433,6 @@ export const EVENTS: EventsData = {
       subtitle: '新生和老成员混编 4 路(产品 / 技术 / 设计 / 创业),48 小时做一件事',
       body: 'Mini Camp 是 InnOSeed 的传统 —— 把所有被录取的人拉到同一个空间,2 天 2 夜只做一件事。每届只有 4 路,每路 2-3 人组队,产出原型 + 现场 Demo + 复盘。',
       where: '岳麓山脚 · 封闭场地',
-    },
-    {
-      key: 'tech-talk-agent',
-      status: 'upcoming',
-      type: 'talk',
-      typeLabel: 'Tech Talk',
-      date: '2025 · 10 · 中旬',
-      title: '智能体落地实战 · 邀请业界前辈',
-      subtitle: '我们联络做过的学长学姐回来聊聊:他们现在在做什么、踩过什么坑',
-      body: '历届 InnOSeed 成员分布于清华 / 北大 / 斯坦福 / 字节 / 阿里 / 蚂蚁 / 量化。每隔几个月把他们拉回来做一次 Tech Talk —— 不是讲座,是前辈 + 后辈的圆桌。',
-      where: '计算机学院报告厅 + 线上直播',
-    },
-    {
-      key: 'demo-day-2025',
-      status: 'upcoming',
-      type: 'demo',
-      typeLabel: 'Demo Day',
-      date: '2025 · 12 · 下旬',
-      title: '年度 Demo Day · 公开路演',
-      subtitle: '一年里做的所有东西,挑最能讲的一个,站上舞台讲 5 分钟',
-      body: 'Demo Day 是 InnOSeed 一年里最公开的舞台 —— 科研项目、创业产品、竞赛作品、社团成果,挑一件最能讲的事,站在外部评委和全体成员面前讲清楚。',
-      where: '中南大学 · 开放场地 (待定)',
-    },
-    {
-      key: 'visit-bytedance',
-      status: 'past',
-      type: 'visit',
-      typeLabel: '行业参访',
-      date: '2025 · 04',
-      title: '走进字节跳动 · 长沙研发中心',
-      subtitle: '8 个名额,2 个校友主讲',
-      body: '去年春天的行业参访,字节学长带我们看了产品落地流程、AI 工程化内部工具栈。',
-      where: '长沙 · 字节跳动研发中心',
-    },
-    {
-      key: 'mini-camp-spring',
-      status: 'past',
-      type: 'camp',
-      typeLabel: 'Mini Camp',
-      date: '2025 · 03',
-      title: '春季 Mini Camp · 做一件被需要的事',
-      subtitle: '4 路 12 人,48 小时',
-      body: '春季 Mini Camp 命题:做一件被需要的事。',
-      where: '后湖 · 独立咖啡馆',
     },
   ],
 };
