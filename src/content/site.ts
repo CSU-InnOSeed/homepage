@@ -395,9 +395,10 @@ export const FOOTER: FooterData = {
  *
  * type 字段使用与 PILLARS 一致的色板:
  *   camp   → research (深绿)
- *   open   → cyan     (青)
  *
- * 现状(2026 年 7 月):2025 秋季招新 + Mini Camp 已结束,统一标 'past'。
+ * 现状(2026 年 7 月):2025 招新季只办了一个 Mini Camp(9 月 · 一个白天),
+ * 没有宣讲,没有面试开放日,统一标 'past'。
+ *
  * 2026 招新形式还在定,等定了再加新条目,不要凭印象提前占位。
  *
  * 添加新活动:在这里加一条即可,渲染端 (Events.tsx) 会自动渲染。
@@ -406,29 +407,18 @@ export const FOOTER: FooterData = {
 export const EVENTS: EventsData = {
   eyebrow: '07 — What\'s On',
   headline: { lead: '上一届', accent: 'InnOSeed' },
-  intro: '上一届招新季(2025 秋季)已结束。2026 招新正在筹备中,形式待定 —— 关注我们获取最新信息。',
+  intro: '上一届招新季(2025 秋季)只办了一个 Mini Camp。2026 招新正在筹备中,形式待定 —— 关注我们获取最新信息。',
   items: [
     {
-      key: 'recruit-2025-info',
-      status: 'past',
-      type: 'open',
-      typeLabel: '招新开放日',
-      date: '2025 · 09 · 中旬',
-      title: '2025 秋季招新 · 宣讲 + 茶歇',
-      subtitle: '30 分钟讲清楚 InnOSeed 在做什么 + 自由问答 + 现场投递简历通道',
-      body: '面向全校大一到大三同学。当天会讲清楚招新流程、四个方向分别做什么、当年面试官阵容。流程上无需准备,只需带着好奇心来。',
-      where: '中南大学校本部 · 计算机学院楼 B 楼 + 腾讯会议同步',
-    },
-    {
-      key: 'mini-camp-fall',
+      key: 'mini-camp-fall-2025',
       status: 'past',
       type: 'camp',
       typeLabel: 'Mini Camp',
-      date: '2025 · 10 · 上旬',
-      title: '秋季 Mini Camp · 48 小时从想法到 Demo',
-      subtitle: '新生和老成员混编 4 路(产品 / 技术 / 设计 / 创业),48 小时做一件事',
-      body: 'Mini Camp 是 InnOSeed 的传统 —— 把所有被录取的人拉到同一个空间,2 天 2 夜只做一件事。每届只有 4 路,每路 2-3 人组队,产出原型 + 现场 Demo + 复盘。',
-      where: '岳麓山脚 · 封闭场地',
+      date: '2025 · 09',
+      title: '2025 秋季 Mini Camp',
+      subtitle: '一个白天 · 9 月举行',
+      body: 'InnOSeed 招新不做宣讲 —— 候选人直接聚到一起,一个白天跑完 Mini Camp。每届固定 8-9 人,4 路分头(产品 / 技术 / 设计 / 创业),每路 2-3 人组队,产出原型 + 现场 Demo + 当场反馈。',
+      where: '具体地点见当时通知',
     },
   ],
 };
