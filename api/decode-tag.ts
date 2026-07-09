@@ -418,7 +418,9 @@ async function composeBitableFields(
   token: string | null
 ): Promise<ComposedFields> {
   const fields: Record<string, any> = {};
-  const multiSelectOf = (names: string[]) => names.map((text) => ({ text, type: 'text' as const }));
+  // 飞书 MultiSelect 字段的写入格式是字符串数组 (["产品创意", ...]),
+  // 不是 [{text, type}] 对象数组 — 后者会在 write API 抛 MultiSelectFieldConvFail.
+  const multiSelectOf = (names: string[]) => names.slice();
   fields[cfg.fieldLane] = multiSelectOf(decoded.tagNames.lane);
   fields[cfg.fieldTech] = multiSelectOf(decoded.tagNames.tech);
   fields[cfg.fieldPlay] = multiSelectOf(decoded.tagNames.play);
