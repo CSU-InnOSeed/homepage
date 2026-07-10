@@ -186,7 +186,10 @@ section { position: relative; }
 /* ===================== HERO ===================== */
 .hero {
   position: relative;
-  min-height: 100vh;
+  /* Cap so a 1080p / 13" MacBook screen actually fits the whole hero. */
+  height: 100vh;
+  max-height: 880px;
+  min-height: 640px;
   display: grid; align-items: center;
   overflow: hidden;
   background: var(--bg-soft);
@@ -213,7 +216,7 @@ section { position: relative; }
 }
 .hero-inner {
   width: 100%;
-  padding: 140px 0 100px;
+  padding: 88px 0 64px;
   position: relative; z-index: 2;
 }
 .hero-tag {
@@ -223,7 +226,7 @@ section { position: relative; }
   text-transform: uppercase;
   color: var(--c-research);
   display: flex; align-items: center; gap: 14px;
-  margin-bottom: 36px;
+  margin-bottom: 20px;
   background: rgba(255,255,255,0.7);
   padding: 8px 16px;
   border-radius: 999px;
@@ -241,16 +244,20 @@ section { position: relative; }
 .hero h1 {
   font-family: var(--ff-zh);
   font-weight: 700;
-  font-size: clamp(34px, 4.5vw, 56px);
-  line-height: 1.18;
-  letter-spacing: -0.01em;
-  margin-bottom: 24px;
-  max-width: 1100px;
+  /* Smaller than the headline — keep it as a lead sentence, not a poster. */
+  font-size: clamp(20px, 2.4vw, 32px);
+  line-height: 1.35;
+  letter-spacing: -0.005em;
+  margin-bottom: 14px;
+  max-width: 980px;
   color: var(--ink-dark);
+  /* Let Latin words like "different thinkers" sit naturally inside the CN line. */
+  word-break: keep-all;
+  overflow-wrap: break-word;
 }
 .hero h1 em {
-  font-family: var(--ff-display);
-  font-style: italic;
+  font-family: var(--ff-sans);
+  font-style: normal;
   font-weight: 700;
   color: var(--brand);
   padding: 0 0.15em;
@@ -267,13 +274,15 @@ section { position: relative; }
 }
 
 .hero-headline {
-  font-family: var(--ff-display);
+  /* Sans for Chinese so the giant block reads modern, not editorial-serif. */
+  font-family: var(--ff-sans);
   font-weight: 800;
-  font-size: var(--fs-display);
-  line-height: 0.92;
-  letter-spacing: -0.04em;
+  /* Cap so the three rows fit inside 100vh. Old --fs-display went to 220px. */
+  font-size: clamp(56px, 8vw, 128px);
+  line-height: 1.0;
+  letter-spacing: -0.035em;
   color: var(--ink-dark);
-  margin: 18px 0 36px;
+  margin: 10px 0 22px;
   max-width: 1300px;
 }
 .hero-headline .row { display: block; overflow: hidden; }
@@ -287,18 +296,22 @@ section { position: relative; }
 .hero-headline .row:nth-child(3) span { animation-delay: 0.7s; }
 @keyframes hero-rise { to { transform: translateY(0); } }
 .hero-headline .accent {
-  font-style: italic;
+  /* Brand-name emphasis via weight + color, not italic serif. */
+  font-family: var(--ff-sans);
+  font-style: normal;
+  font-weight: 800;
   color: var(--brand);
+  letter-spacing: -0.04em;
 }
 
 .hero-sub {
   font-family: var(--ff-zh);
-  font-size: clamp(15px, 1.4vw, 19px);
-  line-height: 1.65;
+  font-size: clamp(14px, 1.2vw, 17px);
+  line-height: 1.6;
   color: var(--ink-mid);
   max-width: 640px;
   font-weight: 400;
-  margin-bottom: 48px;
+  margin-bottom: 28px;
 }
 
 .hero-cta { display: flex; gap: 16px; flex-wrap: wrap; align-items: center; }
@@ -336,7 +349,7 @@ section { position: relative; }
 }
 .btn-ghost:hover { background: var(--ink-dark); color: #fff; }
 
-.arrow { font-family: var(--ff-display); font-style: italic; font-size: 16px; }
+.arrow { font-family: var(--ff-sans); font-style: normal; font-size: 16px; font-weight: 600; }
 
 .hero-meta {
   position: absolute; bottom: 40px; left: 0; right: 0; z-index: 2;
@@ -350,10 +363,11 @@ section { position: relative; }
   color: var(--ink-mid);
 }
 .hero-counter {
-  font-family: var(--ff-display);
-  font-style: italic;
-  font-size: 14px;
-  letter-spacing: 0.05em;
+  font-family: var(--ff-sans);
+  font-style: normal;
+  font-size: 13px;
+  letter-spacing: 0.1em;
+  font-weight: 600;
   color: var(--ink-dark);
   text-transform: none;
 }
@@ -372,7 +386,7 @@ section { position: relative; }
   50% { transform: scaleY(0.4); transform-origin: top; }
 }
 @media (max-width: 720px) {
-  .hero-inner { padding: 120px 0 80px; }
+  .hero-inner { padding: 88px 0 64px; }
   .hero-meta { font-size: 10px; bottom: 24px; }
 }
 
