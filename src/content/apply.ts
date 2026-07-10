@@ -311,7 +311,7 @@ export function decodeTagCode(code: string): number[][] | null {
  * This string is what the candidate copies from the Done step into the
  * 飞书 Bitable's "个性标签代码" field. /api/decode-tag then splits it
  * back into the two halves and writes structured values into the
- * Bitable's 4 multi-select fields + the "TA" Person field.
+ * Bitable's 4 multi-select fields + the "interviewer" Person field.
  */
 export function encodeApplyCode(
   selectedByCategory: number[][],

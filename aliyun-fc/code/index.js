@@ -141,7 +141,7 @@ function readConfig() {
       fieldTech: get('BITABLE_FIELD_TECH') || '技术特长',
       fieldPlay: get('BITABLE_FIELD_PLAY') || '兴趣爱好',
       fieldFuture: get('BITABLE_FIELD_FUTURE') || '未来道路',
-      fieldTa: get('BITABLE_FIELD_TA') || 'TA',
+      fieldTa: get('BITABLE_FIELD_TA') || 'interviewer',
       decodeToken: get('DECODE_TAG_TOKEN'),
     },
   };

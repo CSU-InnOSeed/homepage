@@ -32,7 +32,7 @@ services:
           BITABLE_FIELD_TECH: "技术特长"
           BITABLE_FIELD_PLAY: "兴趣爱好"
           BITABLE_FIELD_FUTURE: "未来道路"
-          BITABLE_FIELD_TA: "TA"
+          BITABLE_FIELD_TA: "interviewer"
       triggers:
         - name: httpTrigger
           type: http
