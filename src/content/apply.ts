@@ -174,7 +174,7 @@ export const INTERVIEWERS: Interviewer[] = [
     ],
   },
   {
-    code: 'Leslie',
+    code: 'MciG',
     avatar: '',
     intros: ['我可以和你聊聊后端、System、开源、西洋棋与魔术', '我的 MBTI 为 : INTP'],
     tags: [

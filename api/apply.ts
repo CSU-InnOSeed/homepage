@@ -103,7 +103,7 @@ export const INTERVIEWERS: Interviewer[] = [
     tags: [{ name: '前端' }, { name: '逆向' }, { name: '番剧' }, { name: '轻小说' }, { name: '就业' }] },
   { code: 'DKK', avatar: '', intros: ['我可以和你聊聊前端、交互设计、项目、就业与 MOBA 游戏', '我的 MBTI 为 : INFJ'],
     tags: [{ name: '前端' }, { name: '交互设计' }, { name: 'ESports' }, { name: '麻将' }, { name: '就业' }, { name: '睡觉' }] },
-  { code: 'Leslie', avatar: '', intros: ['我可以和你聊聊后端、System、开源、西洋棋与魔术', '我的 MBTI 为 : INTP'],
+  { code: 'MciG', avatar: '', intros: ['我可以和你聊聊后端、System、开源、西洋棋与魔术', '我的 MBTI 为 : INTP'],
     tags: [{ name: '开源' }, { name: 'System' }, { name: '西洋棋' }, { name: '魔术' }, { name: '后端' }] },
   { code: '007', avatar: '', intros: ['我可以和你聊聊深度学习、大模型、保研、科研与麻将', '我的 MBTI 为 : ISTJ'],
     tags: [{ name: '深度学习' }, { name: '大模型' }, { name: '麻将' }, { name: '保研' }] },
