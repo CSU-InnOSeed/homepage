@@ -247,7 +247,7 @@ export function encodeTagCode(selectedByCategory: number[][]): string {
  * Inverse of `encodeTagCode`. Returns null on malformed input.
  *
  * Used by:
- *   - /api/decode-tag (Vercel serverless) when a 飞书 Bitable row
+ *   - the decode-tag webhook (Aliyun FC) when a 飞书 Bitable row
  *     arrives with the candidate's code — we recover the structured
  *     selection so we can write it back into the Bitable's multi-select
  *     fields ("Mini Camp 选路" / "技术特长" / "兴趣爱好" / "未来道路").

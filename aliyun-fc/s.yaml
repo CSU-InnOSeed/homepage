@@ -2,11 +2,6 @@ edition: 1.0.0
 name: innoseed-decode-tag
 access: aliyun-mcig
 
-# 部署前需要先 `s config add` 配置阿里云 AccessKey
-# 然后用以下命令设置 secrets (从 .env 加载或直接命令行):
-#   export FEISHU_APP_ID=...  (6 个 env 变量)
-#   s deploy
-
 services:
   decode-tag:
     component: fc
@@ -15,14 +10,15 @@ services:
       service:
         name: innoseed-decode-tag
         internetAccess: true
-        description: Feishu Bitable tag decode webhook (replaces Vercel + Cloudflare)
+        description: Feishu Bitable tag decode webhook (FC custom runtime + Express)
       function:
         name: decode-tag
-        runtime: nodejs18
-        handler: handler.handler
-        memorySize: 128
+        runtime: custom
+        handler: index.handler
+        memorySize: 256
         timeout: 15
         codeUri: ./code
+        instanceConcurrency: 10
         environmentVariables:
           FEISHU_APP_ID: ${env.FEISHU_APP_ID}
           FEISHU_APP_SECRET: ${env.FEISHU_APP_SECRET}
@@ -45,5 +41,3 @@ services:
             methods:
               - GET
               - POST
-            # 不设 customPaths, 用默认 /{serviceName}/{functionName}
-            # 即: https://{accountId}.cn-hangzhou.fc.aliyuncs.com/innoseed-decode-tag/decode-tag

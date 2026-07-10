@@ -11,6 +11,10 @@ dist/
 # Vercel project metadata (per .vercel/README.txt)
 .vercel/
 
+# Serverless Devs (Aliyun FC) local state / cache
+aliyun-fc/.s/
+aliyun-fc/code/node_modules/
+
 # OS
 .DS_Store
 Thumbs.db
