@@ -1,0 +1,85 @@
+name: 网站修改
+description: 对 InnOSeed 官网 (homepage) 的内容、视觉、代码、数据修改请求
+title: "[网站] "
+labels: ["website"]
+body:
+  - type: dropdown
+    id: change_type
+    attributes:
+      label: 变更类型
+      options:
+        - 文案 (copy)
+        - 视觉 (style / animation)
+        - 代码 (component / logic)
+        - 数据 (招募方向 / 标签 / 面试官)
+        - 部署 / 基础设施
+        - 其他
+    validations:
+      required: true
+
+  - type: dropdown
+    id: surface
+    attributes:
+      label: 影响范围
+      options:
+        - 所有端
+        - 桌面端
+        - 移动端
+        - 仅后端 / API
+    validations:
+      required: true
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: 紧急程度
+      options:
+        - 紧急 (招新期间线上挂掉)
+        - 本周内
+        - 招新结束前
+        - 排期再说
+    validations:
+      required: true
+
+  - type: textarea
+    id: current_state
+    attributes:
+      label: 现状
+      description: 当前是什么样，有什么问题
+      placeholder: |
+        例: 招新页的「项目方向」卡片在移动端排版错乱，
+        第一行只显示 1.5 个标签就换行了。
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected_state
+    attributes:
+      label: 期望
+      description: 改完之后应该是什么样
+      placeholder: |
+        例: 移动端下每行至少显示 2 个完整标签；视觉规范沿用 manifesto
+        卡片的字号层级。
+    validations:
+      required: true
+
+  - type: input
+    id: references
+    attributes:
+      label: 参考 / 截图链接
+      description: Figma、竞品、之前的版本等
+      placeholder: "可多个链接"
+    validations:
+      required: false
+
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: 验收标准
+      description: 怎么算改完了
+      placeholder: |
+        - [ ] 移动端 (375 / 768) 视觉正常
+        - [ ] Vercel 预览链接在贴出来
+        - [ ] 桌面端没回归
+    validations:
+      required: true

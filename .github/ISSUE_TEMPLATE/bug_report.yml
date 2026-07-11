@@ -1,0 +1,77 @@
+name: Bug 报告
+description: 网站挂了 / 表现不对 / 控制台报错
+title: "[Bug] "
+labels: ["bug"]
+body:
+  - type: textarea
+    id: what_happened
+    attributes:
+      label: 发生了什么
+      description: 现象描述，越具体越好
+      placeholder: |
+        例: 打开 https://innoseed.csu.edu.cn/apply 提交表单后，
+        一直转圈，30 秒后跳到 500 错误页。
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: 期望行为
+      description: 应该是什么样
+    validations:
+      required: true
+
+  - type: textarea
+    id: repro_steps
+    attributes:
+      label: 复现步骤
+      description: 一步步列出
+      placeholder: |
+        1. 打开 /apply
+        2. 填写表单
+        3. 点击提交
+    validations:
+      required: true
+
+  - type: input
+    id: url
+    attributes:
+      label: 出问题的 URL
+    validations:
+      required: false
+
+  - type: dropdown
+    id: browser
+    attributes:
+      label: 浏览器
+      options:
+        - Chrome
+        - Safari
+        - Firefox
+        - Edge
+        - 微信内置
+        - 其他
+    validations:
+      required: false
+
+  - type: dropdown
+    id: device
+    attributes:
+      label: 设备
+      options:
+        - Desktop
+        - Mobile (iOS)
+        - Mobile (Android)
+        - Tablet
+        - Other
+    validations:
+      required: false
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: 控制台 / 网络日志 (可选)
+      description: F12 → Console / Network，把相关报错截图或文字贴上来
+    validations:
+      required: false

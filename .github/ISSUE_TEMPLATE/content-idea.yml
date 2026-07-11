@@ -1,0 +1,47 @@
+name: 文案 / 内容想法
+description: 还没想好怎么落地的内容灵感 — 文案、金句、版式灵感
+title: "[灵感] "
+labels: ["content", "P2"]
+body:
+  - type: dropdown
+    id: category
+    attributes:
+      label: 类别
+      options:
+        - 招新推文
+        - 官网 copy
+        - 公众号 / 知乎长文
+        - 演讲 / 路演稿
+        - 标语 / Slogan
+        - 其他
+    validations:
+      required: true
+
+  - type: textarea
+    id: idea
+    attributes:
+      label: 想法描述
+      description: 把灵感写出来，越具体越好
+      placeholder: |
+        例: 招新推的开头不要用「InnOSeed 是 XX 实验室」这种自我介绍
+        式开头，试试用一个真实项目切入，比如「去年我们做了一个 XX」
+        — 让读者先看到我们做了什么，再倒推回我们是谁。
+    validations:
+      required: true
+
+  - type: input
+    id: references
+    attributes:
+      label: 灵感来源 / 参考
+      description: 看到的别家文案、推文、书等
+    validations:
+      required: false
+
+  - type: textarea
+    id: next_step
+    attributes:
+      label: 建议的下一步
+      description: 这个想法可以怎么往下推
+      placeholder: "例: 写一个 500 字 draft，下次组会讨论"
+    validations:
+      required: false
