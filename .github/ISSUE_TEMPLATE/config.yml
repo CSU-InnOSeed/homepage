@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: 💬 InnOSeed Lab 讨论区
+    url: https://github.com/CSU-InnOSeed/homepage/discussions
+    about: 想法、提问、不需要立刻执行的讨论放在这里
+  - name: 📋 招新看板 (Project board)
+    url: https://github.com/orgs/CSU-InnOSeed/projects
+    about: 查看所有招新流程 + 网站维护任务的总览

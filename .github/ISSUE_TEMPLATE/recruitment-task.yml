@@ -1,0 +1,82 @@
+name: 招新待办
+description: 招新流程里的具体任务 — 宣传、文案、面试跟进、申请审核
+title: "[招新] "
+labels: ["招新"]
+assignees: []
+body:
+  - type: dropdown
+    id: task_type
+    attributes:
+      label: 任务类型
+      description: 这个任务属于哪一类
+      options:
+        - 招新宣传（海报 / 朋友圈 / 群推）
+        - 文案撰写（公众号 / 知乎 / 朋友圈）
+        - 申请审核
+        - 面试跟进
+        - 录取 / 通知
+        - 招新 FAQ
+        - 其他
+    validations:
+      required: true
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: 优先级
+      options:
+        - P0 (本周必须完成)
+        - P1 (招新结束前)
+        - P2 (有时间再说)
+    validations:
+      required: true
+
+  - type: input
+    id: deadline
+    attributes:
+      label: 截止日期
+      description: 格式 YYYY-MM-DD
+      placeholder: "2026-07-20"
+    validations:
+      required: true
+
+  - type: input
+    id: related_applicant
+    attributes:
+      label: 关联申请人
+      description: 如果是跟进具体某位申请人，填他的姓名 / 报名号 / 申请链接
+      placeholder: "如: 张三 / 报名号 #42 / 申请表链接"
+    validations:
+      required: false
+
+  - type: textarea
+    id: description
+    attributes:
+      label: 任务描述
+      description: 具体要做什么，越具体越好
+      placeholder: |
+        例: 给公众号写一篇 24 级招新推送，重点突出 InnOSeed 的
+        「项目制 + 跨方向」特色，对标一下隔壁 RoboMaster 队的招新推。
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: 验收标准
+      description: 怎么算完成了
+      placeholder: |
+        - [ ] 推文排版符合 Lab 视觉规范
+        - [ ] 包含报名链接
+        - [ ] 在微信群和朋友圈各发一次
+    validations:
+      required: true
+
+  - type: input
+    id: related_links
+    attributes:
+      label: 相关链接
+      description: 参考资料、原型、之前的推文等
+      placeholder: "可多个链接，换行分隔"
+    validations:
+      required: false
