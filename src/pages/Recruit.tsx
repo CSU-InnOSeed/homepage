@@ -40,7 +40,7 @@ export default function RecruitPage() {
           </p>
         </div>
       </header>
-      <Recruit />
+      <Recruit hideHero />
     </main>
   );
 }

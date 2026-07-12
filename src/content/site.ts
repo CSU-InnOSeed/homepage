@@ -182,6 +182,11 @@ export interface FooterData {
   bottomLinks: NavLink[];
 }
 
+// Site-wide constants used outside the section data objects (e.g. the 404
+// page) so they live in one place. Mirrors the values used in BRAND copy.
+export const BRAND = 'InnOSeed';
+export const CONTACT_EMAIL = 'contact@innoseed.club';
+
 export interface MetaData {
   title: string;
   description: string;
@@ -213,10 +218,12 @@ export const NAV_LINKS: NavLink[] = [
 export const HERO: HeroData = {
   tag: 'CSU InnOSeed Lab · est. 2019',
   lead: '我们更像俱乐部，属于 different thinkers 的俱乐部。',
-  // 3 fixed rows; row 2 wraps its first word in <em> for the italic accent.
+  // 2 fixed rows; the accent em sits on "在 InnOSeed" so the brand
+  // name is the visual anchor of the headline. Row 2 is plain text.
+  // (Originally 3 rows with "在" alone on row 1 — looked like a typo;
+  //  the v3 design also places the brand word in the colored em.)
   headlineRows: [
-    { text: '在' },
-    { lead: 'InnOSeed', trail: '，' },
+    { lead: '在 InnOSeed', trail: '，' },
     { text: '你想做的。' },
   ],
   sub:

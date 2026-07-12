@@ -37,7 +37,7 @@ export default function EventsPage() {
           <p className="page-header-desc">{EVENTS.intro}</p>
         </div>
       </header>
-      <Events />
+      <Events showHead={false} />
     </main>
   );
 }

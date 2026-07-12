@@ -3,6 +3,17 @@ import useReveal from '../hooks/useReveal';
 import { trackEvent } from '../lib/observability';
 import { EVENTS, type EventItem } from '../content/site';
 
+interface EventsProps {
+  /**
+   * On the standalone /events page the page-header (in pages/Events.tsx)
+   * already provides the eyebrow + headline + intro. Setting this to false
+   * drops the duplicate in-section head so the page only shows one of them.
+   * On the home page (where the section sits between #members and #recruit)
+   * keep the default — there's no page-header above it.
+   */
+  showHead?: boolean;
+}
+
 /**
  * Events section — 时间倒序展示 InnOSeed 的活动 (upcoming 在前,past 在后)
  *
@@ -14,7 +25,7 @@ import { EVENTS, type EventItem } from '../content/site';
  * Upcoming 卡片展示日期 + 地点 + (open) 报名按钮;
  * Past 卡片灰底处理,不展示 CTA。
  */
-export default function Events() {
+export default function Events({ showHead = true }: EventsProps = {}) {
   const headRef = useRef<HTMLDivElement | null>(null);
   useReveal(headRef);
 
@@ -24,13 +35,15 @@ export default function Events() {
   return (
     <section className="events" id="events">
       <div className="container">
-        <div ref={headRef} className="events-head reveal">
-          <span className="eyebrow">{EVENTS.eyebrow}</span>
-          <h2>
-            {EVENTS.headline.lead} <em>{EVENTS.headline.accent}</em>
-          </h2>
-          <p className="events-intro">{EVENTS.intro}</p>
-        </div>
+        {showHead && (
+          <div ref={headRef} className="events-head reveal">
+            <span className="eyebrow">{EVENTS.eyebrow}</span>
+            <h2>
+              {EVENTS.headline.lead} <em>{EVENTS.headline.accent}</em>
+            </h2>
+            <p className="events-intro">{EVENTS.intro}</p>
+          </div>
+        )}
 
         {upcoming.length > 0 && (
           <div className="events-grid">

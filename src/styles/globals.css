@@ -211,7 +211,12 @@ section { position: relative; }
   position: absolute; inset: 0;
   background:
     radial-gradient(ellipse at 50% 30%, rgba(255,255,255,0.05), transparent 60%),
-    linear-gradient(180deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.35) 70%, rgba(255,255,255,0.85) 100%);
+    /* Pushed bottom stops higher (0.55 → 0.92, 0.85 → 0.95) so the
+       h1 lead sentence — "我们更像俱乐部，属于 different thinkers 的
+       俱乐部。" — sits on a near-solid card, not on a half-transparent
+       watercolour arch. Previous 0.85 at 100% left the banner busy
+       enough that #1F2937 ink read as muted grey. */
+    linear-gradient(180deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.55) 55%, rgba(255,255,255,0.95) 100%);
   z-index: 1;
 }
 .hero-inner {
@@ -692,6 +697,22 @@ section { position: relative; }
   font-weight: 700;
   letter-spacing: 0;
 }
+.num-value .num-suffix {
+  font-family: var(--ff-display);
+  /* 0.6em keeps the "+" reading as a punctuation accent, not a digit.
+     Was previously rendered at full 144px next to "140" with -0.04em
+     tracking, which made the glyph fuse with the "0" and look like
+     "14" + "0+". */
+  font-size: 0.6em;
+  font-weight: 800;
+  color: var(--num-color, var(--brand));
+  margin-left: 0.05em;
+  align-self: flex-start;
+  /* Sit on the cap-line, not the baseline — gives the "+" room above
+     the digit and prevents the optical collision. */
+  margin-top: 0.12em;
+  letter-spacing: 0;
+}
 .num-meta {
   margin-top: 24px;
   font-size: 14px;
@@ -946,7 +967,12 @@ section { position: relative; }
 .recruit-bg::after {
   content: '';
   position: absolute; inset: 0;
-  background: linear-gradient(180deg, rgba(237,245,236,0.6) 0%, rgba(237,245,236,0.85) 100%);
+  /* Was 0.6 → 0.85 mint. The mint overlay let the desaturated group
+     photo bleed through, which on mobile (375px) made the headline,
+     "06 — JOIN US" eyebrow, and the "立即申请" CTA look washed out.
+     0.78 → 0.94 keeps the section's mint identity while letting the
+     text sit on a near-solid card. */
+  background: linear-gradient(180deg, rgba(237,245,236,0.78) 0%, rgba(237,245,236,0.94) 100%);
 }
 .recruit-inner { text-align: center; position: relative; }
 .recruit h2 {
@@ -1282,6 +1308,10 @@ main .page-header-desc {
   font-family: var(--ff-display);
   font-style: italic;
   color: var(--brand);
+  /* Keep "是怎样的?" together — at var(--fs-h1) (clamp 36..96px) the
+     em would otherwise break mid-phrase, leaving "的?" orphaned on
+     a second line. nowrap forces the whole em to wrap as one unit. */
+  white-space: nowrap;
 }
 .rt-grid {
   list-style: none;
@@ -1317,9 +1347,13 @@ main .page-header-desc {
 .rt-num {
   font-family: var(--ff-display);
   font-weight: 800;
-  font-size: clamp(48px, 5vw, 72px);
+  /* Capped at 60px (down from 72px) — Fraunces 800 "04" at 72px with
+     -0.04em letter-spacing overflowed the rightmost .rt-step's right
+     padding on a 1440 viewport, slicing the "4" character. 60px fits
+     cleanly inside the 1fr column at all desktop widths ≥1280. */
+  font-size: clamp(48px, 4.2vw, 60px);
   line-height: 0.9;
-  letter-spacing: -0.04em;
+  letter-spacing: -0.02em;
   color: var(--rt-color, var(--brand));
   margin-bottom: 24px;
 }
@@ -1366,6 +1400,8 @@ main .page-header-desc {
   font-family: var(--ff-display);
   font-style: italic;
   color: var(--brand);
+  /* Keep "一次说清楚。" together — same reason as .rt-head h2 em. */
+  white-space: nowrap;
 }
 .rf-list {
   list-style: none;
@@ -1423,6 +1459,69 @@ main .page-header-desc {
   color: var(--ink-mid);
   max-width: 760px;
 }
+
+/* ===================== 404 NOT FOUND =====================
+   Matches the static 404.html in /public so the two surfaces
+   (server-rendered fallback vs client-side route miss) feel
+   like one product. */
+.not-found {
+  min-height: calc(100vh - 200px);
+  background: var(--bg-soft);
+  display: grid;
+  place-items: center;
+  padding: clamp(80px, 14vh, 160px) 24px clamp(48px, 8vh, 80px);
+}
+.not-found-inner {
+  max-width: 560px;
+  width: 100%;
+  text-align: center;
+}
+.not-found-code {
+  font-family: var(--ff-display);
+  font-style: italic;
+  font-weight: 800;
+  font-size: clamp(120px, 22vw, 220px);
+  line-height: 0.9;
+  color: var(--ink-dark);
+  letter-spacing: -0.04em;
+  margin-bottom: 24px;
+}
+.not-found-inner h1 {
+  font-family: var(--ff-zh-serif);
+  font-weight: 900;
+  font-size: clamp(28px, 4vw, 40px);
+  line-height: 1.2;
+  margin-bottom: 16px;
+  letter-spacing: -0.01em;
+  color: var(--ink-dark);
+}
+.not-found-inner h1 em {
+  font-family: var(--ff-display);
+  font-style: italic;
+  color: var(--brand);
+}
+.not-found-inner p {
+  font-family: var(--ff-zh);
+  font-size: clamp(15px, 1.2vw, 17px);
+  line-height: 1.65;
+  color: var(--ink-mid);
+  margin-bottom: 40px;
+  max-width: 440px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.not-found-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+}
+.not-found-foot {
+  margin-top: 80px;
+  font-size: 13px;
+  color: var(--ink-muted);
+}
+.not-found-foot a { color: var(--brand); text-decoration: none; }
 
 /* ===================== FOOTER ===================== */
 .footer {

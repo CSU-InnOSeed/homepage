@@ -5,7 +5,10 @@
   "framework": null,
   "trailingSlash": false,
   "rewrites": [
-    { "source": "/(.*)", "destination": "/index.html" }
+    { "source": "/", "destination": "/index.html" },
+    { "source": "/apply", "destination": "/index.html" },
+    { "source": "/events", "destination": "/index.html" },
+    { "source": "/recruit", "destination": "/index.html" }
   ],
   "headers": [
     {

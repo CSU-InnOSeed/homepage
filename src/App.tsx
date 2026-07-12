@@ -14,10 +14,11 @@ import Footer from './components/Footer';
 import Apply from './pages/Apply';
 import EventsPage from './pages/Events';
 import RecruitPage from './pages/Recruit';
+import NotFound from './pages/NotFound';
 
 /**
  * App — composes the landing page sections in order, with an extra
- * `/apply` route for the recruitment flow.
+ * `/apply` route for the recruitment flow and a 404 catch-all.
  *
  * Sections on `/`:
  *   Nav → Hero → Marquee → Manifesto → Pillars
@@ -25,6 +26,17 @@ import RecruitPage from './pages/Recruit';
  *
  * Sections on `/apply`:
  *   Apply (4-step flow: Guide → PickInterviewer → Application → Done)
+ *
+ * Sections on `/events`, `/recruit`:
+ *   Page header (breadcrumb + title + intro) followed by the matching
+ *   section component. The in-section hero/head is suppressed via prop
+ *   so the page only shows the title once.
+ *
+ * 404:
+ *   `path="*"` renders the NotFound page. At the Vercel level, unknown
+ *   top-level paths serve dist/404.html (404 status) before the SPA
+ *   bundle even loads; the React NotFound catches the same case for
+ *   client-side navigation and unknown nested paths.
  *
  * Accessibility:
  *   - <a className="skip-link" href="#main"> is the first focusable element;
@@ -76,7 +88,7 @@ export default function App() {
           }
         />
         <Route
-          path="*"
+          path="/"
           element={
             <>
               <Nav />
@@ -94,6 +106,10 @@ export default function App() {
               <Footer />
             </>
           }
+        />
+        <Route
+          path="*"
+          element={<NotFound />}
         />
       </Routes>
     </BrowserRouter>

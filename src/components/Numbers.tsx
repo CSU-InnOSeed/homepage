@@ -43,6 +43,10 @@ function NumCard({ stat, idx }: NumCardProps) {
   const cardRef = useRef<HTMLDivElement | null>(null);
   const counterRef = useRef<HTMLSpanElement | null>(null);
   useReveal(cardRef);
+  // Pass suffix to useCountUp so the final value still reads e.g. "140+",
+  // but render it as a separate <span> for typography control — at
+  // var(--fs-display) (clamp 56..144px) the "+" glued onto "0" with
+  // -0.04em letter-spacing read like "14" + "0+".
   useCountUp(counterRef, { target: stat.target, suffix: stat.suffix });
   return (
     <div ref={cardRef} className={`num-card ${stat.key} reveal`} data-delay={String(idx)}>
@@ -50,8 +54,8 @@ function NumCard({ stat, idx }: NumCardProps) {
       <div className="num-value">
         <span ref={counterRef} className="num-counter" data-target={stat.target}>
           {stat.target}
-          {stat.suffix}
         </span>
+        {stat.suffix && <span className="num-suffix">{stat.suffix}</span>}
         {stat.unit && <span className="unit">{stat.unit}</span>}
       </div>
       <p className="num-meta">

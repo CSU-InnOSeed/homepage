@@ -3,6 +3,18 @@ import useReveal from '../hooks/useReveal';
 import { trackEvent } from '../lib/observability';
 import { RECRUIT, RECRUIT_EXTRAS } from '../content/site';
 
+interface RecruitProps {
+  /**
+   * On the standalone /recruit page the page-header (in pages/Recruit.tsx)
+   * already provides the title + intro. Setting this to true drops the
+   * in-section hero (group-photo background + duplicate "加入 InnOSeed"
+   * heading) so the page only shows the timeline + FAQs below the
+   * page-header. On the home page (where the section is the last thing
+   * before the footer) keep the default — the section hero IS the CTA.
+   */
+  hideHero?: boolean;
+}
+
 /**
  * Recruit — 招新 CTA + 时间线 + FAQ
  *
@@ -11,10 +23,10 @@ import { RECRUIT, RECRUIT_EXTRAS } from '../content/site';
  *   2. 中段:招新时间线 (4 步,4 色 pillar accent)
  *   3. 底段:FAQ accordion (展开/收起)
  */
-export default function Recruit() {
+export default function Recruit({ hideHero = false }: RecruitProps = {}) {
   return (
     <>
-      <RecruitHero />
+      {!hideHero && <RecruitHero />}
       <RecruitTimeline />
       <RecruitFaqs />
     </>
