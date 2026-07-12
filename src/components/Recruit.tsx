@@ -121,6 +121,12 @@ function TimelineStep({ step }: TimelineStepProps) {
 /** FAQ accordion — 第一条默认展开 */
 function RecruitFaqs() {
   const [openIdx, setOpenIdx] = useState<number>(0);
+  // Track which items have entered the viewport as React state so the `.in`
+  // class is part of the JSX className. Mixing classList.add with a className
+  // prop that changes (rf-open toggles here) makes React overwrite the whole
+  // `class` attribute and the manually-added `.in` is silently lost — the
+  // open/closed items then disappear until the user scrolls.
+  const [seen, setSeen] = useState<ReadonlySet<number>>(() => new Set());
   const headRef = useRef<HTMLDivElement | null>(null);
   const listRef = useRef<HTMLUListElement | null>(null);
   useReveal(headRef);
@@ -130,19 +136,27 @@ function RecruitFaqs() {
   useEffect(() => {
     const root = listRef.current;
     if (!root) return undefined;
-    const items = root.querySelectorAll<HTMLElement>('.rf-item.reveal');
+    const items = Array.from(root.querySelectorAll<HTMLElement>('.rf-item.reveal'));
     if (items.length === 0) return undefined;
     if (typeof IntersectionObserver === 'undefined') {
-      items.forEach((el) => el.classList.add('in'));
+      setSeen(new Set(items.map((_, i) => i)));
       return undefined;
     }
     const io = new IntersectionObserver(
       (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('in');
+        setSeen((prev) => {
+          let changed = false;
+          const next = new Set(prev);
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            const idx = items.indexOf(entry.target as HTMLElement);
+            if (idx !== -1 && !next.has(idx)) {
+              next.add(idx);
+              changed = true;
+            }
             io.unobserve(entry.target);
-          }
+          });
+          return changed ? next : prev;
         });
       },
       { threshold: 0.15, rootMargin: '0px 0px -60px 0px' }
@@ -163,10 +177,11 @@ function RecruitFaqs() {
         <ul ref={listRef} className="rf-list">
           {RECRUIT_EXTRAS.faqs.map((faq, i) => {
             const open = openIdx === i;
+            const isIn = seen.has(i);
             return (
               <li
                 key={faq.q}
-                className={`rf-item reveal${open ? ' rf-open' : ''}`}
+                className={`rf-item reveal${isIn ? ' in' : ''}${open ? ' rf-open' : ''}`}
                 data-delay={String(Math.min(i + 1, 6))}
               >
                 <button

@@ -51,4 +51,38 @@ test.describe('desktop @ 1440x900', () => {
     );
     expect(cols).toBe(4);
   });
+
+  test('FAQ accordion: opening/closing keeps every item visible (regression guard)', async ({ page }) => {
+    // Recruit page renders the FAQ accordion. Earlier the .in class was
+    // added to .rf-item via classList.add, but a state change (openIdx)
+    // re-evaluated the className prop and React overwrote the `class`
+    // attribute, silently stripping `.in` from the just-clicked item and
+    // collapsing it to opacity:0. This test pins the fix: every item must
+    // stay visible (opacity >= 0.95) after several open/close clicks.
+    await page.goto('/recruit');
+    const list = page.locator('.rf-list');
+    await list.scrollIntoViewIfNeeded();
+    // Wait for IntersectionObserver + 1.1s CSS transition to reveal all
+    // items — without this the test races the in-view animation.
+    await page.waitForFunction(() => {
+      const items = document.querySelectorAll('.rf-item');
+      return Array.from(items).every(
+        (el) => el.classList.contains('in') && parseFloat(getComputedStyle(el).opacity) > 0.95
+      );
+    }, null, { timeout: 5000 });
+
+    // Click each FAQ button in turn (item 0 is open by default; the rest
+    // start closed) and after every click assert all 5 items are still
+    // visible. The bug manifested as the open+closed items losing `.in`
+    // while the rest kept it — checking ALL items catches that.
+    for (let i = 0; i < 5; i++) {
+      await page.locator('.rf-item').nth(i).locator('.rf-q').click();
+      await page.waitForFunction((idx) => {
+        const items = document.querySelectorAll('.rf-item');
+        return Array.from(items).every(
+          (el, j) => el.classList.contains('in') && parseFloat(getComputedStyle(el).opacity) > 0.95
+        );
+      }, i, { timeout: 2000 });
+    }
+  });
 });
