@@ -10,7 +10,8 @@
 #
 # 用法:
 #   1) gh auth login                       # 第一次用需先登录
-#   2) gh auth refresh -s project         # 允许 gh 操作 Projects
+#   2) gh auth refresh -s project,read:project  # 允许 gh 操作 Projects
+#      (这一步会让浏览器跳出来, 确认授权; 没授权的话 gh issue edit --add-project 会报 'not found')
 #   3) ./scripts/setup-github-project.sh   # 跑本脚本
 #
 # 安全: 脚本是幂等的, 已存在的 label 会用 --force 更新颜色/描述。
