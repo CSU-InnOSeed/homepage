@@ -130,9 +130,9 @@ function TimelineStep({ step }: TimelineStepProps) {
   );
 }
 
-/** FAQ accordion — 第一条默认展开 */
+/** FAQ accordion — 全部默认折叠，用户主动点开再展开 */
 function RecruitFaqs() {
-  const [openIdx, setOpenIdx] = useState<number>(0);
+  const [openIdx, setOpenIdx] = useState<number>(-1);
   // Track which items have entered the viewport as React state so the `.in`
   // class is part of the JSX className. Mixing classList.add with a className
   // prop that changes (rf-open toggles here) makes React overwrite the whole

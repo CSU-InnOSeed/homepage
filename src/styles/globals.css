@@ -124,6 +124,16 @@ section { position: relative; }
   * { animation: none !important; transition: none !important; }
 }
 
+/* ===================== KEYBOARD FOCUS RINGS =====================
+   Global default for any focusable element. Specific elements below
+   (.rf-q, .nav-toggle, .btn, etc.) may override. Mouse users get
+   :hover underlines on links; the rings only show for keyboard nav. */
+:focus-visible {
+  outline: 3px solid var(--brand);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
 /* ===================== NAV ===================== */
 .nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 50;
@@ -1428,6 +1438,25 @@ main .page-header-desc {
   transition: color 0.2s ease;
 }
 .rf-q:hover { color: var(--brand); }
+/* .rf-q is `width: 100%` so the whole row is the click target (good for
+   touch). The default `:focus-visible` rule below draws a 3px brand-blue
+   outline that, at 100% width, looks like a frame around the entire
+   FAQ item — distracting, not "I'm focused on this question". Override
+   to a thin underline on the question text + a tighter ring on the
+   toggle so the focus indicator sits on the content, not the row. */
+.rf-q:focus-visible {
+  outline: none;
+}
+.rf-q:focus-visible > span:first-child {
+  text-decoration: underline;
+  text-decoration-color: var(--brand);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 6px;
+}
+.rf-q:focus-visible .rf-toggle {
+  outline: 2px solid var(--brand);
+  outline-offset: 2px;
+}
 .rf-toggle {
   font-family: var(--ff-display);
   font-style: italic;
@@ -1791,13 +1820,6 @@ main .page-header-desc {
   outline-offset: 2px;
 }
 
-/* Keyboard focus rings — only when navigating by keyboard.
-   Mouse users get the existing :hover underlines on nav links, etc. */
-:focus-visible {
-  outline: 3px solid var(--brand);
-  outline-offset: 3px;
-  border-radius: 4px;
-}
 .btn:focus-visible,
 .icon-link:focus-visible,
 .recruit-cta:focus-visible {
