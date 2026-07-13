@@ -108,7 +108,7 @@ v3 阶段放弃了原 spec 里的 video-led hero（macro time-lapse 种子萌芽
 | `--ink-dark` | `#1F2937` | 主文字 |
 | `--ink-mid` | `#374151` | 副文字 |
 | `--ink-muted` | `#6B7280` | 辅助文字 |
-| `--ink-faint` | `#9CA3AF` | meta 文字 ⚠ 不达 WCAG AA 对比度 |
+| `--ink-faint` | `#6B7280` | meta 文字 (与 `--ink-muted` 同值,WCAG AA 5.74:1) |
 | `--rule` | `#E5E7EB` | 分隔线 |
 | `--brand` | `#1C64F2` | 中南蓝，主强调 |
 | `--c-compete` | `#6B21A8` | 紫（竞赛 pillar + 国家一等奖数字） |

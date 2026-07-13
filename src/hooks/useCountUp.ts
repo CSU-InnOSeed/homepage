@@ -1,4 +1,5 @@
 import { useEffect, type RefObject } from 'react';
+import { observe } from '../lib/intersectionController';
 
 const easeOutQuart = (t: number): number => 1 - Math.pow(1 - t, 4);
 
@@ -25,6 +26,12 @@ export interface CountUpConfig {
  * Animates textContent on the ref'd element using requestAnimationFrame.
  * Fires once when the element enters the viewport, then disconnects.
  *
+ * Delegates to a module-level IntersectionObserver
+ * (see `lib/intersectionController.ts`) so the page runs a single
+ * shared observer for all count-up targets. When a custom threshold
+ * is passed, a one-shot local observer is created instead — the
+ * shared controller only owns the common (0.4) threshold variant.
+ *
  * The suffix is intentionally NOT written into the counter element; the
  * caller is expected to render it as a sibling <span class="num-suffix">.
  * (See Numbers.tsx for the layout.)
@@ -50,23 +57,30 @@ export default function useCountUp(
       requestAnimationFrame(tick);
     };
 
-    if (typeof IntersectionObserver === 'undefined') {
-      animate();
-      return undefined;
+    if (threshold !== 0.4) {
+      // Custom threshold path — keep a local observer so we don't
+      // pollute the shared controller with non-default options.
+      if (typeof IntersectionObserver === 'undefined') {
+        animate();
+        return undefined;
+      }
+      const io = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              animate();
+              io.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold }
+      );
+      io.observe(el);
+      return () => io.disconnect();
     }
 
-    const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            animate();
-            io.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold }
-    );
-    io.observe(el);
-    return () => io.disconnect();
+    return observe('countUp', el, () => {
+      animate();
+    });
   }, [ref, target, duration, threshold]);
 }

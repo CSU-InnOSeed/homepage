@@ -42,6 +42,9 @@
          matches its viewport: phones preload 480w (~18 KB), desktop
          preloads 1440w (~84 KB). Chrome/Edge/Firefox support this; older
          Safari falls back to the 480w WebP href. -->
+    <!-- Source banner.jpg is 1828x1010 — 1920w srcset would require
+         upscaling and is intentionally omitted. 1440w is the sharpest
+         option shipped; ≥1441px DPR-1 viewports still pick it. -->
     <link
       rel="preload"
       as="image"
@@ -52,19 +55,34 @@
       fetchpriority="high"
     />
 
-    <!-- Google Fonts: only the weights we actually use.
-         Fraunces: italic 700 (hero h1 em), 800 (display headlines + footer),
-                   900 (members/numbers h2 etc.)
-         Inter: 400 / 500 / 600 / 700 (body, nav, btn, eyebrow)
-         Noto Serif SC: 500 (manifesto lead), 900 (h2 sections)
-         Noto Sans SC: 400 / 500 / 700 (body, subtitle, recruit)
-         The CSS font-family chain puts system Chinese fonts (PingFang SC,
-         Microsoft YaHei, system-ui) BEFORE Noto SC, so most visitors never
-         pay the Noto SC download cost. -->
+    <!-- Fonts:
+         Fraunces + Inter (Latin only) are self-hosted at /fonts/*.woff2
+         and declared in src/styles/fonts.css (imported by main.tsx).
+         Each woff2 carries its own unicode-range so the browser only
+         fetches the subset a glyph actually needs.
+         Noto Serif/Sans SC (Chinese) remain on Google Fonts CDN — they
+         only serve visitors without a system Chinese font (Linux / old
+         Android), and self-hosting them would balloon the deploy bundle
+         by ~5 MB per weight. -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- Self-hosted Latin fonts used above the fold (latin subset only —
+         latin-ext downloads on first non-ASCII glyph). Preload uses
+         crossorigin because woff2 fetches are CORS. We preload exactly
+         four weights: the hero h1 italic em, the hero h1 + footer
+         display weight, the body weight, and the eyebrow / CTA weight.
+         Fraunces-900 / Inter-500 / Inter-700 / all latin-ext files
+         load on demand once their first glyph is needed. -->
+    <link rel="preload" as="font" type="font/woff2" crossorigin
+          href="/fonts/Fraunces-700-i-latin.woff2" />
+    <link rel="preload" as="font" type="font/woff2" crossorigin
+          href="/fonts/Fraunces-800-n-latin.woff2" />
+    <link rel="preload" as="font" type="font/woff2" crossorigin
+          href="/fonts/Inter-400-n-latin.woff2" />
+    <link rel="preload" as="font" type="font/woff2" crossorigin
+          href="/fonts/Inter-600-n-latin.woff2" />
     <link
-      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,800;0,9..144,900;1,9..144,700&family=Inter:wght@400;500;600;700&family=Noto+Serif+SC:wght@500;900&family=Noto+Sans+SC:wght@400;500;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;900&family=Noto+Sans+SC:wght@400;500;700&display=swap"
       rel="stylesheet"
     />
   </head>
