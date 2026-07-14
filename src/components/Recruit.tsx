@@ -49,6 +49,11 @@ function RecruitHero() {
     <section className="recruit" id="recruit">
       <picture className="recruit-bg" aria-hidden="true">
         <source
+          type="image/avif"
+          srcSet="/imgs/group-photo-480.avif 480w, /imgs/group-photo-800.avif 800w, /imgs/group-photo-1200.avif 1200w"
+          sizes="100vw"
+        />
+        <source
           type="image/webp"
           srcSet="/imgs/group-photo-480.webp 480w, /imgs/group-photo-800.webp 800w, /imgs/group-photo-1200.webp 1200w"
           sizes="100vw"

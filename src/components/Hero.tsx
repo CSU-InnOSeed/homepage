@@ -32,6 +32,11 @@ export default function Hero() {
       <div className="hero-media">
         <picture>
           <source
+            type="image/avif"
+            srcSet="/imgs/banner-480.avif 480w, /imgs/banner-960.avif 960w, /imgs/banner-1440.avif 1440w"
+            sizes="100vw"
+          />
+          <source
             type="image/webp"
             srcSet="/imgs/banner-480.webp 480w, /imgs/banner-960.webp 960w, /imgs/banner-1440.webp 1440w"
             sizes="100vw"

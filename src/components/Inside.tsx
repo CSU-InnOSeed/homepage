@@ -14,6 +14,11 @@ export default function Inside() {
         <div ref={imageRef} className="inside-image reveal">
           <picture>
             <source
+              type="image/avif"
+              srcSet="/imgs/group-photo-480.avif 480w, /imgs/group-photo-800.avif 800w, /imgs/group-photo-1200.avif 1200w"
+              sizes="(max-width: 880px) 100vw, 50vw"
+            />
+            <source
               type="image/webp"
               srcSet="/imgs/group-photo-480.webp 480w, /imgs/group-photo-800.webp 800w, /imgs/group-photo-1200.webp 1200w"
               sizes="(max-width: 880px) 100vw, 50vw"
