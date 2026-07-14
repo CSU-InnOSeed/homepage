@@ -2,16 +2,15 @@ import { lazy, Suspense, useRef } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Nav from './components/Nav';
 import Hero from './components/Hero';
-import Marquee from './components/Marquee';
-import Manifesto from './components/Manifesto';
-import Pillars from './components/Pillars';
-import Numbers from './components/Numbers';
-import Members from './components/Members';
-import Inside from './components/Inside';
-import Events from './components/Events';
-import Recruit from './components/Recruit';
-import Footer from './components/Footer';
-import NotFound from './pages/NotFound';
+const Marquee = lazy(() => import('./components/Marquee'));
+const Manifesto = lazy(() => import('./components/Manifesto'));
+const Pillars = lazy(() => import('./components/Pillars'));
+const Numbers = lazy(() => import('./components/Numbers'));
+const Members = lazy(() => import('./components/Members'));
+const Inside = lazy(() => import('./components/Inside'));
+const Events = lazy(() => import('./components/Events'));
+const Recruit = lazy(() => import('./components/Recruit'));
+const Footer = lazy(() => import('./components/Footer'));
 
 /**
  * App — composes the landing page sections in order, with an extra
@@ -55,6 +54,7 @@ import NotFound from './pages/NotFound';
 const Apply = lazy(() => import('./pages/Apply'));
 const EventsPage = lazy(() => import('./pages/Events'));
 const RecruitPage = lazy(() => import('./pages/Recruit'));
+const NotFound = lazy(() => import('./pages/NotFound'));
 
 /**
  * PageFallback — shown while a lazy route chunk is loading. Keeps the
@@ -134,22 +134,28 @@ export default function App() {
               <Nav />
               <main id="main" ref={mainRef} tabIndex={-1}>
                 <Hero />
-                <Marquee />
-                <Manifesto />
-                <Pillars />
-                <Numbers />
-                <Members />
-                <Inside />
-                <Events />
-                <Recruit />
+                <Suspense fallback={null}>
+                  <Marquee />
+                  <Manifesto />
+                  <Pillars />
+                  <Numbers />
+                  <Members />
+                  <Inside />
+                  <Events />
+                  <Recruit />
+                  <Footer />
+                </Suspense>
               </main>
-              <Footer />
             </>
           }
         />
         <Route
           path="*"
-          element={<NotFound />}
+          element={
+            <Suspense fallback={<PageFallback />}>
+              <NotFound />
+            </Suspense>
+          }
         />
       </Routes>
     </BrowserRouter>

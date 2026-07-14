@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback, useMemo, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   APPLY_CATEGORIES,
@@ -43,6 +43,17 @@ export default function Apply() {
   }, []);
 
   const stepIdx = STEPS.find((s) => s.key === step)?.idx ?? 0;
+
+  // Per-route title — fix stage-1 X1 (synthesis): gives /apply its own
+  // document.title so screen readers / browser tabs / history reflect
+  // which step the user is on. Restored on unmount to the site default.
+  useEffect(() => {
+    const prev = document.title;
+    document.title = `招新 · 第 ${stepIdx + 1} 步 · InnOSeed Lab`;
+    return () => {
+      document.title = prev;
+    };
+  }, [stepIdx]);
 
   return (
     <div className="apply-page">
@@ -270,7 +281,13 @@ function ApplicationStep({
   }, [tagCode, pickedInterviewer, selected, onSubmitted]);
 
   return (
-    <section className="apply-section">
+    <form
+      className="apply-section"
+      onSubmit={(e) => {
+        e.preventDefault();
+        submit();
+      }}
+    >
       <span className="eyebrow">03 — Application</span>
       <h1>选你的标签。</h1>
       <p className="apply-lead">
@@ -313,7 +330,7 @@ function ApplicationStep({
           ← 上一步
         </button>
         <button
-          type="button"
+          type="submit"
           className="btn btn-primary"
           onClick={submit}
           disabled={submitting || selected[0].length === 0}
@@ -322,7 +339,7 @@ function ApplicationStep({
           {submitting ? '提交中…' : '生成个性标签代码 →'}
         </button>
       </div>
-    </section>
+    </form>
   );
 }
 
