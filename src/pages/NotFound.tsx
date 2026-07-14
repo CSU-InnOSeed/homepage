@@ -4,7 +4,7 @@ import Nav from '../components/Nav';
 import Footer from '../components/Footer';
 import useReveal from '../hooks/useReveal';
 import usePageMeta from '../hooks/usePageMeta';
-import { BRAND, CONTACT_EMAIL } from '../content/site';
+import { BRAND, CONTACT_EMAIL, TAGLINE } from '../content/site';
 
 /**
  * NotFound — 404 page rendered by React Router's path="*" route.
@@ -36,11 +36,13 @@ export default function NotFound() {
   // pointing at the home page (so any inbound link gets consolidated).
   // On unmount usePageMeta flips the robots meta back to index,follow
   // so a subsequent SPA navigation to a real route doesn't leak the
-  // noindex directive.
+  // noindex directive. Description opens with the site TAGLINE so
+  // anyone who *does* see this URL in a debug tool gets the brand
+  // context (we don't expect search engines to index this — noindex
+  // is set above — but link unshorteners and dev tools render it).
   usePageMeta({
     title: '页面走丢了 · InnOSeed Lab',
-    description:
-      '页面走丢了,但种子还在土里。回主页看看 InnOSeed 在做什么。',
+    description: `${TAGLINE} — 页面走丢了,但种子还在土里。回主页看看 InnOSeed 在做什么。`,
     canonical: '/',
     noindex: true,
   });
