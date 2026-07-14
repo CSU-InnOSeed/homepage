@@ -114,7 +114,7 @@ export default function Nav() {
         <nav
           id="nav-links"
           className="nav-links"
-          aria-hidden={open ? 'false' : undefined}
+          aria-hidden={open ? false : undefined}
         >
           {NAV_LINKS.map((l) => (
             <a

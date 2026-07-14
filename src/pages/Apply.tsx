@@ -377,10 +377,14 @@ function DoneStep({
         {interviewer && <>。你选的面聊官是 <strong>{interviewer.code}</strong>。</>}
       </p>
 
-      <div className="apply-code-card" onClick={copy} role="button" tabIndex={0} onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && copy()}>
+      <button
+        type="button"
+        className="apply-code-card"
+        onClick={copy}
+      >
         <code>{tagCode || '（未选任何标签）'}</code>
         <span className="apply-code-hint">{copied ? '✓ 已复制' : '点击复制'}</span>
-      </div>
+      </button>
 
       <p className="apply-small">
         我们会通过飞书 / 邮件 / 群组联系你；期间不需要重复填这个表单。
