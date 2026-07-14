@@ -190,6 +190,8 @@ function RecruitFaqs() {
           {RECRUIT_EXTRAS.faqs.map((faq, i) => {
             const open = openIdx === i;
             const isIn = seen.has(i);
+            const qId = `rf-q-${i}`;
+            const aId = `rf-a-${i}`;
             return (
               <li
                 key={faq.q}
@@ -198,8 +200,10 @@ function RecruitFaqs() {
               >
                 <button
                   type="button"
+                  id={qId}
                   className="rf-q"
                   aria-expanded={open}
+                  aria-controls={aId}
                   onClick={() => setOpenIdx(open ? -1 : i)}
                 >
                   <span>{faq.q}</span>
@@ -209,7 +213,10 @@ function RecruitFaqs() {
                 </button>
                 {open && (
                   <div
+                    id={aId}
                     className="rf-a"
+                    role="region"
+                    aria-labelledby={qId}
                     dangerouslySetInnerHTML={{ __html: faq.a }}
                   />
                 )}
