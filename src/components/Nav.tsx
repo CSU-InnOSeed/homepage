@@ -21,7 +21,7 @@ import { NAV_LINKS } from '../content/site';
  *                            intra-site nav from reloading the page.
  */
 export default function Nav() {
-  const scrolled = useScrolled(60);
+  const [scrolled, scrollSentinelRef] = useScrolled(60);
   const navRef = useRef<HTMLElement | null>(null);
   const [open, setOpen] = useState(false);
   const location = useLocation();
@@ -95,11 +95,30 @@ export default function Nav() {
   );
 
   return (
-    <header
-      className={`nav${scrolled ? ' scrolled' : ''}${open ? ' open' : ''}`}
-      id="nav"
-      ref={navRef}
-    >
+    <>
+      {/* Sentinel for useScrolled's IntersectionObserver. Lives at the
+          top of the document (the nav header above is position:fixed
+          so it takes no document space). When the user scrolls past
+          60px the sentinel crosses out the top of the IO root and
+          useScrolled flips to true — no scroll listener needed. */}
+      <div
+        ref={scrollSentinelRef}
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          height: 1,
+          pointerEvents: 'none',
+          visibility: 'hidden',
+        }}
+      />
+      <header
+        className={`nav${scrolled ? ' scrolled' : ''}${open ? ' open' : ''}`}
+        id="nav"
+        ref={navRef}
+      >
       <div className="container nav-inner">
         <a href="#top" className="brand" onClick={(e) => handleAnchorClick(e, '#top')}>
           <span className="brand-mark">
@@ -141,6 +160,7 @@ export default function Nav() {
           <span className="bar" />
         </button>
       </div>
-    </header>
+      </header>
+    </>
   );
 }
