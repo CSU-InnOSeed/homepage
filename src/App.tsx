@@ -11,7 +11,6 @@ import Inside from './components/Inside';
 import Events from './components/Events';
 import Recruit from './components/Recruit';
 import Footer from './components/Footer';
-import NotFound from './pages/NotFound';
 
 /**
  * App — composes the landing page sections in order, with an extra
@@ -55,6 +54,7 @@ import NotFound from './pages/NotFound';
 const Apply = lazy(() => import('./pages/Apply'));
 const EventsPage = lazy(() => import('./pages/Events'));
 const RecruitPage = lazy(() => import('./pages/Recruit'));
+const NotFound = lazy(() => import('./pages/NotFound'));
 
 /**
  * PageFallback — shown while a lazy route chunk is loading. Keeps the
@@ -149,7 +149,11 @@ export default function App() {
         />
         <Route
           path="*"
-          element={<NotFound />}
+          element={
+            <Suspense fallback={<PageFallback />}>
+              <NotFound />
+            </Suspense>
+          }
         />
       </Routes>
     </BrowserRouter>
