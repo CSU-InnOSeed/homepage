@@ -413,7 +413,7 @@ export const FOOTER: FooterData = {
  */
 export const EVENTS: EventsData = {
   eyebrow: '07 — What\'s On',
-  headline: { lead: '上一届', accent: 'InnOSeed' },
+  headline: { lead: '上届活动回顾', accent: '2025·09' },
   intro: '上一届招新季(2025 秋季)只办了一个 Mini Camp。2026 招新正在筹备中,形式待定 —— 关注我们获取最新信息。',
   items: [
     {
