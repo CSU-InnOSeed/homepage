@@ -77,6 +77,7 @@ interface EventCardProps {
 
 function EventCard({ ev, idx }: EventCardProps) {
   const ref = useRef<HTMLElement | null>(null);
+  const titleId = `event-${ev.key}-title`;
   useReveal(ref);
 
   const isUpcoming = ev.status === 'upcoming';
@@ -86,6 +87,7 @@ function EventCard({ ev, idx }: EventCardProps) {
       ref={ref}
       className={`event-card reveal event-${ev.type}${isUpcoming ? '' : ' event-past'}`}
       data-delay={String(Math.min(idx, 6))}
+      aria-labelledby={titleId}
     >
       <header className="event-head">
         <span className="event-type">
@@ -98,7 +100,7 @@ function EventCard({ ev, idx }: EventCardProps) {
       </header>
 
       <div className="event-date">{ev.date}</div>
-      <h3 className="event-title">{ev.title}</h3>
+      <h3 id={titleId} className="event-title">{ev.title}</h3>
       <p className="event-subtitle">{ev.subtitle}</p>
       <p className="event-body">{ev.body}</p>
 

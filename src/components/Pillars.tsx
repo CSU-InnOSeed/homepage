@@ -103,6 +103,7 @@ interface PillarCardProps {
 
 function PillarCard({ pillar, idx }: PillarCardProps) {
   const ref = useRef<HTMLElement | null>(null);
+  const nameId = `pillar-${pillar.key}-name`;
   useReveal(ref);
   return (
     <article
@@ -110,6 +111,7 @@ function PillarCard({ pillar, idx }: PillarCardProps) {
       className="reveal"
       data-delay={String(idx)}
       data-c={pillar.key}
+      aria-labelledby={nameId}
     >
       <div className="pillar-num">{String(idx).padStart(2, '0')} / 04</div>
       <div className="pillar-icon">
@@ -117,7 +119,7 @@ function PillarCard({ pillar, idx }: PillarCardProps) {
       </div>
       <div className="pillar-bottom">
         <div className="pillar-en">{pillar.en}</div>
-        <div className="pillar-name">{pillar.name}</div>
+        <h3 id={nameId} className="pillar-name">{pillar.name}</h3>
         <div className="pillar-line" />
         <p className="pillar-desc">{pillar.desc}</p>
       </div>

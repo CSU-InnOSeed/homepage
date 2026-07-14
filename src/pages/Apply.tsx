@@ -220,10 +220,16 @@ function PickInterviewerStep({ selectedTags, picked, onPick, onBack, onNext }: P
           onClick={onNext}
           disabled={!picked}
           aria-disabled={!picked}
+          aria-describedby={!picked ? 'apply-pick-hint' : undefined}
         >
           下一步：填申请 →
         </button>
       </div>
+      {!picked && (
+        <p id="apply-pick-hint" className="visually-hidden">
+          请先在上方选一位最想面聊的学长或学姐。
+        </p>
+      )}
     </section>
   );
 }
@@ -339,10 +345,16 @@ function ApplicationStep({
           onClick={submit}
           disabled={submitting || selected[0].length === 0}
           aria-disabled={submitting || selected[0].length === 0}
+          aria-describedby={selected[0].length === 0 ? 'apply-mini-camp-hint' : undefined}
         >
           {submitting ? '提交中…' : '生成个性标签代码 →'}
         </button>
       </div>
+      {selected[0].length === 0 && (
+        <p id="apply-mini-camp-hint" className="visually-hidden">
+          请先在"分路"分类下选至少一个方向,Mini Camp 必选一项。
+        </p>
+      )}
     </form>
   );
 }

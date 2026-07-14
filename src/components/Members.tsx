@@ -41,11 +41,12 @@ interface MemberCardProps {
 
 function MemberCard({ person, idx }: MemberCardProps) {
   const ref = useRef<HTMLElement | null>(null);
+  const nameId = `member-${idx}-name`;
   useReveal(ref);
   return (
-    <article ref={ref} className="member reveal" data-delay={String(idx)}>
+    <article ref={ref} className="member reveal" data-delay={String(idx)} aria-labelledby={nameId}>
       <span className="member-tag">{person.tag}</span>
-      <h3 className="member-name">{person.name}</h3>
+      <h3 id={nameId} className="member-name">{person.name}</h3>
       <p className="member-title">{person.title}</p>
       <div className="member-divider" />
       <ul className="member-list">
