@@ -18,6 +18,15 @@ export default function RecruitPage() {
     window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
   }, []);
 
+  // Per-route title — fix stage-1 X1 (synthesis).
+  useEffect(() => {
+    const prev = document.title;
+    document.title = '招新 · InnOSeed Lab';
+    return () => {
+      document.title = prev;
+    };
+  }, []);
+
   return (
     <main id="main" tabIndex={-1}>
       <header ref={headRef} className="page-header reveal">

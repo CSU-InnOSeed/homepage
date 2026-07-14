@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback, useMemo, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   APPLY_CATEGORIES,
@@ -43,6 +43,17 @@ export default function Apply() {
   }, []);
 
   const stepIdx = STEPS.find((s) => s.key === step)?.idx ?? 0;
+
+  // Per-route title — fix stage-1 X1 (synthesis): gives /apply its own
+  // document.title so screen readers / browser tabs / history reflect
+  // which step the user is on. Restored on unmount to the site default.
+  useEffect(() => {
+    const prev = document.title;
+    document.title = `招新 · 第 ${stepIdx + 1} 步 · InnOSeed Lab`;
+    return () => {
+      document.title = prev;
+    };
+  }, [stepIdx]);
 
   return (
     <div className="apply-page">
