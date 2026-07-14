@@ -2,6 +2,7 @@ import { lazy, Suspense, useRef } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Nav from './components/Nav';
 import Hero from './components/Hero';
+import Organization from './components/SEO/Organization';
 import usePageMeta from './hooks/usePageMeta';
 import { META } from './content/site';
 const Marquee = lazy(() => import('./components/Marquee'));
@@ -106,6 +107,10 @@ export default function App() {
 
   return (
     <BrowserRouter>
+      {/* Singleton JSON-LD describing the site as a schema.org Organization.
+          Lives on every route — knowledge-panel data is site-wide, not
+          per-page. */}
+      <Organization />
       <a className="skip-link" href="#main" onClick={handleSkip}>
         跳到主要内容
       </a>

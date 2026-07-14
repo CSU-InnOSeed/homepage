@@ -137,12 +137,17 @@ export default function usePageMeta(meta: PageMetaInput): void {
     // Open Graph — optional overrides, fallback to title/description
     // (and the canonical we just resolved) so the og:url is always
     // absolute and matches the link rel="canonical" href exactly.
-    const ogTitle = meta.ogTitle ?? meta.title;
-    const ogDescription = meta.ogDescription ?? meta.description ?? '';
-    const ogUrl = meta.ogUrl ?? resolveCanonical(meta.canonical);
-    if (ogTitle) setMeta('og:title', 'property', ogTitle, meta.title);
-    if (ogDescription) setMeta('og:description', 'property', ogDescription, meta.title);
-    if (ogUrl) setMeta('og:url', 'property', ogUrl, meta.title);
+    // Skipped entirely on noindex routes: /apply and /404 are not
+    // shareable surfaces, so updating og:* on them would just produce
+    // stale preview cards.
+    if (!meta.noindex) {
+      const ogTitle = meta.ogTitle ?? meta.title;
+      const ogDescription = meta.ogDescription ?? meta.description ?? '';
+      const ogUrl = meta.ogUrl ?? resolveCanonical(meta.canonical);
+      if (ogTitle) setMeta('og:title', 'property', ogTitle, meta.title);
+      if (ogDescription) setMeta('og:description', 'property', ogDescription, meta.title);
+      if (ogUrl) setMeta('og:url', 'property', ogUrl, meta.title);
+    }
 
     return () => {
       document.title = prevTitle;
