@@ -228,8 +228,8 @@ export const HERO: HeroData = {
   ],
   sub:
     '中南大学计算机学院 · 一个以种子为名、靠不同想法长成一片林的实验室。\n竞赛 · 科研 · 创业 · 志合者 — 四个方向，一条共同的路。',
-  primaryCta: { label: '了解方向', arrow: '→', href: '#pillars' },
-  secondaryCta: { label: '申请加入', arrow: '↗', href: '#recruit' },
+  primaryCta: { label: '申请加入', arrow: '↗', href: '/apply' },
+  secondaryCta: { label: '了解方向', arrow: '→', href: '#pillars' },
 };
 
 export const MARQUEE_ITEMS: string[] = [

@@ -281,7 +281,13 @@ function ApplicationStep({
   }, [tagCode, pickedInterviewer, selected, onSubmitted]);
 
   return (
-    <section className="apply-section">
+    <form
+      className="apply-section"
+      onSubmit={(e) => {
+        e.preventDefault();
+        submit();
+      }}
+    >
       <span className="eyebrow">03 — Application</span>
       <h1>选你的标签。</h1>
       <p className="apply-lead">
@@ -324,7 +330,7 @@ function ApplicationStep({
           ← 上一步
         </button>
         <button
-          type="button"
+          type="submit"
           className="btn btn-primary"
           onClick={submit}
           disabled={submitting || selected[0].length === 0}
@@ -333,7 +339,7 @@ function ApplicationStep({
           {submitting ? '提交中…' : '生成个性标签代码 →'}
         </button>
       </div>
-    </section>
+    </form>
   );
 }
 
