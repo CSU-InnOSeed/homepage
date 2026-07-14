@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo, useEffect } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   APPLY_CATEGORIES,
@@ -6,6 +6,7 @@ import {
   encodeTagCode,
   type Interviewer,
 } from '../content/apply';
+import usePageMeta from '../hooks/usePageMeta';
 import './Apply.css';
 
 type StepKey = 'guide' | 'pick' | 'apply' | 'done';
@@ -44,16 +45,19 @@ export default function Apply() {
 
   const stepIdx = STEPS.find((s) => s.key === step)?.idx ?? 0;
 
-  // Per-route title — fix stage-1 X1 (synthesis): gives /apply its own
-  // document.title so screen readers / browser tabs / history reflect
-  // which step the user is on. Restored on unmount to the site default.
-  useEffect(() => {
-    const prev = document.title;
-    document.title = `招新 · 第 ${stepIdx + 1} 步 · InnOSeed Lab`;
-    return () => {
-      document.title = prev;
-    };
-  }, [stepIdx]);
+  // Per-route title + description + canonical + noindex (stage-2 D1).
+  // /apply is intentionally noindexed: it's an interactive flow that
+  // shouldn't appear in search results, and there's nothing for a
+  // searcher to land on directly (the form needs JS). The title
+  // advances with each step so screen readers / tab strips reflect
+  // progress.
+  usePageMeta({
+    title: `招新 · 第 ${stepIdx + 1} 步 · InnOSeed Lab`,
+    description:
+      '加入 InnOSeed 的申请流程:挑一位最想面聊的学长 / 学姐,选几行个性标签,生成你的"个性标签代码"。',
+    canonical: '/apply',
+    noindex: true,
+  });
 
   return (
     <div className="apply-page">

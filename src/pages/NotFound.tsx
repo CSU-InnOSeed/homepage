@@ -1,8 +1,9 @@
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import Nav from '../components/Nav';
 import Footer from '../components/Footer';
 import useReveal from '../hooks/useReveal';
+import usePageMeta from '../hooks/usePageMeta';
 import { BRAND, CONTACT_EMAIL } from '../content/site';
 
 /**
@@ -20,8 +21,9 @@ import { BRAND, CONTACT_EMAIL } from '../content/site';
  *      (e.g. user types a bad URL in the SPA, or a stale internal link).
  *      In that case Vercel already returned 200 + index.html (because of
  *      the SPA rewrite), and this component renders instead of the home
- *      page. We set <meta name="robots" content="noindex"> + update the
- *      document title so crawlers don't index the 404.
+ *      page. usePageMeta sets noindex + the title so crawlers don't
+ *      index the 404 (Vercel's 200 makes the SPA URL indexable by
+ *      default — the meta is the only signal we have).
  *
  * The visual treatment mirrors the static 404.html — same "页面走丢了 /
  * 种子还在土里" copy — so the two surfaces feel like one product.
@@ -30,29 +32,18 @@ export default function NotFound() {
   const headRef = useRef<HTMLElement | null>(null);
   useReveal(headRef);
 
-  useEffect(() => {
-    // SPA-rendered 404 should still look like a 404 to search engines and
-    // users' tab strips. We can't change the HTTP status (Vercel's SPA
-    // rewrite already returned 200), but we can change the title and
-    // inject a noindex meta tag so crawlers don't index this URL.
-    document.title = '页面走丢了 · InnOSeed Lab';
-
-    let meta = document.querySelector<HTMLMetaElement>('meta[name="robots"]');
-    if (!meta) {
-      meta = document.createElement('meta');
-      meta.name = 'robots';
-      document.head.appendChild(meta);
-    }
-    meta.content = 'noindex';
-
-    return () => {
-      // Leaving the 404 (e.g. user clicks "回到首页") — restore the
-      // default indexable meta so we don't leak noindex onto real pages
-      // if the same SPA session later mounts a route that *should* be
-      // indexed.
-      if (meta) meta.content = 'index,follow';
-    };
-  }, []);
+  // SPA-rendered 404: set a real title + noindex meta + canonical
+  // pointing at the home page (so any inbound link gets consolidated).
+  // On unmount usePageMeta flips the robots meta back to index,follow
+  // so a subsequent SPA navigation to a real route doesn't leak the
+  // noindex directive.
+  usePageMeta({
+    title: '页面走丢了 · InnOSeed Lab',
+    description:
+      '页面走丢了,但种子还在土里。回主页看看 InnOSeed 在做什么。',
+    canonical: '/',
+    noindex: true,
+  });
 
   return (
     <>
