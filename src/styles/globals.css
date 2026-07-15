@@ -1846,14 +1846,14 @@ main .page-header-desc {
   .hero-inner { padding: 110px 0 72px; }
   .hero-tag { font-size: 11px; padding: 6px 12px; margin-bottom: 24px; letter-spacing: 0.22em; }
   .hero h1 { font-size: clamp(22px, 6vw, 56px); margin-bottom: 18px; }
-  .hero-headline { margin: 14px 0 24px; }
+  .hero-headline { margin: 14px 0 24px; font-size: clamp(40px, 10vw, 96px); letter-spacing: -0.02em; }
   .hero-sub { font-size: 15px; line-height: 1.6; margin-bottom: 32px; }
   .hero-cta {
     flex-direction: column;
     align-items: stretch;
     width: 100%;
   }
-  .hero-cta .btn { width: 100%; justify-content: center; padding: 16px 20px; }
+  .hero-cta .btn { width: 100%; justify-content: center; padding: 14px 22px; font-size: 13px; }
   .hero-meta { font-size: 10px; bottom: 18px; }
   .hero-scroll { font-size: 10px; }
   .hero-scroll::after { height: 28px; }
@@ -1877,7 +1877,7 @@ main .page-header-desc {
   .pillars-head { margin-bottom: 40px; }
   .pillar { padding: 28px 22px 26px; min-height: 0; }
   .pillar-icon { width: 64px; height: 64px; margin-bottom: 22px; }
-  .pillar-icon img { width: 38px; height: 38px; }
+  .pillar-icon-svg { width: 44px; height: 44px; }
   .pillar-num { margin-bottom: 22px; }
   .pillar-name { font-size: 30px; }
 
@@ -1899,7 +1899,8 @@ main .page-header-desc {
 
   /* Recruit */
   .recruit .meta { margin: 24px 0 36px; }
-  .recruit-cta { padding: 18px 32px; font-size: 15px; }
+  .recruit h2 { font-size: clamp(36px, 9vw, 88px); letter-spacing: -0.02em; }
+  .recruit-cta { padding: 14px 28px; font-size: 14px; }
 
   /* Footer */
   .footer { padding: 56px 0 32px; }
@@ -1925,6 +1926,8 @@ main .page-header-desc {
     --fs-display: clamp(44px, 13vw, 220px);
   }
   .hero h1 { font-size: 21px; }
+  .hero-headline { font-size: 32px; }
+  .recruit h2 { font-size: 30px; }
   .pillar-name { font-size: 26px; }
 }
 

@@ -34,7 +34,7 @@ export default function Nav() {
   // a state where the desktop link row stays hidden behind the panel.
   useEffect(() => {
     if (typeof window === 'undefined') return undefined;
-    const mq = window.matchMedia('min-width: 721px');
+    const mq = window.matchMedia('(min-width: 721px)');
     const onChange = (e: MediaQueryListEvent) => {
       if (e.matches) setOpen(false);
     };
