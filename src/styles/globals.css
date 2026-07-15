@@ -423,8 +423,10 @@ section { position: relative; }
 }
 
 .hero h1.hero-headline {
-  /* Sans for Chinese so the giant block reads modern, not editorial-serif. */
-  font-family: var(--ff-sans);
+  /* Unify with editorial section headings — Fraunces (Latin) + Source Han Serif
+     (CJK) — so the brand statement shares the typographic register of the
+     Manifesto / Pillars / Numbers / Members / Recruit headlines that follow. */
+  font-family: var(--ff-display);
   font-weight: 800;
   /* Cap so the three rows fit inside 100vh. Old --fs-display went to 220px. */
   font-size: clamp(56px, 8vw, 128px);
@@ -445,9 +447,12 @@ section { position: relative; }
 .hero-headline .row:nth-child(3) span { animation-delay: 0.7s; }
 @keyframes hero-rise { to { transform: translateY(0); } }
 .hero-headline .accent {
-  /* Brand-name emphasis via weight + color, not italic serif. */
-  font-family: var(--ff-sans);
-  font-style: normal;
+  /* Match the section <em> treatment (Manifesto / Pillars / Numbers /
+     Members / Recruit / page-header h1): italic Fraunces for the Latin
+     brand name, weighted and tinted brand-blue so "InnOSeed" still
+     reads as the visual anchor inside the serif block. */
+  font-family: var(--ff-display);
+  font-style: italic;
   font-weight: 800;
   color: var(--brand);
   letter-spacing: -0.04em;
@@ -1833,10 +1838,14 @@ main .page-header-desc {
   .nav-links a::after { display: none; }
 }
 
-/* Phone (≤ 480px): tighten type, padding, stack CTAs */
+/* Phone (≤ 480px): tighten type, padding, stack CTAs.
+   --gutter is INDEPENDENT from desktop — phone keeps the same 24px
+   breathing room as desktop (the 18px shrink caused mobile cramping);
+   it scales down only below 360px. The hero inline changes never
+   shrink the gutter to compensate for the headline's apparent width. */
 @media (max-width: 480px) {
   :root {
-    --gutter: 18px;
+    --gutter: 24px;
     --fs-display: clamp(48px, 13vw, 220px);
     --fs-h1: clamp(36px, 8vw, 96px);
     --fs-h3: clamp(20px, 5vw, 36px);
@@ -1919,10 +1928,12 @@ main .page-header-desc {
   .btn { padding: 16px 24px; }
 }
 
-/* Very small phones (≤ 360px): one last squeeze */
+/* Very small phones (≤ 360px): one last squeeze.
+   --gutter only now compresses below 480px. Floor of 20px keeps
+   360px-class devices from feeling edge-clipped. */
 @media (max-width: 360px) {
   :root {
-    --gutter: 14px;
+    --gutter: 20px;
     --fs-display: clamp(44px, 13vw, 220px);
   }
   .hero h1 { font-size: 21px; }
