@@ -384,7 +384,7 @@ export const INSIDE: InsideData = {
 export const RECRUIT: RecruitData = {
   eyebrow: '06 — Join Us',
   headline: { lead: '加 入', accent: 'InnOSeed' },
-  body: '坚持小而精的发展路线，每届只固定招收 8 — 9 人，招生对象面向全校。我们没有硬性的招生标准。',
+  body: '坚持小而精的发展路线，每届只固定招收 8 — 9 人，招生对象面向全校、只面向大二。我们没有硬性的招生标准。',
   meta: '— 只希望能够和有着不同想法的你相遇。',
   cta: { label: '立即申请 · Apply Now', arrow: '→', href: '/apply' },
 };
@@ -392,7 +392,7 @@ export const RECRUIT: RecruitData = {
 export const FOOTER: FooterData = {
   brand: 'InnOSeed',
   tagline: [TAGLINE, 'different thinkers 的俱乐部。'],
-  copyright: '© 2025 InnOSeed Lab. 保留所有权利.',
+  copyright: '© 2025-2026 InnOSeed Lab. 保留所有权利.',
   navHeading: '导航',
   navLinks: [
     { href: '#manifesto', label: '关于实验室' },
@@ -404,7 +404,7 @@ export const FOOTER: FooterData = {
   contactHeading: '联系我们',
   contactLinks: [
     { href: 'mailto:contact@innoseed.club', label: 'contact@innoseed.club' },
-    { label: '微信号: wpcwzy1', plain: true },
+    { label: '微信号: MichIGaNmcig', plain: true },
     { href: 'https://github.com/CSU-InnOSeed', label: 'GitHub · CSU-InnOSeed', external: true },
     { href: 'https://blog.csdn.net/cyl_csdn_1', label: 'CSDN · cyl_csdn_1', external: true },
   ],
@@ -493,8 +493,8 @@ export const RECRUIT_EXTRAS: RecruitExtras = {
       a: '没有。我们不看出身 / 不看绩点 / 不看你简历上写了几行字,只看你在 4 个方向里有没有一件认真做过的事。',
     },
     {
-      q: '我大一 / 非计算机 / 完全没有竞赛经验,可以来吗?',
-      a: '面向全校,不限年级、不限学院。我们更看重好奇心与持续做一件事的能力,而不是已经积累了多少成果。',
+      q: '我们只招大二的吗?',
+      a: '是的 —— 我们只面向大二招生,大一 / 大三 / 大四及研究生暂不列入本次招新范围。非计算机背景、没有竞赛经验都不影响,只看好奇心与持续做一件事的能力。',
     },
     {
       q: '每年招多少人?什么时候截止?',
