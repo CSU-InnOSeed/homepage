@@ -42,3 +42,8 @@ vite.config.d.ts
 # tsc -p tsconfig.node.json emits vite.config.js as a side effect.
 # Source of truth is vite.config.ts; the .js is regenerated on demand.
 vite.config.js
+
+# oh-my-claudecode (OMC) operational state — runtime sessions,
+# notepads, plans, handoffs, project memory. Never source of truth.
+# If team-shared skills ever land here later, add `!.omc/skills/`.
+.omc/
