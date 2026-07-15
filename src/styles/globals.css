@@ -422,7 +422,7 @@ section { position: relative; }
   border-radius: 2px;
 }
 
-.hero-headline {
+.hero h1.hero-headline {
   /* Sans for Chinese so the giant block reads modern, not editorial-serif. */
   font-family: var(--ff-sans);
   font-weight: 800;
@@ -1846,7 +1846,7 @@ main .page-header-desc {
   .hero-inner { padding: 110px 0 72px; }
   .hero-tag { font-size: 11px; padding: 6px 12px; margin-bottom: 24px; letter-spacing: 0.22em; }
   .hero h1 { font-size: clamp(22px, 6vw, 56px); margin-bottom: 18px; }
-  .hero-headline { margin: 14px 0 24px; font-size: clamp(40px, 10vw, 96px); letter-spacing: -0.02em; }
+  .hero h1.hero-headline { margin: 14px 0 24px; font-size: clamp(40px, 10vw, 96px); letter-spacing: -0.02em; }
   .hero-sub { font-size: 15px; line-height: 1.6; margin-bottom: 32px; }
   .hero-cta {
     flex-direction: column;
@@ -1926,7 +1926,7 @@ main .page-header-desc {
     --fs-display: clamp(44px, 13vw, 220px);
   }
   .hero h1 { font-size: 21px; }
-  .hero-headline { font-size: 32px; }
+  .hero h1.hero-headline { font-size: 32px; }
   .recruit h2 { font-size: 30px; }
   .pillar-name { font-size: 26px; }
 }
