@@ -2,6 +2,9 @@ import { lazy, Suspense, useRef } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Nav from './components/Nav';
 import Hero from './components/Hero';
+import Organization from './components/SEO/Organization';
+import usePageMeta from './hooks/usePageMeta';
+import { META } from './content/site';
 const Marquee = lazy(() => import('./components/Marquee'));
 const Manifesto = lazy(() => import('./components/Manifesto'));
 const Pillars = lazy(() => import('./components/Pillars'));
@@ -85,6 +88,17 @@ function PageFallback() {
 export default function App() {
   const mainRef = useRef<HTMLElement | null>(null);
 
+  // Index/home page meta (stage-2 D1). The per-route pages (/events,
+  // /recruit, /apply, /404) all call usePageMeta themselves; the / route
+  // doesn't have a dedicated page component so the meta lives here.
+  // Title + description match META (the static index.html default) so
+  // the initial paint (before React mounts) and the SPA route agree.
+  usePageMeta({
+    title: META.title,
+    description: META.description,
+    canonical: '/',
+  });
+
   const handleSkip = () => {
     if (mainRef.current) {
       mainRef.current.focus({ preventScroll: true });
@@ -93,6 +107,10 @@ export default function App() {
 
   return (
     <BrowserRouter>
+      {/* Singleton JSON-LD describing the site as a schema.org Organization.
+          Lives on every route — knowledge-panel data is site-wide, not
+          per-page. */}
+      <Organization />
       <a className="skip-link" href="#main" onClick={handleSkip}>
         跳到主要内容
       </a>

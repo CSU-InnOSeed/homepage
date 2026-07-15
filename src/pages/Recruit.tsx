@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import Recruit from '../components/Recruit';
 import useReveal from '../hooks/useReveal';
+import usePageMeta from '../hooks/usePageMeta';
 
 /**
  * /recruit — 独立"招新"页面
@@ -18,14 +19,13 @@ export default function RecruitPage() {
     window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
   }, []);
 
-  // Per-route title — fix stage-1 X1 (synthesis).
-  useEffect(() => {
-    const prev = document.title;
-    document.title = '招新 · InnOSeed Lab';
-    return () => {
-      document.title = prev;
-    };
-  }, []);
+  // Per-route SEO (stage-2 D1): title + description + canonical.
+  usePageMeta({
+    title: '招新 · InnOSeed Lab',
+    description:
+      '加入 InnOSeed 的招新流程与时间线 — 投递 + 简历初筛 / 1v1 面试 / Mini Camp / Offer。坚持小而精,每届 8 — 9 人。',
+    canonical: '/recruit',
+  });
 
   return (
     <main id="main" tabIndex={-1}>

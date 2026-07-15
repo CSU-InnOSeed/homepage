@@ -187,6 +187,23 @@ export interface FooterData {
 export const BRAND = 'InnOSeed';
 export const CONTACT_EMAIL = 'contact@innoseed.club';
 
+/**
+ * TAGLINE — the single sentence that names who we are in plain
+ * Chinese. Used as the opening line of:
+ *   - HERO.sub (followed by the four-pillar line break)
+ *   - FOOTER.tagline[0]
+ *   - index.html <meta name="description">
+ *   - index.html <meta property="og:description">
+ *   - index.html <meta name="twitter:description">
+ *   - NotFound description (in the usePageMeta call)
+ *
+ * Previously these were five separate strings and they had already
+ * drifted (FOOTER says "以种子为名的实验室" without the "靠不同想法
+ * 长成一片林" half, index.html used a different wording entirely).
+ * One source of truth here means a copy change in one place.
+ */
+export const TAGLINE = '中南大学计算机学院 · 一个以种子为名、靠不同想法长成一片林的实验室。';
+
 export interface MetaData {
   title: string;
   description: string;
@@ -227,7 +244,7 @@ export const HERO: HeroData = {
     { text: '你想做的。' },
   ],
   sub:
-    '中南大学计算机学院 · 一个以种子为名、靠不同想法长成一片林的实验室。\n竞赛 · 科研 · 创业 · 志合者 — 四个方向，一条共同的路。',
+    `${TAGLINE}\n竞赛 · 科研 · 创业 · 志合者 — 四个方向，一条共同的路。`,
   primaryCta: { label: '申请加入', arrow: '↗', href: '/apply' },
   secondaryCta: { label: '了解方向', arrow: '→', href: '#pillars' },
 };
@@ -374,7 +391,7 @@ export const RECRUIT: RecruitData = {
 
 export const FOOTER: FooterData = {
   brand: 'InnOSeed',
-  tagline: ['中南大学计算机学院 · 一个以种子为名的实验室。', 'different thinkers 的俱乐部。'],
+  tagline: [TAGLINE, 'different thinkers 的俱乐部。'],
   copyright: '© 2025 InnOSeed Lab. 保留所有权利.',
   navHeading: '导航',
   navLinks: [

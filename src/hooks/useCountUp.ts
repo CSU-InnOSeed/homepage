@@ -35,6 +35,13 @@ export interface CountUpConfig {
  * The suffix is intentionally NOT written into the counter element; the
  * caller is expected to render it as a sibling <span class="num-suffix">.
  * (See Numbers.tsx for the layout.)
+ *
+ * Honors `prefers-reduced-motion: reduce` — if the user (or OS) has
+ * asked for reduced motion, the counter skips the rAF tween and writes
+ * the final value directly. A `change` listener on the same media
+ * query lets us react if the user toggles the system setting while
+ * the page is open (the count hasn't started yet → write final value
+ * and stop; or already tweening → snap to final).
  */
 export default function useCountUp(
   ref: RefObject<HTMLElement | null>,
@@ -44,17 +51,53 @@ export default function useCountUp(
     const el = ref.current;
     if (!el) return undefined;
 
+    // Reduced-motion short-circuit. Also subscribe to `change` so
+    // users who flip the OS setting while the page is open see the
+    // final value without a 2.2-second tween.
+    if (typeof window !== 'undefined') {
+      const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+      const writeFinal = () => {
+        el.textContent = String(target);
+      };
+      if (mq.matches) {
+        writeFinal();
+        // Even when reduced-motion is on at mount, listen for changes
+        // — if the user disables it, the next IO hit should run the
+        // tween, so we just ensure the element holds the final value
+        // until that fires.
+        mq.addEventListener('change', writeFinal);
+        return () => mq.removeEventListener('change', writeFinal);
+      }
+    }
+
     const animate = () => {
       el.textContent = '0';
       const startTs = performance.now();
+      let rafId = 0;
       const tick = (now: number) => {
         const t = Math.min((now - startTs) / duration, 1);
         const v = Math.round(target * easeOutQuart(t));
         el.textContent = String(v);
-        if (t < 1) requestAnimationFrame(tick);
+        if (t < 1) rafId = requestAnimationFrame(tick);
         else el.textContent = String(target);
       };
-      requestAnimationFrame(tick);
+      rafId = requestAnimationFrame(tick);
+      // If the user flips reduced-motion ON mid-tween, snap to final
+      // and cancel the next frame.
+      const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+      const snap = () => {
+        if (mq.matches) {
+          el.textContent = String(target);
+          cancelAnimationFrame(rafId);
+        }
+      };
+      mq.addEventListener('change', snap);
+      // animate() is called once after IO fires; cleanup the snap
+      // listener when the tween ends.
+      const onEnd = () => mq.removeEventListener('change', snap);
+      // Use a tiny extra frame to attach the cleanup after the tween
+      // has settled; duration + small margin is fine.
+      setTimeout(onEnd, duration + 50);
     };
 
     if (threshold !== 0.4) {

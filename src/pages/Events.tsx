@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import Events from '../components/Events';
 import { EVENTS } from '../content/site';
 import useReveal from '../hooks/useReveal';
+import usePageMeta from '../hooks/usePageMeta';
 
 /**
  * /events — 独立"活动"页面
@@ -21,14 +22,14 @@ export default function EventsPage() {
     window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
   }, []);
 
-  // Per-route title — fix stage-1 X1 (synthesis).
-  useEffect(() => {
-    const prev = document.title;
-    document.title = '活动 · InnOSeed Lab';
-    return () => {
-      document.title = prev;
-    };
-  }, []);
+  // Per-route SEO (stage-2 D1): title + description + canonical. Description
+  // is hand-tuned for /events — the home page description is shorter.
+  usePageMeta({
+    title: '活动 · InnOSeed Lab',
+    description:
+      'InnOSeed 的活动:招新季 Mini Camp、tech talk、企业参访。了解上一届招新是怎么跑的。',
+    canonical: '/events',
+  });
 
   return (
     <main id="main" tabIndex={-1}>

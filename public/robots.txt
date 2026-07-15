@@ -1,0 +1,19 @@
+# robots.txt — InnOSeed Lab
+#
+# /apply is an interactive 4-step flow that depends on JS to work, so
+# asking crawlers to fetch + index it just produces a useless page in
+# search results. The route itself also sends noindex via the
+# usePageMeta hook, but robots.txt is the first signal and the
+# cheaper one for compliant crawlers.
+#
+# All other routes are indexable.
+#
+# If you proxy a custom domain (innoseed.club, etc.) to this Vercel
+# project, update the Sitemap line below to point at the production
+# canonical. The sitemap itself is regenerated when content changes.
+
+User-agent: *
+Allow: /
+Disallow: /apply
+
+Sitemap: https://innoseed.club/sitemap.xml

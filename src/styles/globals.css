@@ -1932,6 +1932,21 @@ main .page-header-desc {
 
 /* ===================== A11Y ===================== */
 
+/* visually-hidden: stays in the a11y tree (so aria-describedby can
+   resolve) but is invisible and takes no layout space. Used by the
+   disabled-button hints in /apply (stage-2 a11y #9). */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 /* Skip-link: visually hidden until focused, then jumps past the nav. */
 .skip-link {
   position: absolute;

@@ -39,18 +39,20 @@
 
     <!-- Preload hero image (above-fold LCP candidate).
          imagesrcset + imagesizes lets the browser pick the variant that
-         matches its viewport: phones preload 480w (~18 KB), desktop
-         preloads 1440w (~84 KB). Chrome/Edge/Firefox support this; older
-         Safari falls back to the 480w WebP href. -->
+         matches its viewport: phones preload 480w (~14 KB AVIF / ~18 KB
+         WebP fallback), desktop preloads 1440w (~68 KB AVIF / ~84 KB
+         WebP). Chrome/Edge/Firefox support imagesrcset; older Safari
+         falls back to the 480w href. AVIF first because it's ~20 %
+         smaller than WebP and supported by every evergreen browser. -->
     <!-- Source banner.jpg is 1828x1010 — 1920w srcset would require
          upscaling and is intentionally omitted. 1440w is the sharpest
          option shipped; ≥1441px DPR-1 viewports still pick it. -->
     <link
       rel="preload"
       as="image"
-      type="image/webp"
-      href="/imgs/banner-480.webp"
-      imagesrcset="/imgs/banner-480.webp 480w, /imgs/banner-960.webp 960w, /imgs/banner-1440.webp 1440w"
+      type="image/avif"
+      href="/imgs/banner-480.avif"
+      imagesrcset="/imgs/banner-480.avif 480w, /imgs/banner-960.avif 960w, /imgs/banner-1440.avif 1440w"
       imagesizes="100vw"
       fetchpriority="high"
     />

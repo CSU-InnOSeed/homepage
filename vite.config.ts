@@ -1,6 +1,7 @@
 import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
 import { execSync } from 'node:child_process';
+import { TAGLINE } from './src/content/site';
 
 /**
  * Vite config for InnOSeed landing.
@@ -17,7 +18,14 @@ import { execSync } from 'node:child_process';
  *      VITE_ANALYTICS_DOMAIN overrides the default data-domain.
  *      unset → no bytes shipped.
  *
- *   3. (none)              → VITE_ANALYTICS_ENDPOINT (used by observability
+ *   3. inject-tagline     → <meta name="description"> /
+ *                           <meta property="og:description"> /
+ *                           <meta name="twitter:description">
+ *                           Pulled from src/content/site.ts TAGLINE so
+ *                           the static initial-paint meta agrees with
+ *                           the SPA's per-route meta (item 6).
+ *
+ *   4. (none)              → VITE_ANALYTICS_ENDPOINT (used by observability
  *      at runtime, not injected into HTML) routes custom event POSTs to
  *      your own collector when you want Plausible/Umami in addition.
  */
@@ -92,6 +100,36 @@ export default defineConfig(({ mode }) => {
             // primary domain to Vercel.
             const tag = `<script defer data-domain="${analyticsDomain}" src="${analyticsUrl}"></script>`;
             return html.replace('</head>', `    ${tag}\n  </head>`);
+          },
+        },
+      },
+      {
+        // Single source of truth for the tagline: src/content/site.ts
+        // exports TAGLINE; we rewrite the three initial-paint meta
+        // descriptions in index.html to match it. Without this the
+        // initial HTML payload would disagree with the SPA's per-route
+        // description (set via usePageMeta) and crawlers / link
+        // unshorteners that scrape the static HTML would index the
+        // old wording.
+        name: 'inject-tagline',
+        transformIndexHtml: {
+          order: 'post',
+          handler(html) {
+            // Match each meta tag whose content the hook should own,
+            // then replace the quoted content with the TAGLINE-derived
+            // value. Anchoring on the attribute name keeps the
+            // replacement narrow so we never accidentally touch any
+            // other meta description that the page might add later.
+            const rewrite = (input: string, attr: 'name' | 'property', key: string): string =>
+              input.replace(
+                new RegExp(`(<meta\\s+${attr}="${key}"[^>]*content=")[^"]*(")`),
+                (_, prefix, suffix) => `${prefix}${TAGLINE}${suffix}`
+              );
+            let out = html;
+            out = rewrite(out, 'name', 'description');
+            out = rewrite(out, 'property', 'og:description');
+            out = rewrite(out, 'name', 'twitter:description');
+            return out;
           },
         },
       },
