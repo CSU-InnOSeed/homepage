@@ -81,7 +81,7 @@ pnpm test:e2e                     # 29 个烟雾测试 (~12s)
 | `/` | `App.tsx` 默认分支 | 9 个 section 组件 + `Nav` + `Footer` |
 | `/apply` | `pages/Apply.tsx` | 4 步表单,自身管 step state,**不**渲染 `Nav` / `Footer` (用户从 Hero CTA 进入) |
 | `/events` `/recruit` | `pages/Events.tsx` / `pages/Recruit.tsx` | 渲染 `Nav` + 复用 `components/Events` / `components/Recruit` (传 `showHead={false}` 避免双 h2) + `Footer` |
-| `/minicamp` | `pages/MiniCamp.tsx` | Mini Camp 招新专用页。`minicamp.innoseed.club/` 根路径会被 `App.tsx` 同步 `<Navigate>` 重定向到这里。子域名下用 `SubdomainHeader` / `SubdomainFooter` 极简 chrome;主站下走完整 `Nav` + `Footer`。内容数据在 `src/content/site.ts` 的 `MINICAMP` 块 |
+| `/minicamp` | `pages/MiniCamp.tsx` | Mini Camp 活动介绍/回顾页。`minicamp.innoseed.club/` 根路径会被 `App.tsx` 同步 `<Navigate>` 重定向到这里。子域名下用 `SubdomainHeader` / `SubdomainFooter` 极简 chrome;主站下走完整 `Nav` + `Footer`。内容数据在 `src/content/site.ts` 的 `MINICAMP` 块 |
 | `*` | `pages/NotFound.tsx` | 走 Vercel 404 兜底,前端 NotFound 兜客户端路由 |
 
 **section id 锚点(供 nav 跳转)**:`#top` `#manifesto` `#pillars` `#members` `#events` `#recruit`。新增 section 必须:① 加 id ② 同步 `NAV_LINKS` ③ 跑 `pnpm test:e2e` 验 `checkNavSmoothScroll` 还过。

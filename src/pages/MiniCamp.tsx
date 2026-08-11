@@ -4,7 +4,7 @@ import Nav from '../components/Nav';
 import Footer from '../components/Footer';
 import useReveal from '../hooks/useReveal';
 import usePageMeta from '../hooks/usePageMeta';
-import { MINICAMP, EVENTS, RECRUIT_EXTRAS, BRAND, CONTACT_EMAIL } from '../content/site';
+import { MINICAMP, EVENTS, BRAND, CONTACT_EMAIL } from '../content/site';
 import './MiniCamp.css';
 
 /**
@@ -20,8 +20,7 @@ import './MiniCamp.css';
  *   - Chrome 自适应:子域名下用极简头(品牌 + 回主站);主站下用全 Nav,
  *     保持一致导航体验。
  *   - 内容沿用 PILLARS 的 4 色 accent 给 4 个分路上色,复用 EVENTS 中
- *     上一届 Mini Camp 条目,以及 RECRUIT_EXTRAS.timeline 的 4 步招新
- *     时间线 — 数据单源在 site.ts。
+ *     上一届 Mini Camp 活动条目 — 数据单源在 site.ts。
  */
 
 function isMiniCampHost(): boolean {
@@ -41,9 +40,9 @@ export default function MiniCamp() {
 
   // Per-route SEO. Description 专为 Mini Camp 写,跟首页的简短描述区分。
   usePageMeta({
-    title: 'Mini Camp · InnOSeed 招新',
+    title: 'Mini Camp 活动 · InnOSeed',
     description:
-      'InnOSeed 招新不做宣讲——一个白天的 Mini Camp,4 路分头(产品/技术/设计/创业)产出原型 + 现场 Demo + 当场反馈。这是 InnOSeed 招新流程的核心环节。',
+      'InnOSeed 准备过的一场 Mini Camp 活动:一个白天,4 路分头(产品/技术/设计/创业)产出原型 + 现场 Demo + 当场反馈。',
     canonical: '/minicamp',
   });
 
@@ -70,12 +69,6 @@ export default function MiniCamp() {
               {MINICAMP.headline.lead} <em>{MINICAMP.headline.accent}</em>
             </h1>
             <p className="page-header-desc">{MINICAMP.lead}</p>
-            <div className="minicamp-hero-cta">
-              <Link to={MINICAMP.cta.href} className="btn btn-primary">
-                <span>{MINICAMP.cta.label}</span>
-                <span className="arrow">{MINICAMP.cta.arrow}</span>
-              </Link>
-            </div>
           </div>
         </header>
 
@@ -141,45 +134,6 @@ export default function MiniCamp() {
           </section>
         )}
 
-        <section className="minicamp-timeline">
-          <div className="container">
-            <span className="eyebrow">招新流程</span>
-            <h2>
-              走到 Mini Camp 之前的<em>三步</em>。
-            </h2>
-            <ol className="minicamp-timeline-list">
-              {RECRUIT_EXTRAS.timeline.map((step) => (
-                <li
-                  key={step.index}
-                  className={`minicamp-timeline-step pillar-${step.phase}`}
-                >
-                  <span className="minicamp-timeline-when">{step.when}</span>
-                  <h3 className="minicamp-timeline-title">{step.title}</h3>
-                  <p className="minicamp-timeline-desc">{step.desc}</p>
-                </li>
-              ))}
-            </ol>
-          </div>
-        </section>
-
-        <section className="minicamp-cta">
-          <div className="container">
-            <h2>准备好来 Mini Camp 了?</h2>
-            <p>
-              填一份申请(几分钟),生成你的个性标签代码,
-              再到飞书表单提交简历 + 标签。我们 3 天内回复是否进入 Mini Camp。
-            </p>
-            <div className="minicamp-cta-row">
-              <Link to={MINICAMP.cta.href} className="btn btn-primary">
-                <span>{MINICAMP.cta.label}</span>
-                <span className="arrow">{MINICAMP.cta.arrow}</span>
-              </Link>
-              <a className="btn btn-ghost" href={`mailto:${CONTACT_EMAIL}`}>
-                联系我们: {CONTACT_EMAIL}
-              </a>
-            </div>
-          </div>
-        </section>
       </main>
       {onSubdomain ? <SubdomainFooter /> : <Footer />}
     </>
@@ -223,7 +177,7 @@ function SubdomainFooter() {
     <footer className="minicamp-subdomain-foot">
       <div className="container">
         <span>
-          © {BRAND} Lab · Mini Camp 招新专用页
+          © {BRAND} Lab · Mini Camp 活动页
         </span>
         <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
       </div>

@@ -420,10 +420,10 @@ export const FOOTER: FooterData = {
  * type 字段使用与 PILLARS 一致的色板:
  *   camp   → research (深绿)
  *
- * 现状(2026 年 7 月):2025 招新季只办了一个 Mini Camp(9 月 · 一个白天),
- * 没有宣讲,没有面试开放日,统一标 'past'。
+ * 现状(2026 年 7 月):2025 年准备过一场 Mini Camp(9 月 · 一个白天),
+ * 作为独立活动统一标 'past'。
  *
- * 2026 招新形式还在定,等定了再加新条目,不要凭印象提前占位。
+ * 2026 年活动安排还在定,等定了再加新条目,不要凭印象提前占位。
  *
  * 添加新活动:在这里加一条即可,渲染端 (Events.tsx) 会自动渲染。
  * 若需要更多自定义字段(报名链接/海报图),扩展 EventItem 接口。
@@ -431,7 +431,7 @@ export const FOOTER: FooterData = {
 export const EVENTS: EventsData = {
   eyebrow: '07 — What\'s On',
   headline: { lead: '上届活动回顾', accent: '2025·09' },
-  intro: '上一届招新季(2025 秋季)只办了一个 Mini Camp。2026 招新正在筹备中,形式待定 —— 关注我们获取最新信息。',
+  intro: '2025 年我们准备过一场 Mini Camp,作为一次独立的共创活动。2026 年的活动安排正在筹备中,形式待定 —— 关注我们获取最新信息。',
   items: [
     {
       key: 'mini-camp-fall-2025',
@@ -441,7 +441,7 @@ export const EVENTS: EventsData = {
       date: '2025 · 09',
       title: '2025 秋季 Mini Camp',
       subtitle: '一个白天 · 9 月举行',
-      body: 'InnOSeed 招新不做宣讲 —— 候选人直接聚到一起,一个白天跑完 Mini Camp。每届固定 8-9 人,4 路分头(产品 / 技术 / 设计 / 创业),每路 2-3 人组队,产出原型 + 现场 Demo + 当场反馈。',
+      body: 'InnOSeed 曾准备一场 Mini Camp —— 参与者直接聚到一起,一个白天完成一次共创。4 路分头(产品 / 技术 / 设计 / 创业),每路 2-3 人组队,产出原型 + 现场 Demo + 当场反馈。',
       where: '具体地点见当时通知',
     },
   ],
@@ -453,7 +453,7 @@ export const EVENTS: EventsData = {
  * timeline 沿用 PILLARS 的 4 色 accent 给每个阶段配色。
  * faqs 短小精悍,每条不超过 2 行。
  *
- * 当前显示的是 2025 招新流程(已结束,作为参考)。
+ * 当前显示的是 2025 招新流程(已结束,作为参考),不包含独立活动 Mini Camp。
  * 2026 招新时间表待定 — 访问者看到的是历史参考,实际时间以当年通知为准。
  */
 export const RECRUIT_EXTRAS: RecruitExtras = {
@@ -473,18 +473,11 @@ export const RECRUIT_EXTRAS: RecruitExtras = {
       desc: '与你选的面试官一对一聊聊。问题不背题,重点看你怎么思考和怎么表达。',
     },
     {
-      phase: 'startup',
+      phase: 'bonds',
       index: 3,
       when: '2025 · 09',
-      title: 'Mini Camp · 一个白天',
-      desc: '候选人聚到一起,4 路分头(产品 / 技术 / 设计 / 创业)做一个原型 + 现场 Demo + 当场反馈。这是我们判断"能不能一起做事"的最终环节。',
-    },
-    {
-      phase: 'bonds',
-      index: 4,
-      when: '2025 · 09',
       title: '正式 offer',
-      desc: 'Mini Camp 之后 3 天内发出 offer。从此刻起,InnOSeed 是你的另一个家。',
+      desc: '完成面试后 3 天内发出 offer。从此刻起,InnOSeed 是你的另一个家。',
     },
   ],
   faqs: [
@@ -504,10 +497,6 @@ export const RECRUIT_EXTRAS: RecruitExtras = {
       q: '招新期间我可以参加其他社团 / 实验室吗?',
       a: '可以。我们本身鼓励多元尝试 —— InnOSeed 不是一个会消耗你所有时间的组织,前提是你认真。',
     },
-    {
-      q: 'Mini Camp 是必须的吗?',
-      a: '是。它是 InnOSeed 招新流程的核心 —— 我们通过一个白天的 Mini Camp 一起做事判断你适不适合这里。',
-    },
   ],
 };
 
@@ -515,7 +504,7 @@ export const RECRUIT_EXTRAS: RecruitExtras = {
  * MiniCamp — `minicamp.innoseed.club` 子域名的内容源
  *
  * 这个页面复用 PILLARS 的 4 色 accent (compete/research/startup/bonds) 给
- * 4 个分路上色,以及 EVENTS / RECRUIT_EXTRAS 中已有的 Mini Camp 素材。
+ * 4 个分路上色,以及 EVENTS 中已有的 Mini Camp 活动素材。
  *
  * 域名检测在 MiniCamp.tsx 里做;此处只关心内容。
  */
@@ -542,19 +531,17 @@ export interface MiniCampData {
   paragraphs: string[];
   /** 4 个分路 */
   tracks: MiniCampTrack[];
-  /** CTA 按钮(指 /apply) */
-  cta: HeroCta;
 }
 
 export const MINICAMP: MiniCampData = {
-  eyebrow: 'Mini Camp · InnOSeed 招新',
-  headline: { lead: '一个白天的', accent: '招新。' },
+  eyebrow: 'Mini Camp · InnOSeed 活动',
+  headline: { lead: '一个白天的', accent: '共创活动。' },
   lead:
-    'InnOSeed 招新不做宣讲、不做群面——候选人和我们聚到一起，一个白天做完事。这是 Mini Camp。',
+    'Mini Camp 是 InnOSeed 准备过的一场活动：大家聚到一起，一个白天把想法做成原型、跑通 Demo，再当面交流反馈。',
   paragraphs: [
-    '候选人按 <strong>产品 / 技术 / 设计 / 创业</strong> 四路分头，每路 2-3 人自由组队。',
+    '大家按 <strong>产品 / 技术 / 设计 / 创业</strong> 四路分头，每路 2-3 人自由组队。',
     '一个白天的产出：原型 + 现场 Demo + 当场反馈。我们看的不是"做完了什么"，而是"怎么想的、怎么表达的、怎么和队友合作的"。',
-    'Mini Camp 是 InnOSeed 招新流程的核心——它是判断"能不能一起做事"的最终环节。',
+    'Mini Camp 不是招新流程，而是一次把不同想法带到一起、一起做点事情的活动。',
   ],
   tracks: [
     {
@@ -586,5 +573,4 @@ export const MINICAMP: MiniCampData = {
       desc: '想清楚目标用户是谁、怎么触达、第一次验证怎么做。可以是一段客户访谈、一份落地页、或者一个 landing。',
     },
   ],
-  cta: { label: '立即申请 · Apply Now', arrow: '→', href: '/apply' },
 };

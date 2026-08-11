@@ -9,16 +9,6 @@
   font-family: var(--ff-sans);
 }
 
-/* ── Hero CTA row ─────────────────────────────────────────── */
-
-.minicamp-hero-cta {
-  margin-top: 32px;
-  display: flex;
-  gap: 16px;
-  flex-wrap: wrap;
-  align-items: center;
-}
-
 /* ── Subdomain chrome (minicamp.innoseed.club 头/尾) ───────── */
 
 .minicamp-subdomain-head {
@@ -246,101 +236,10 @@
   height: 14px;
 }
 
-/* ── Timeline (4 步) ──────────────────────────────────────── */
-
-.minicamp-timeline {
-  padding: clamp(64px, 10vw, 120px) 0;
-  background: var(--bg-base);
-  border-top: 1px solid var(--rule);
-}
-.minicamp-timeline h2 {
-  margin-top: 8px;
-  font-family: var(--ff-zh-serif);
-  font-size: clamp(26px, 3vw, 40px);
-  line-height: 1.2;
-  color: var(--ink-dark);
-}
-.minicamp-timeline h2 em {
-  font-style: italic;
-  color: var(--c-research);
-}
-.minicamp-timeline-list {
-  list-style: none;
-  padding: 0;
-  margin: 40px 0 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: 20px;
-}
-.minicamp-timeline-step {
-  position: relative;
-  padding: 22px 22px 22px 24px;
-  background: var(--bg-cream);
-  border: 1px solid var(--rule);
-  border-radius: var(--radius-md);
-  border-left: 4px solid var(--step-color, var(--ink-faint));
-}
-.minicamp-timeline-step.pillar-compete { --step-color: var(--c-compete); }
-.minicamp-timeline-step.pillar-research { --step-color: var(--c-research); }
-.minicamp-timeline-step.pillar-startup { --step-color: var(--c-startup); }
-.minicamp-timeline-step.pillar-bonds { --step-color: var(--c-bonds); }
-.minicamp-timeline-when {
-  display: block;
-  font-family: var(--ff-display);
-  font-style: italic;
-  font-size: 13px;
-  letter-spacing: 0.06em;
-  color: var(--step-color);
-  margin-bottom: 8px;
-}
-.minicamp-timeline-title {
-  font-family: var(--ff-zh-serif);
-  font-weight: 700;
-  font-size: 18px;
-  color: var(--ink-dark);
-  margin: 0 0 8px;
-}
-.minicamp-timeline-desc {
-  font-size: 13px;
-  line-height: 1.7;
-  color: var(--ink-muted);
-}
-
-/* ── Bottom CTA ───────────────────────────────────────────── */
-
-.minicamp-cta {
-  padding: clamp(64px, 10vw, 120px) 0;
-  border-top: 1px solid var(--rule);
-  background: var(--bg-cream);
-}
-.minicamp-cta h2 {
-  font-family: var(--ff-zh-serif);
-  font-size: clamp(26px, 3vw, 40px);
-  line-height: 1.2;
-  color: var(--ink-dark);
-  margin: 0 0 12px;
-}
-.minicamp-cta p {
-  max-width: 720px;
-  font-size: 15px;
-  line-height: 1.85;
-  color: var(--ink-mid);
-}
-.minicamp-cta-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
-  align-items: center;
-  margin-top: 28px;
-}
-
 /* ── Mobile ───────────────────────────────────────────────── */
 
 @media (max-width: 720px) {
   .minicamp-track-grid {
-    grid-template-columns: 1fr;
-  }
-  .minicamp-timeline-list {
     grid-template-columns: 1fr;
   }
   .minicamp-subdomain-foot .container {

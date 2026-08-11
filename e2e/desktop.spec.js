@@ -71,12 +71,13 @@ test.describe('desktop @ 1440x900', () => {
       );
     }, null, { timeout: 5000 });
 
-    // Click each FAQ button in turn (all 5 start closed now — openIdx=-1
+    // Click every FAQ button in turn (all start closed now — openIdx=-1
     // was previously 0, which auto-opened item 0 and felt like a leaky
-    // default) and after every click assert all 5 items are still
-    // visible. The bug manifested as the open+closed items losing `.in`
-    // while the rest kept it — checking ALL items catches that.
-    for (let i = 0; i < 5; i++) {
+    // default) and after every click assert all items are still visible.
+    // The bug manifested as the open+closed items losing `.in` while the
+    // rest kept it — checking ALL items catches that.
+    const faqCount = await page.locator('.rf-item').count();
+    for (let i = 0; i < faqCount; i++) {
       await page.locator('.rf-item').nth(i).locator('.rf-q').click();
       await page.waitForFunction((idx) => {
         const items = document.querySelectorAll('.rf-item');

@@ -12,7 +12,7 @@
 | `/apply` | `Apply` (4 步: Guide → Pick Interviewer → Application → Done) | 招新表单 → POST `/api/apply` |
 | `/events` | `Nav + EventsPage + Footer` | 复刻首页 `#events` section |
 | `/recruit` | `Nav + RecruitPage + Footer` | 复刻首页 `#recruit` section + 时间线 + FAQ |
-| `/minicamp` | `MiniCampPage` | Mini Camp 招新专用页;`minicamp.innoseed.club/` 根路径也走这条 |
+| `/minicamp` | `MiniCampPage` | Mini Camp 活动介绍/回顾页;`minicamp.innoseed.club/` 根路径也走这条 |
 | `*` | `NotFound` | 服务端由 Vercel `dist/404.html` 先返回 404 |
 
 ## 技术栈
@@ -135,7 +135,7 @@ build 时由 `vite.config.ts` 的两个内联插件处理:
 
 ## 子域名 (minicamp.innoseed.club)
 
-Mini Camp 招新专用子域名。**不**需要新建 Vercel project — 同一个 SPA 多绑一个域名:
+Mini Camp 活动专用子域名。**不**需要新建 Vercel project — 同一个 SPA 多绑一个域名:
 
 1. Vercel dashboard → `innoseed-landing` → Settings → Domains → 添加 `minicamp.innoseed.club`
 2. DNS provider 加 Vercel `vercel domains verify minicamp.innoseed.club` 输出的 CNAME。当前项目返回:

@@ -13,7 +13,7 @@ import { test, expect } from '@playwright/test';
 test.describe('minicamp @ /minicamp route', () => {
   test.use({ viewport: { width: 1280, height: 900 } });
 
-  test('renders the page header, tracks, past camp, timeline, and CTA', async ({ page }) => {
+  test('renders the activity header, tracks, and past camp', async ({ page }) => {
     await page.goto('/minicamp');
     await expect(page.locator('.minicamp-page')).toBeVisible();
 
@@ -35,14 +35,10 @@ test.describe('minicamp @ /minicamp route', () => {
     await expect(page.locator('.minicamp-past')).toBeVisible();
     await expect(page.locator('.minicamp-past h2')).toContainText('2025 秋季 Mini Camp');
 
-    // Timeline 4 steps
-    const steps = page.locator('.minicamp-timeline-step');
-    await expect(steps).toHaveCount(4);
-
-    // Bottom CTA leads to /apply
-    const applyLink = page.locator('.minicamp-cta a[href="/apply"]').first();
-    await expect(applyLink).toBeVisible();
-    await expect(applyLink).toHaveAttribute('href', '/apply');
+    // Mini Camp is an activity page, not a recruitment flow.
+    await expect(page.locator('.minicamp-page')).toContainText('不是招新流程');
+    await expect(page.locator('.minicamp-timeline')).toHaveCount(0);
+    await expect(page.locator('.minicamp-cta')).toHaveCount(0);
   });
 
   test('on the main domain the page shows full Nav (not subdomain chrome)', async ({ page }) => {

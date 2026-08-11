@@ -27,7 +27,7 @@ export default function EventsPage() {
   usePageMeta({
     title: '活动 · InnOSeed Lab',
     description:
-      'InnOSeed 的活动:招新季 Mini Camp、tech talk、企业参访。了解上一届招新是怎么跑的。',
+      'InnOSeed 的活动:Mini Camp、tech talk、企业参访。了解我们准备过的一场 Mini Camp。',
     canonical: '/events',
   });
 
