@@ -1,5 +1,5 @@
 import { lazy, Suspense, useRef } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Nav from './components/Nav';
 import Hero from './components/Hero';
 import Organization from './components/SEO/Organization';
@@ -57,6 +57,7 @@ const Footer = lazy(() => import('./components/Footer'));
 const Apply = lazy(() => import('./pages/Apply'));
 const EventsPage = lazy(() => import('./pages/Events'));
 const RecruitPage = lazy(() => import('./pages/Recruit'));
+const MiniCampPage = lazy(() => import('./pages/MiniCamp'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 
 /**
@@ -146,25 +147,43 @@ export default function App() {
           }
         />
         <Route
+          path="/minicamp"
+          element={
+            <Suspense fallback={<PageFallback />}>
+              <MiniCampPage />
+            </Suspense>
+          }
+        />
+        <Route
           path="/"
           element={
-            <>
-              <Nav />
-              <main id="main" ref={mainRef} tabIndex={-1}>
-                <Hero />
-                <Suspense fallback={null}>
-                  <Marquee />
-                  <Manifesto />
-                  <Pillars />
-                  <Numbers />
-                  <Members />
-                  <Inside />
-                  <Events />
-                  <Recruit />
-                  <Footer />
-                </Suspense>
-              </main>
-            </>
+            // Subdomain detection — when served from `minicamp.<root>`,
+            // route root directly to /minicamp so the URL stays shareable
+            // (minicamp.innoseed.club/minicamp) and the dedicated page
+            // renders. Other subdomains (or the main domain) get the
+            // landing page as usual. Done synchronously before render so
+            // there's no landing-page flash on subdomain root.
+            typeof window !== 'undefined' && window.location.hostname.startsWith('minicamp.') ? (
+              <Navigate to="/minicamp" replace />
+            ) : (
+              <>
+                <Nav />
+                <main id="main" ref={mainRef} tabIndex={-1}>
+                  <Hero />
+                  <Suspense fallback={null}>
+                    <Marquee />
+                    <Manifesto />
+                    <Pillars />
+                    <Numbers />
+                    <Members />
+                    <Inside />
+                    <Events />
+                    <Recruit />
+                    <Footer />
+                  </Suspense>
+                </main>
+              </>
+            )
           }
         />
         <Route

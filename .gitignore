@@ -42,3 +42,9 @@ vite.config.d.ts
 # tsc -p tsconfig.node.json emits vite.config.js as a side effect.
 # Source of truth is vite.config.ts; the .js is regenerated on demand.
 vite.config.js
+
+# tsconfig.node.json includes src/content/site.ts with composite:true,
+# which emits site.js + site.d.ts as cross-project ref artifacts. Source
+# of truth is src/content/site.ts.
+src/content/site.js
+src/content/site.d.ts

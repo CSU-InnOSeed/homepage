@@ -510,3 +510,81 @@ export const RECRUIT_EXTRAS: RecruitExtras = {
     },
   ],
 };
+
+/**
+ * MiniCamp — `minicamp.innoseed.club` 子域名的内容源
+ *
+ * 这个页面复用 PILLARS 的 4 色 accent (compete/research/startup/bonds) 给
+ * 4 个分路上色,以及 EVENTS / RECRUIT_EXTRAS 中已有的 Mini Camp 素材。
+ *
+ * 域名检测在 MiniCamp.tsx 里做;此处只关心内容。
+ */
+export interface MiniCampTrack {
+  /** 与 PillarKey 一致 — 复用 4 色 token */
+  pillarKey: 'compete' | 'research' | 'startup' | 'bonds';
+  /** 序号,1-based */
+  index: number;
+  /** 分路名(显示) */
+  name: string;
+  /** 一句概括 */
+  one: string;
+  /** 详细说明 */
+  desc: string;
+}
+
+export interface MiniCampData {
+  eyebrow: string;
+  /** 主标题两行:lead + accent(em) */
+  headline: { lead: string; accent: string };
+  /** hero 下面的引导段 */
+  lead: string;
+  /** 正文段落(可含简单 HTML,如 <strong>) */
+  paragraphs: string[];
+  /** 4 个分路 */
+  tracks: MiniCampTrack[];
+  /** CTA 按钮(指 /apply) */
+  cta: HeroCta;
+}
+
+export const MINICAMP: MiniCampData = {
+  eyebrow: 'Mini Camp · InnOSeed 招新',
+  headline: { lead: '一个白天的', accent: '招新。' },
+  lead:
+    'InnOSeed 招新不做宣讲、不做群面——候选人和我们聚到一起，一个白天做完事。这是 Mini Camp。',
+  paragraphs: [
+    '候选人按 <strong>产品 / 技术 / 设计 / 创业</strong> 四路分头，每路 2-3 人自由组队。',
+    '一个白天的产出：原型 + 现场 Demo + 当场反馈。我们看的不是"做完了什么"，而是"怎么想的、怎么表达的、怎么和队友合作的"。',
+    'Mini Camp 是 InnOSeed 招新流程的核心——它是判断"能不能一起做事"的最终环节。',
+  ],
+  tracks: [
+    {
+      pillarKey: 'compete',
+      index: 1,
+      name: '产品',
+      one: '定义要解决的问题。',
+      desc: '从用户场景出发，写一句话问题，列 3 条假设，画一张草图。你来定义这个白天到底要做什么。',
+    },
+    {
+      pillarKey: 'research',
+      index: 2,
+      name: '技术',
+      one: '把原型跑起来。',
+      desc: '不要求代码多漂亮。能用最直接的方式证明"这个东西确实能跑"就够了——贴一个 demo URL 或者一段录屏即可。',
+    },
+    {
+      pillarKey: 'startup',
+      index: 3,
+      name: '设计',
+      one: '把体验做顺。',
+      desc: '信息架构、关键页面的视觉稿、用户路径。你不需要是设计师，但需要能把"用户怎么走完这件事"讲清楚。',
+    },
+    {
+      pillarKey: 'bonds',
+      index: 4,
+      name: '创业',
+      one: '把想法推到市场前。',
+      desc: '想清楚目标用户是谁、怎么触达、第一次验证怎么做。可以是一段客户访谈、一份落地页、或者一个 landing。',
+    },
+  ],
+  cta: { label: '立即申请 · Apply Now', arrow: '→', href: '/apply' },
+};
