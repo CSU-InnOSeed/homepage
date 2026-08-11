@@ -48,3 +48,7 @@ vite.config.js
 # of truth is src/content/site.ts.
 src/content/site.js
 src/content/site.d.ts
+# oh-my-claudecode (OMC) operational state — runtime sessions,
+# notepads, plans, handoffs, project memory. Never source of truth.
+# If team-shared skills ever land here later, add `!.omc/skills/`.
+.omc/

@@ -79,6 +79,10 @@
   .apply-header { flex-direction: column; align-items: flex-start; }
   .apply-progress { width: 100%; justify-content: flex-start; }
   .apply-step-pill .title { display: none; }
+
+  /* CTAs — stack vertically and fill width for thumb-friendly tap targets */
+  .apply-cta-row { flex-direction: column; align-items: stretch; }
+  .apply-cta-row .btn { width: 100%; justify-content: center; }
 }
 
 /* ── Main content ─────────────────────────────────────────────────── */
