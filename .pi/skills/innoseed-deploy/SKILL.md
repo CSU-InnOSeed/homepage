@@ -109,16 +109,19 @@ docs(ag): document deploy workflow
 to `/index.html` — same SPA serves every host. To bind a new subdomain:
 
 ```bash
-# A. Vercel side (browser-only, can't be scripted from CLI):
-#    1. Vercel dashboard → innoseed-landing → Settings → Domains.
-#    2. Add the new domain (e.g. minicamp.innoseed.club). Vercel tells
-#       you the target (usually cname.vercel-dns.com).
+# A. Vercel side (browser or CLI):
+#    1. Vercel dashboard → innoseed-landing → Settings → Domains, or:
+#       vercel domains add <subdomain> innoseed-landing
+#    2. Run `vercel domains verify <subdomain>` to get the exact target.
+#       The current minicamp target is:
+#       CNAME  minicamp  →  9293a6f6fcfa0256.vercel-dns-017.com
 #    3. Wait for Vercel to issue the SSL cert after DNS resolves.
 
 # B. DNS side (provider-specific, e.g. Cloudflare):
-#    CNAME  minicamp  →  cname.vercel-dns.com
+#    Use the exact CNAME target from `vercel domains verify`.
 #    Proxy: DNS only (off the orange cloud) — Cloudflare's proxy breaks
-#    Vercel's SSL issuance.
+#    Vercel's SSL issuance. Do not blindly use the generic
+#    cname.vercel-dns.com when Vercel returns a project-specific target.
 
 # C. Verify:
 curl -I https://minicamp.innoseed.club/      # 200 from Vercel

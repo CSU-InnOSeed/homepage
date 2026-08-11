@@ -138,7 +138,11 @@ build 时由 `vite.config.ts` 的两个内联插件处理:
 Mini Camp 招新专用子域名。**不**需要新建 Vercel project — 同一个 SPA 多绑一个域名:
 
 1. Vercel dashboard → `innoseed-landing` → Settings → Domains → 添加 `minicamp.innoseed.club`
-2. DNS provider 加 Vercel 给出的 CNAME (`minicamp` 子域名)
+2. DNS provider 加 Vercel `vercel domains verify minicamp.innoseed.club` 输出的 CNAME。当前项目返回:
+   - **Name**: `minicamp`
+   - **Target**: `9293a6f6fcfa0256.vercel-dns-017.com`
+   - **Proxy**: DNS only (关闭 Cloudflare orange cloud)
+   不要盲填通用的 `cname.vercel-dns.com`;以该命令当前输出为准。
 3. 路由逻辑在 [`src/App.tsx`](./src/App.tsx) 里:`/` 路径检测到 hostname 以 `minicamp.` 开头时,同步 `<Navigate>` 到 `/minicamp`,无 landing-page flash
 4. 同样 SPA 也支持 `innoseed.club/minicamp` 直接访问(供主站分享用)
 5. 内容由 [`src/pages/MiniCamp.tsx`](./src/pages/MiniCamp.tsx) 渲染,数据源在 [`src/content/site.ts`](./src/content/site.ts) 的 `MINICAMP` 块,沿用 PILLARS 的 4 色 accent 给产品/技术/设计/创业四路上色
