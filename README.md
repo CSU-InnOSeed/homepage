@@ -12,6 +12,7 @@
 | `/apply` | `Apply` (4 步: Guide → Pick Interviewer → Application → Done) | 招新表单 → POST `/api/apply` |
 | `/events` | `Nav + EventsPage + Footer` | 复刻首页 `#events` section |
 | `/recruit` | `Nav + RecruitPage + Footer` | 复刻首页 `#recruit` section + 时间线 + FAQ |
+| `/minicamp` | `MiniCampPage` | Mini Camp 招新专用页;`minicamp.innoseed.club/` 根路径也走这条 |
 | `*` | `NotFound` | 服务端由 Vercel `dist/404.html` 先返回 404 |
 
 ## 技术栈
@@ -131,6 +132,17 @@ build 时由 `vite.config.ts` 的两个内联插件处理:
    - **阿里云 / 腾讯云** → 按 Vercel 给的值填
 3. 等 DNS 传播 + Vercel 颁 SSL (5–30 分钟)
 4. 旧 SvelteKit 链接自动兼容: `mailto:contact@innoseed.club` / `innoseed.club/events` / `innoseed.club/recruit` 落到 v4 对应路由
+
+## 子域名 (minicamp.innoseed.club)
+
+Mini Camp 招新专用子域名。**不**需要新建 Vercel project — 同一个 SPA 多绑一个域名:
+
+1. Vercel dashboard → `innoseed-landing` → Settings → Domains → 添加 `minicamp.innoseed.club`
+2. DNS provider 加 Vercel 给出的 CNAME (`minicamp` 子域名)
+3. 路由逻辑在 [`src/App.tsx`](./src/App.tsx) 里:`/` 路径检测到 hostname 以 `minicamp.` 开头时,同步 `<Navigate>` 到 `/minicamp`,无 landing-page flash
+4. 同样 SPA 也支持 `innoseed.club/minicamp` 直接访问(供主站分享用)
+5. 内容由 [`src/pages/MiniCamp.tsx`](./src/pages/MiniCamp.tsx) 渲染,数据源在 [`src/content/site.ts`](./src/content/site.ts) 的 `MINICAMP` 块,沿用 PILLARS 的 4 色 accent 给产品/技术/设计/创业四路上色
+6. 子域名下用极简 chrome(`SubdomainHeader` / `SubdomainFooter`),主站下走完整 `Nav` + `Footer`
 
 ## 飞书 Bitable 接入 (招新表单持久化)
 

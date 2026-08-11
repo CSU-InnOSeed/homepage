@@ -385,7 +385,8 @@ function DoneStep({
       <span className="eyebrow">04 — Done</span>
       <h1>你的个性标签已生成。</h1>
       <p className="apply-lead">
-        复制下面的代码保存下来，作为后续 InnOSeed 联系 / 群组匹配的引用 ID
+        复制下面的代码保存下来——打开下方"飞书表单"，把它粘到表单里的
+        <strong>「个性标签」字段</strong>，再上传简历
         {interviewer && <>。你选的面聊官是 <strong>{interviewer.code}</strong>。</>}
       </p>
 
@@ -412,9 +413,11 @@ function DoneStep({
       </div>
 
       <div className="apply-callout">
-        <h2>下一步 — 投递简历</h2>
+        <h2>下一步 — 把标签粘到飞书表单 + 投递简历</h2>
         <p>
-          个性标签生成完成，接下来请把简历投到飞书表单（必填，InnOSeed 通过简历 + 标签做综合评估）。
+          <strong>必填</strong>：把上面那份『个性标签代码』粘到飞书表单的
+          <strong>「个性标签」字段</strong>，再上传简历。
+          InnOSeed 通过简历 + 标签做综合评估——标签是面试官匹配 / 群组分配的依据。
           飞书表单提交后我们会尽快与你联系。
         </p>
         <a
@@ -423,7 +426,7 @@ function DoneStep({
           target="_blank"
           rel="noopener"
         >
-          投递简历 (飞书表单) ↗
+          打开飞书表单 ↗
         </a>
       </div>
     </section>

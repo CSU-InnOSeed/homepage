@@ -43,6 +43,11 @@ vite.config.d.ts
 # Source of truth is vite.config.ts; the .js is regenerated on demand.
 vite.config.js
 
+# tsconfig.node.json includes src/content/site.ts with composite:true,
+# which emits site.js + site.d.ts as cross-project ref artifacts. Source
+# of truth is src/content/site.ts.
+src/content/site.js
+src/content/site.d.ts
 # oh-my-claudecode (OMC) operational state — runtime sessions,
 # notepads, plans, handoffs, project memory. Never source of truth.
 # If team-shared skills ever land here later, add `!.omc/skills/`.
