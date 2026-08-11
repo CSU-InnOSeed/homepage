@@ -13,7 +13,7 @@
  * `minicamp.innoseed.club` 映射到 127.0.0.1,然后启动 `vite preview`
  * 服务同一份 dist/,在浏览器里检查:
  *
- *   1.  子域根 /            → 重定向到 /minicamp,渲染子域 chrome
+ *   1.  子域根 /            → 重定向到 /minicamp,渲染活动页和子域 chrome
  *   2.  子域 /apply          → 仍然落到招新表单
  *   3.  主域根 /             → 渲染落地页(没重定向)
  *   4.  主域 /minicamp       → 渲染 Mini Camp 页(完整 Nav,不子域 chrome)
@@ -150,7 +150,7 @@ async function runChecks() {
     results.subdomain_root.h1Visible &&
     results.subdomain_root.subdomainHeader &&
     results.subdomain_root.tracks === 4 &&
-    results.subdomain_root.timelineSteps === 4;
+    results.subdomain_root.timelineSteps === 0;
 
   // 2) 子域 /apply → 仍然落到招新表单(不被重定向劫持)
   await page.goto(`http://${SUBDOMAIN}:${PORT}/apply`, { waitUntil: 'networkidle' });

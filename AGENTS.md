@@ -6,6 +6,8 @@
 
 中南大学 InnOSeed Lab 品牌站。**v4 是 React 18 + TS 5.6 + Vite 5 + react-router-dom 7** 的纯静态 SPA,Vercel 部署。`api/apply.ts` 是唯一的 serverless function,`aliyun-fc/` 是配套的飞书 Bitable webhook。**所有"如何构建/部署/接入第三方"的事实源都在 README.md + spec.md,改之前先读**。
 
+共享 agent skill 放在 `.agents/skills/`;`.pi/skills/` 只作为本地 pi 兼容入口,不要在其中维护唯一版本。
+
 ## 2. 不要碰的东西
 
 | 路径 / 文件 | 原因 |

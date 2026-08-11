@@ -59,7 +59,7 @@ If you change the hostname list (e.g. adding a new subdomain), edit
 asserts 4 things:
 
 1. `minicamp.innoseed.club/` redirects to `/minicamp` + renders
-   subdomain chrome (4 tracks, 4 timeline steps).
+   subdomain chrome (4 tracks, no recruitment timeline).
 2. `minicamp.innoseed.club/apply` still lands on Apply (not hijacked).
 3. `127.0.0.1:8765/` lands on the main landing page (no redirect).
 4. `127.0.0.1:8765/minicamp` renders the page with full Nav (NOT
