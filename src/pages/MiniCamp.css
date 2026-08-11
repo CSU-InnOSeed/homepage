@@ -1,6 +1,7 @@
 /* =========================================================
    Mini Camp page — `minicamp.innoseed.club` 子域页面
-   与主站共 design token(--c-compete/research/startup/bonds)。
+   复用主站 design token(--bg-cream / --c-compete/research/startup/bonds),
+   用四路图片做时间轴叙事;版式与主站节奏相近,但有自己的活动调性。
    ========================================================= */
 
 .minicamp-page {
@@ -24,8 +25,6 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-top: 14px;
-  padding-bottom: 14px;
   gap: 16px;
 }
 .minicamp-subdomain-brand {
@@ -40,12 +39,15 @@
 }
 .minicamp-subdomain-mark {
   color: var(--c-research);
-  font-size: 14px;
+  font-size: 18px;
+  font-weight: 700;
   position: relative;
   top: -1px;
 }
 .minicamp-subdomain-name {
-  font-size: 16px;
+  font-family: var(--ff-zh-serif);
+  font-size: 17px;
+  font-weight: 700;
 }
 .minicamp-subdomain-of {
   font-size: 12px;
@@ -53,19 +55,50 @@
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
-.minicamp-subdomain-back {
+.minicamp-local-nav {
+  display: flex;
+  gap: 18px;
+  margin-left: auto;
+}
+.minicamp-local-nav a {
   font-size: 13px;
   color: var(--ink-mid);
+  text-decoration: none;
+  position: relative;
+  padding: 4px 0;
+  transition: color 0.2s ease;
+}
+.minicamp-local-nav a:hover { color: var(--ink-dark); }
+.minicamp-local-nav a::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0; bottom: -2px;
+  height: 1px;
+  background: var(--c-research);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+}
+.minicamp-local-nav a:hover::after { transform: scaleX(1); }
+.minicamp-subdomain-back {
+  font-size: 13px;
+  color: var(--ink-dark);
   padding: 8px 14px;
   border-radius: 999px;
   border: 1px solid var(--rule);
   background: var(--bg-base);
   text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   transition: border-color 0.2s ease, color 0.2s ease;
 }
 .minicamp-subdomain-back:hover {
   border-color: var(--brand);
-  color: var(--ink-dark);
+  color: var(--brand);
+}
+@media (max-width: 720px) {
+  .minicamp-local-nav { display: none; }
 }
 
 .minicamp-subdomain-foot {
@@ -81,86 +114,303 @@
   gap: 16px;
   flex-wrap: wrap;
 }
-.minicamp-subdomain-foot a {
-  color: var(--ink-mid);
-}
-.minicamp-subdomain-foot a:hover {
-  color: var(--ink-dark);
-}
+.minicamp-subdomain-foot a { color: var(--ink-mid); }
+.minicamp-subdomain-foot a:hover { color: var(--ink-dark); }
 
-/* ── Lead paragraphs ──────────────────────────────────────── */
+/* ── Hero with photo backdrop ─────────────────────────────── */
 
-.minicamp-section {
-  padding: clamp(48px, 8vw, 96px) 0;
-  border-top: 1px solid var(--rule);
+.minicamp-hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  min-height: clamp(540px, 78vh, 760px);
+  display: flex;
+  align-items: flex-end;
+  /* Override globals.css page-header soft fill; Mini Camp leans on the photo. */
+  background: #0f172a;
+  padding: 0 !important;
 }
-.minicamp-paragraphs {
-  max-width: 720px;
+.minicamp-hero-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 50%;
+  z-index: -2;
+  filter: saturate(0.95);
+  animation: minicamp-zoom 24s ease-in-out infinite alternate;
+}
+@keyframes minicamp-zoom {
+  from { transform: scale(1); }
+  to   { transform: scale(1.05); }
+}
+.minicamp-hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg,
+      rgba(15, 23, 42, 0.55) 0%,
+      rgba(15, 23, 42, 0.25) 35%,
+      rgba(15, 23, 42, 0.65) 75%,
+      rgba(15, 23, 42, 0.92) 100%);
+  z-index: -1;
+}
+.minicamp-hero-content {
+  position: relative;
+  z-index: 2;
+  padding-top: clamp(140px, 22vh, 220px);
+  padding-bottom: clamp(48px, 7vh, 88px);
+  width: 100%;
+  color: #F5EFE6;
+}
+.minicamp-hero-content .breadcrumb a { color: rgba(245, 239, 230, 0.75); }
+.minicamp-hero-content .breadcrumb span { color: rgba(245, 239, 230, 0.9); }
+.minicamp-hero-content .eyebrow {
+  color: #93C5A2;
+}
+.minicamp-hero-content .eyebrow::before { background: #93C5A2; }
+.minicamp-hero-kicker {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 24px;
+}
+.minicamp-hero-date {
+  font-family: var(--ff-sans);
+  font-size: 12px;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: rgba(245, 239, 230, 0.6);
+}
+.minicamp-hero h1 {
+  font-family: var(--ff-zh-serif);
+  font-weight: 900;
+  font-size: clamp(46px, 7.5vw, 108px);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: #F5EFE6;
+  margin: 16px 0 26px;
+  max-width: 1100px;
+  text-shadow: 0 2px 24px rgba(15, 23, 42, 0.4);
+}
+.minicamp-hero h1 em {
+  font-family: var(--ff-display);
+  font-style: italic;
+  color: #93C5A2;
+  letter-spacing: -0.04em;
+}
+.minicamp-hero .page-header-desc {
+  color: rgba(245, 239, 230, 0.86);
+  max-width: 620px;
   font-family: var(--ff-zh);
   font-size: clamp(15px, 1.4vw, 18px);
+  line-height: 1.7;
+}
+.minicamp-scroll-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 28px;
+  font-family: var(--ff-sans);
+  font-size: 12px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: rgba(245, 239, 230, 0.85);
+  text-decoration: none;
+  border: 1px solid rgba(245, 239, 230, 0.35);
+  padding: 10px 18px;
+  border-radius: 999px;
+  transition: border-color 0.3s ease, color 0.3s ease, background 0.3s ease;
+}
+.minicamp-scroll-link:hover {
+  border-color: #93C5A2;
+  color: #93C5A2;
+  background: rgba(147, 197, 162, 0.12);
+}
+.minicamp-hero-index {
+  position: absolute;
+  right: clamp(20px, 4vw, 48px);
+  bottom: clamp(20px, 4vh, 56px);
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-family: var(--ff-sans);
+  font-size: 11px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: rgba(245, 239, 230, 0.55);
+  text-align: right;
+}
+
+/* ── Story section: idea figure + body copy ──────────────── */
+
+.minicamp-story {
+  padding: clamp(64px, 10vw, 120px) 0 clamp(40px, 6vw, 72px);
+  background: var(--bg-cream);
+}
+.minicamp-story-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(32px, 6vw, 88px);
+  align-items: end;
+}
+.minicamp-story-intro h2 {
+  margin-top: 18px;
+  font-family: var(--ff-zh-serif);
+  font-weight: 900;
+  font-size: clamp(36px, 5vw, 72px);
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+  color: var(--ink-dark);
+}
+.minicamp-story-intro h2 em {
+  font-family: var(--ff-display);
+  font-style: italic;
+  color: var(--c-research);
+}
+.minicamp-story-note {
+  margin-top: 22px;
+  max-width: 380px;
+  font-family: var(--ff-zh);
+  font-size: 15px;
+  color: var(--ink-mid);
+  line-height: 1.7;
+  border-left: 2px solid var(--c-research);
+  padding-left: 16px;
+}
+.minicamp-idea-figure {
+  margin: 0;
+  position: relative;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: 0 32px 60px -32px rgba(15, 23, 42, 0.28);
+  aspect-ratio: 16 / 9;
+  background: var(--bg-base);
+}
+.minicamp-idea-figure img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.minicamp-idea-figure figcaption {
+  position: absolute;
+  left: 24px;
+  bottom: 20px;
+  right: 24px;
+  font-family: var(--ff-zh);
+  font-size: 13px;
+  color: var(--ink-mid);
+  letter-spacing: 0.04em;
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(6px);
+  padding: 10px 14px;
+  border-radius: 999px;
+  text-align: center;
+}
+.minicamp-copy-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 18px 32px;
+  margin-top: clamp(40px, 6vw, 72px);
+  font-family: var(--ff-zh);
+  font-size: clamp(15px, 1.3vw, 17px);
   line-height: 1.85;
   color: var(--ink-mid);
 }
-.minicamp-paragraphs p + p {
-  margin-top: 1em;
+.minicamp-copy-grid p {
+  border-top: 1px solid var(--rule);
+  padding-top: 16px;
 }
-.minicamp-paragraphs strong {
+.minicamp-copy-grid strong {
   color: var(--ink-dark);
   font-weight: 600;
 }
 
-/* ── 4 tracks grid ────────────────────────────────────────── */
+/* ── Tracks ───────────────────────────────────────────────── */
 
 .minicamp-tracks {
-  padding: clamp(64px, 10vw, 120px) 0;
+  padding: clamp(72px, 11vw, 132px) 0;
   background: var(--bg-base);
   border-top: 1px solid var(--rule);
 }
-.minicamp-tracks h2 {
-  margin-top: 8px;
+.minicamp-section-heading {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: clamp(24px, 5vw, 64px);
+  align-items: end;
+  margin-bottom: 56px;
+}
+.minicamp-section-heading h2 {
+  margin-top: 14px;
   font-family: var(--ff-zh-serif);
-  font-size: clamp(26px, 3vw, 40px);
-  line-height: 1.2;
+  font-weight: 900;
+  font-size: clamp(32px, 4.2vw, 56px);
+  line-height: 1.1;
+  letter-spacing: -0.025em;
   color: var(--ink-dark);
 }
-.minicamp-tracks h2 em {
+.minicamp-section-heading h2 em {
+  font-family: var(--ff-display);
   font-style: italic;
   color: var(--c-research);
+}
+.minicamp-section-heading p {
+  font-family: var(--ff-zh);
+  font-size: 15px;
+  color: var(--ink-mid);
+  line-height: 1.8;
 }
 .minicamp-track-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   gap: 18px;
-  margin-top: 40px;
 }
 .minicamp-track {
   position: relative;
   display: flex;
   flex-direction: column;
   gap: 14px;
-  padding: 28px 24px 24px;
+  padding: 28px 26px 56px;
   background: var(--bg-cream);
   border: 1px solid var(--rule);
   border-radius: var(--radius-md);
   overflow: hidden;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  isolation: isolate;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 .minicamp-track::before {
-  content: "";
+  content: '';
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
+  top: 0; left: 0; right: 0;
   height: 3px;
   background: var(--track-color, var(--ink-faint));
+}
+.minicamp-track::after {
+  content: '';
+  position: absolute;
+  right: -50px; bottom: -50px;
+  width: 160px; height: 160px;
+  border-radius: 50%;
+  background: var(--track-color, transparent);
+  opacity: 0.08;
+  z-index: -1;
+  transition: transform 0.5s ease, opacity 0.5s ease;
 }
 .minicamp-track.pillar-compete { --track-color: var(--c-compete); }
 .minicamp-track.pillar-research { --track-color: var(--c-research); }
 .minicamp-track.pillar-startup { --track-color: var(--c-startup); }
 .minicamp-track.pillar-bonds { --track-color: var(--c-bonds); }
 .minicamp-track:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 14px 30px -18px rgba(15, 23, 42, 0.18);
+  transform: translateY(-6px);
+  box-shadow: 0 18px 40px -22px rgba(15, 23, 42, 0.22);
+}
+.minicamp-track:hover::after {
+  transform: scale(1.4);
+  opacity: 0.15;
 }
 .minicamp-track-head {
   display: inline-flex;
@@ -182,62 +432,137 @@
 }
 .minicamp-track-one {
   font-family: var(--ff-zh);
-  font-size: 15px;
+  font-size: 16px;
   color: var(--ink-dark);
   line-height: 1.5;
+  font-weight: 500;
 }
 .minicamp-track-desc {
   font-size: 13px;
   color: var(--ink-muted);
-  line-height: 1.7;
+  line-height: 1.75;
+}
+.minicamp-track-arrow {
+  position: absolute;
+  right: 22px;
+  bottom: 18px;
+  font-size: 22px;
+  color: var(--track-color);
+  opacity: 0.7;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+.minicamp-track:hover .minicamp-track-arrow {
+  transform: translate(4px, -4px);
+  opacity: 1;
 }
 
-/* ── Past Mini Camp recap ─────────────────────────────────── */
+/* ── Recap: large group photo + copy ──────────────────────── */
 
-.minicamp-past {
-  padding: clamp(64px, 10vw, 120px) 0;
+.minicamp-recap {
+  padding: clamp(72px, 11vw, 132px) 0;
+  background: var(--bg-cream);
   border-top: 1px solid var(--rule);
 }
-.minicamp-past h2 {
-  margin-top: 8px;
+.minicamp-recap-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: clamp(28px, 5vw, 64px);
+  align-items: stretch;
+}
+.minicamp-group-figure {
+  margin: 0;
+  position: relative;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: 0 36px 70px -34px rgba(15, 23, 42, 0.32);
+  min-height: 360px;
+  background: var(--bg-base);
+}
+.minicamp-group-figure img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  min-height: 360px;
+}
+.minicamp-group-figure figcaption {
+  position: absolute;
+  left: 22px;
+  bottom: 22px;
+  font-family: var(--ff-zh);
+  font-size: 13px;
+  color: #F5EFE6;
+  background: rgba(15, 23, 42, 0.62);
+  padding: 8px 14px;
+  border-radius: 999px;
+  backdrop-filter: blur(6px);
+  letter-spacing: 0.04em;
+}
+.minicamp-recap-copy {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.minicamp-recap-copy h2 {
+  margin-top: 18px;
   font-family: var(--ff-zh-serif);
-  font-size: clamp(24px, 2.6vw, 34px);
-  line-height: 1.3;
+  font-weight: 900;
+  font-size: clamp(28px, 3.6vw, 44px);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
   color: var(--ink-dark);
 }
-.minicamp-past h2 em {
-  font-style: italic;
+.minicamp-recap-number {
+  margin-top: 22px;
+  font-family: var(--ff-display);
+  font-weight: 800;
+  font-size: clamp(48px, 6vw, 88px);
+  line-height: 1;
   color: var(--c-research);
+  letter-spacing: -0.04em;
+}
+.minicamp-recap-number em {
+  font-family: var(--ff-zh-serif);
+  font-style: normal;
+  font-weight: 700;
+  color: var(--ink-dark);
+  font-size: 0.6em;
+  margin-left: 6px;
 }
 .minicamp-past-subtitle {
-  margin-top: 12px;
+  margin-top: 18px;
   font-family: var(--ff-zh);
   font-size: 15px;
   color: var(--ink-mid);
   letter-spacing: 0.04em;
 }
 .minicamp-past-body {
-  margin-top: 20px;
-  max-width: 720px;
+  margin-top: 16px;
   font-size: 15px;
   line-height: 1.85;
   color: var(--ink-mid);
 }
 .minicamp-past-where {
-  margin-top: 16px;
+  margin-top: 18px;
   display: inline-flex;
   align-items: center;
   gap: 8px;
   font-size: 13px;
   color: var(--ink-muted);
 }
-.minicamp-past-where svg {
-  width: 14px;
-  height: 14px;
-}
+.minicamp-past-where svg { width: 14px; height: 14px; }
 
 /* ── Mobile ───────────────────────────────────────────────── */
 
+@media (max-width: 880px) {
+  .minicamp-hero { min-height: clamp(560px, 88vh, 760px); }
+  .minicamp-hero-index { display: none; }
+  .minicamp-story-grid,
+  .minicamp-section-heading,
+  .minicamp-recap-grid {
+    grid-template-columns: 1fr;
+  }
+  .minicamp-idea-figure { aspect-ratio: 4 / 3; }
+}
 @media (max-width: 720px) {
   .minicamp-track-grid {
     grid-template-columns: 1fr;
@@ -246,4 +571,13 @@
     flex-direction: column;
     align-items: flex-start;
   }
+  .minicamp-hero-content { padding-top: 120px; }
+}
+@media (max-width: 480px) {
+  .minicamp-hero h1 { font-size: clamp(40px, 12vw, 64px); }
+  .minicamp-idea-figure figcaption { font-size: 12px; padding: 8px 12px; }
+  .minicamp-group-figure figcaption { font-size: 12px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .minicamp-hero-image { animation: none; }
 }

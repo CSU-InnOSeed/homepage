@@ -23,6 +23,17 @@ test.describe('minicamp @ /minicamp route', () => {
     // Chinese headline.
     await expect(page.locator('.minicamp-page .eyebrow').first()).toContainText('Mini Camp');
 
+    // Hero backdrop image is wired up
+    await expect(page.locator('.minicamp-hero-image')).toBeVisible();
+    await expect(page.locator('.minicamp-hero-image')).toHaveAttribute(
+      'src',
+      /\/imgs\/minicamp\/.+\.jpg$/
+    );
+
+    // Story figure + recap figure keep the photos inline
+    await expect(page.locator('.minicamp-idea-figure img')).toBeVisible();
+    await expect(page.locator('.minicamp-group-figure img')).toBeVisible();
+
     // 4 tracks render — one card per pillar accent
     const tracks = page.locator('.minicamp-track');
     await expect(tracks).toHaveCount(4);
@@ -32,8 +43,8 @@ test.describe('minicamp @ /minicamp route', () => {
     await expect(tracks.nth(3)).toContainText('创业');
 
     // Past Mini Camp recap block
-    await expect(page.locator('.minicamp-past')).toBeVisible();
-    await expect(page.locator('.minicamp-past h2')).toContainText('2025 秋季 Mini Camp');
+    await expect(page.locator('.minicamp-recap')).toBeVisible();
+    await expect(page.locator('.minicamp-recap h2')).toContainText('2025 秋季 Mini Camp');
 
     // Mini Camp is an activity page, not a recruitment flow.
     await expect(page.locator('.minicamp-page')).toContainText('不是招新流程');

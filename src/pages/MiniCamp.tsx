@@ -7,21 +7,11 @@ import usePageMeta from '../hooks/usePageMeta';
 import { MINICAMP, EVENTS, BRAND, CONTACT_EMAIL } from '../content/site';
 import './MiniCamp.css';
 
-/**
- * MiniCamp — `minicamp.innoseed.club` 子域名页(同 SPA)。
- *
- * 设计思路:
- *   - 同一个 Vite 部署包,同一份 vercel.json,只是 Vercel 在 Domains 里
- *     多绑一个域名。当 hostname 以 `minicamp.` 开头时,根路径 /
- *     由 App.tsx 的路由层重定向到 /minicamp,这样:
- *       · minicamp.innoseed.club/         → 落到本页
- *       · minicamp.innoseed.club/apply    → 落到 Apply 页(招新表单)
- *       · innoseed.club/minicamp          → 主站也能直接分享这个 URL
- *   - Chrome 自适应:子域名下用极简头(品牌 + 回主站);主站下用全 Nav,
- *     保持一致导航体验。
- *   - 内容沿用 PILLARS 的 4 色 accent 给 4 个分路上色,复用 EVENTS 中
- *     上一届 Mini Camp 活动条目 — 数据单源在 site.ts。
- */
+const MINI_CAMP_IMAGES = {
+  hero: '/imgs/minicamp/437f51bf12a65eb87ff05deca5eb821a.jpg',
+  idea: '/imgs/minicamp/403973cd2a692714f8991fa2caca693d.jpg',
+  group: '/imgs/minicamp/6897ed0365db6c38ac2580863835f816.jpg',
+};
 
 function isMiniCampHost(): boolean {
   if (typeof window === 'undefined') return false;
@@ -32,17 +22,14 @@ export default function MiniCamp() {
   const headRef = useRef<HTMLElement | null>(null);
   useReveal(headRef);
 
-  // Scroll to top on mount — arriving from another route shouldn't keep
-  // the user mid-page from wherever they were before.
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
   }, []);
 
-  // Per-route SEO. Description 专为 Mini Camp 写,跟首页的简短描述区分。
   usePageMeta({
-    title: 'Mini Camp 活动 · InnOSeed',
+    title: 'Mini Camp · InnOSeed',
     description:
-      'InnOSeed 准备过的一场 Mini Camp 活动:一个白天,4 路分头(产品/技术/设计/创业)产出原型 + 现场 Demo + 当场反馈。',
+      'InnOSeed Mini Camp: 一个白天,把一个小想法做成原型、跑通 Demo,再当面交换反馈。',
     canonical: '/minicamp',
   });
 
@@ -53,8 +40,13 @@ export default function MiniCamp() {
     <>
       {onSubdomain ? <SubdomainHeader /> : <Nav />}
       <main id="main" tabIndex={-1} className="minicamp-page">
-        <header ref={headRef} className="page-header reveal">
-          <div className="container">
+        <header ref={headRef} className="page-header minicamp-hero reveal">
+          <img
+            className="minicamp-hero-image"
+            src={MINI_CAMP_IMAGES.hero}
+            alt="Mini Camp 活动现场合照"
+          />
+          <div className="container minicamp-hero-content">
             <nav className="breadcrumb" aria-label="面包屑">
               {onSubdomain ? (
                 <a href="https://innoseed.club">{BRAND} 主站</a>
@@ -64,108 +56,117 @@ export default function MiniCamp() {
               <span aria-hidden="true">/</span>
               <span aria-current="page">Mini Camp</span>
             </nav>
-            <span className="eyebrow">{MINICAMP.eyebrow}</span>
+            <div className="minicamp-hero-kicker">
+              <span className="eyebrow">{MINICAMP.eyebrow}</span>
+              <span className="minicamp-hero-date">ONE DAY / MANY DIRECTIONS</span>
+            </div>
             <h1>
-              {MINICAMP.headline.lead} <em>{MINICAMP.headline.accent}</em>
+              {MINICAMP.headline.lead}
+              <br />
+              <em>{MINICAMP.headline.accent}</em>
             </h1>
             <p className="page-header-desc">{MINICAMP.lead}</p>
+            <a className="minicamp-scroll-link" href="#minicamp-story">
+              <span>向下看现场</span>
+              <span aria-hidden="true">↓</span>
+            </a>
+          </div>
+          <div className="minicamp-hero-index" aria-hidden="true">
+            <span>MC</span>
+            <span>01 / 03</span>
           </div>
         </header>
 
-        <section className="minicamp-section">
-          <div className="container">
-            <div className="minicamp-paragraphs">
-              {MINICAMP.paragraphs.map((html, i) => (
-                <p key={i} dangerouslySetInnerHTML={{ __html: html }} />
-              ))}
+        <section id="minicamp-story" className="minicamp-story">
+          <div className="container minicamp-story-grid">
+            <div className="minicamp-story-intro">
+              <span className="eyebrow">从一个想法开始</span>
+              <h2>先有一点<br /><em>不满足。</em></h2>
+              <p className="minicamp-story-note">Mini Camp 不是招新流程,而是把不同想法带到一起,一起做点事情。</p>
             </div>
+            <figure className="minicamp-idea-figure">
+              <img src={MINI_CAMP_IMAGES.idea} alt="关于创新项目从小想法开始的文字海报" />
+              <figcaption>每一个创新性的项目,最初都只是一个小小的想法。</figcaption>
+            </figure>
+          </div>
+          <div className="container minicamp-copy-grid">
+            {MINICAMP.paragraphs.map((html, i) => (
+              <p key={i} dangerouslySetInnerHTML={{ __html: html }} />
+            ))}
           </div>
         </section>
 
-        <section className="minicamp-tracks">
+        <section id="minicamp-tracks" className="minicamp-tracks">
           <div className="container">
-            <span className="eyebrow">四路分头</span>
-            <h2>
-              按你的<em>擅长</em>选一条路。
-            </h2>
+            <div className="minicamp-section-heading">
+              <div>
+                <span className="eyebrow">四路分头</span>
+                <h2>同一件事,<br /><em>从不同角度</em>开始。</h2>
+              </div>
+              <p>每路 2–3 人,自由组队。你不必把自己放进一个固定答案里,只要带着一种擅长进场。</p>
+            </div>
             <div className="minicamp-track-grid">
               {MINICAMP.tracks.map((t) => (
-                <article
-                  key={t.pillarKey}
-                  className={`minicamp-track pillar-${t.pillarKey}`}
-                >
+                <article key={t.pillarKey} className={`minicamp-track pillar-${t.pillarKey}`}>
                   <header className="minicamp-track-head">
-                    <span className="minicamp-track-num">
-                      0{t.index}
-                    </span>
+                    <span className="minicamp-track-num">0{t.index}</span>
                     <span className="minicamp-track-name">{t.name}</span>
                   </header>
                   <p className="minicamp-track-one">{t.one}</p>
                   <p className="minicamp-track-desc">{t.desc}</p>
+                  <span className="minicamp-track-arrow" aria-hidden="true">↗</span>
                 </article>
               ))}
             </div>
           </div>
         </section>
 
-        {pastCamp && (
-          <section className="minicamp-past">
-            <div className="container">
-              <span className="eyebrow">上一届</span>
-              <h2>
-                <em>{pastCamp.date}</em> · {pastCamp.title}
-              </h2>
-              <p className="minicamp-past-subtitle">{pastCamp.subtitle}</p>
-              <p className="minicamp-past-body">{pastCamp.body}</p>
-              <p className="minicamp-past-where">
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.6"
-                  aria-hidden="true"
-                >
-                  <path d="M12 2a8 8 0 0 0-8 8c0 5.5 8 12 8 12s8-6.5 8-12a8 8 0 0 0-8-8z" />
-                  <circle cx="12" cy="10" r="3" />
-                </svg>
-                {pastCamp.where}
-              </p>
-            </div>
-          </section>
-        )}
-
+        <section id="minicamp-recap" className="minicamp-recap">
+          <div className="container minicamp-recap-grid">
+            <figure className="minicamp-group-figure">
+              <img src={MINI_CAMP_IMAGES.group} alt="2025 秋季 Mini Camp 全体合照" loading="lazy" />
+              <figcaption>从分头做事,到一起站在这里。</figcaption>
+            </figure>
+            {pastCamp && (
+              <div className="minicamp-recap-copy">
+                <span className="eyebrow">上一届现场</span>
+                <p className="minicamp-recap-number">2025 <em>秋</em></p>
+                <h2>{pastCamp.title}</h2>
+                <p className="minicamp-past-subtitle">{pastCamp.subtitle}</p>
+                <p className="minicamp-past-body">{pastCamp.body}</p>
+                <p className="minicamp-past-where">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
+                    <path d="M12 2a8 8 0 0 0-8 8c0 5.5 8 12 8 12s8-6.5 8-12a8 8 0 0 0-8-8z" />
+                    <circle cx="12" cy="10" r="3" />
+                  </svg>
+                  {pastCamp.where}
+                </p>
+              </div>
+            )}
+          </div>
+        </section>
       </main>
       {onSubdomain ? <SubdomainFooter /> : <Footer />}
     </>
   );
 }
 
-/**
- * SubdomainHeader — 子域名下的极简头
- *
- * 只显示品牌 + 回主站入口。不放 Nav,因为这是 Mini Camp 专用页,
- * 让访客不被其他章节噪音干扰。
- */
 function SubdomainHeader() {
   return (
     <header className="minicamp-subdomain-head">
       <div className="container">
-        <a
-          className="minicamp-subdomain-brand"
-          href={typeof window !== 'undefined' ? window.location.href : '/'}
-        >
-          <span className="minicamp-subdomain-mark" aria-hidden="true">
-            ◉
-          </span>
+        <a className="minicamp-subdomain-brand" href={typeof window !== 'undefined' ? window.location.href : '/'}>
+          <span className="minicamp-subdomain-mark" aria-hidden="true">+</span>
           <span className="minicamp-subdomain-name">Mini Camp</span>
           <span className="minicamp-subdomain-of">of {BRAND}</span>
         </a>
-        <a
-          className="minicamp-subdomain-back"
-          href={`https://${BRAND === 'InnOSeed' ? 'innoseed.club' : 'innoseed.club'}`}
-          aria-label={`返回 ${BRAND} 主站`}
-        >
-          ← 主站
+        <nav className="minicamp-local-nav" aria-label="Mini Camp 页面导航">
+          <a href="#minicamp-story">故事</a>
+          <a href="#minicamp-tracks">四路</a>
+          <a href="#minicamp-recap">现场</a>
+        </nav>
+        <a className="minicamp-subdomain-back" href="https://innoseed.club" aria-label={`返回 ${BRAND} 主站`}>
+          <span aria-hidden="true">↗</span> 主站
         </a>
       </div>
     </header>
@@ -176,9 +177,7 @@ function SubdomainFooter() {
   return (
     <footer className="minicamp-subdomain-foot">
       <div className="container">
-        <span>
-          © {BRAND} Lab · Mini Camp 活动页
-        </span>
+        <span>© {BRAND} Lab · Mini Camp</span>
         <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
       </div>
     </footer>
