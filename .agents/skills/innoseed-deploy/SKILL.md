@@ -1,6 +1,6 @@
 ---
 name: innoseed-deploy
-description: Deploy workflow for the InnOSeed Lab landing (innoseed.club) — local subdomain verification with chromium --host-resolver-rules, commit + PR + CI, Vercel domain attachment, DNS CNAME setup, and branch cleanup. Use when shipping a change to main, adding a new subdomain (e.g. minicamp.innoseed.club), or pruning stale branches.
+description: Deploy workflow for the InnOSeed Lab landing (innoseed.club) — local subdomain verification with chromium --host-resolver-rules, merge-to-main + push deploy model, Vercel domain attachment, DNS CNAME setup, and branch cleanup. Use when shipping a change to main, adding a new subdomain (e.g. minicamp.innoseed.club), or pruning stale branches.
 ---
 
 # InnOSeed Deploy
@@ -65,7 +65,13 @@ asserts 4 things:
 4. `127.0.0.1:8765/minicamp` renders the page with full Nav (NOT
    subdomain chrome).
 
-## Phase 2 — commit, push, open PR
+## Phase 2 — commit on a branch, merge to main, push
+
+Vercel auto-deploys production on every push to `main`. **The canonical
+ship path is: branch → commit → merge to main locally → push main.**
+Skip `gh pr create` for routine fixes; the merge itself is the review
+boundary. (Use a PR only when you want external review — see
+"PR-based review" below.)
 
 ```bash
 # Branch off main. Use codex/<slug> or MciG-ggg/<slug>.
@@ -82,16 +88,34 @@ git commit -F- <<'EOF'
 <body explaining what + why, not how>
 EOF
 
-git push -u origin HEAD
+# Ship it: fast-forward main and push. Vercel picks up the new HEAD.
+git checkout main
+git merge --ff-only codex/<short-slug>
+git push origin main
 
-# Open the PR. Body in a file (backticks in inline strings get
-# interpolated by bash).
-gh pr create --title "<same as commit subject>" --body-file /tmp/pr-body.md
-gh pr checks <num>          # wait for Vercel + CI to go green
+# Delete the local branch (remote was never pushed, so nothing to prune).
+git branch -d codex/<short-slug>
 ```
 
-**Do not push directly to main.** Always PR so CI runs and someone can
-review. Vercel auto-deploys production on merge.
+**Push to `main` is the deploy.** There is no separate `vercel deploy`
+step; CI on `main` builds and Vercel ships. If `git push` fails with
+non-fast-forward, run `git fetch origin && git rebase origin/main` on
+your branch before retrying.
+
+### PR-based review (optional)
+
+For changes that need eyes on them before they hit production
+(spec/design shifts, risky refactors), open a PR instead:
+
+```bash
+git push -u origin HEAD
+gh pr create --title "<same as commit subject>" --body-file /tmp/pr-body.md
+gh pr checks <num>          # wait for Vercel + CI to go green
+gh pr merge --squash --delete-branch
+```
+
+After the squash merge, pull `main` and clean up: `git pull && git
+fetch --prune`.
 
 ### Commit message conventions
 
