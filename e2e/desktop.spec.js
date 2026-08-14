@@ -35,39 +35,61 @@ test.describe('desktop @ 1440x900', () => {
     );
   });
 
-  test('sidebar pills render as a vertical stack of 4 rounded rectangles', async ({ page }) => {
+  test('sidebar pills render as a compact vertical stack of 4 rounded rectangles', async ({ page }) => {
     await page.goto('/');
     const pills = page.locator('.nav-sidebar-pills .pill');
     await expect(pills).toHaveCount(4);
-    // Pills are horizontal rectangles — each pill has a height < width
-    // (i.e. the layout is "landscape pill, stacked vertically").
+    // Each pill is a small horizontal rectangle (width > height), and
+    // every pill has the same height so the stack reads as a tidy
+    // floating block rather than a varied list.
     const boxes = await pills.evaluateAll((els) =>
       els.map((el) => {
         const r = el.getBoundingClientRect();
         return { w: Math.round(r.width), h: Math.round(r.height) };
       })
     );
+    const heights = new Set(boxes.map((b) => b.h));
+    expect(heights.size, `all 4 pills should share one height, got: ${[...heights].join(',')}`).toBe(1);
     for (const b of boxes) {
       expect(b.w, `pill width ${b.w} should exceed height ${b.h}`).toBeGreaterThan(b.h);
     }
   });
 
   test('exactly one sidebar pill is highlighted (pill-active)', async ({ page }) => {
-    // The design brief shows one pill highlighted (brand-blue); the
-    // other three stay neutral. Pin both ends of that invariant so a
-    // future change can't drop the highlight or highlight all four.
     await page.goto('/');
     await expect(page.locator('.nav-sidebar-pills .pill.pill-active')).toHaveCount(1);
   });
 
-  test('sidebar sits below the top bar on the left edge', async ({ page }) => {
+  test('sidebar floats at the right edge, vertically centered', async ({ page }) => {
+    // The sidebar is a compact floating panel pinned to the right of
+    // the viewport — NOT a full-height left rail. The panel itself is
+    // small (a few pills + padding, well under the viewport height),
+    // but vertically centered so its bounding box spans a wide y-range.
+    // We measure the panel's *content* height (scrollHeight) to assert
+    // it stays compact, plus check it's pinned to the right edge and
+    // centered on the viewport's vertical axis.
     await page.goto('/');
-    const top = await page.locator('.nav-top').boundingBox();
-    const side = await page.locator('.nav-sidebar').boundingBox();
-    // The sidebar's top should equal the top bar's bottom (or be just
-    // below it within sub-pixel tolerance).
-    expect(side.y).toBeGreaterThanOrEqual(top.y + top.height - 2);
-    expect(side.x).toBe(0);
+    const metrics = await page.evaluate(() => {
+      const el = document.querySelector('.nav-sidebar');
+      const r = el.getBoundingClientRect();
+      return {
+        scrollH: el.scrollHeight,
+        bboxH: Math.round(r.height),
+        bboxY: r.y,
+        bboxX: r.x,
+        bboxW: r.width,
+      };
+    });
+    const vh = await page.evaluate(() => window.innerHeight);
+    const vw = await page.evaluate(() => window.innerWidth);
+    // Compact: scrollHeight (the actual content size) is well under
+    // half the viewport — proves this isn't a full-height rail.
+    expect(metrics.scrollH, `panel scrollHeight ${metrics.scrollH}px should be << vh ${vh}`).toBeLessThan(vh * 0.4);
+    // Vertically centered: panel center is close to vh/2.
+    const center = metrics.bboxY + metrics.bboxH / 2;
+    expect(Math.abs(center - vh / 2), `panel center ${center} should be near vh/2 ${vh / 2}`).toBeLessThan(vh * 0.1);
+    // Pinned to the right edge: panel right is at or near the viewport right.
+    expect(vw - (metrics.bboxX + metrics.bboxW), `panel should be flush with the right edge`).toBeLessThan(40);
   });
 
   test('numbers count-up finishes at target value', async ({ page }) => {

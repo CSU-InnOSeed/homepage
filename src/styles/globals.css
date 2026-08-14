@@ -363,7 +363,12 @@ section { position: relative; }
   display: none;
 }
 
-/* ── Sidebar (desktop only) ─────────────────────────────────── */
+/* ── Sidebar (desktop only) ───────────────────────────────────
+   Compact floating panel — not a full-height left rail. The panel
+   sits at the right edge of the viewport, vertically centered, with
+   4 horizontal pill buttons stacked vertically. Each pill is small
+   and minimal: white pill background, subtle border, blue for the
+   active one. No big surface, no eyebrow header — just the pills. */
 .nav-sidebar {
   display: none;
 }
@@ -372,101 +377,63 @@ section { position: relative; }
     display: flex;
     flex-direction: column;
     align-items: stretch;
-    gap: 24px;
+    /* Floating right side, vertically centered. Right gutter leaves
+       room for the panel without crowding the content. */
     position: fixed;
-    left: 0;
-    /* Sit below the top bar; --nav-top-h is set by .has-sidebar rule. */
-    top: var(--nav-top-h, 68px);
-    bottom: 0;
-    width: var(--nav-sidebar-w, 220px);
-    padding: 28px 20px 28px;
-    border-right: 1px solid var(--rule);
-    background: rgba(255,255,255,0.86);
-    backdrop-filter: blur(20px) saturate(140%);
-    -webkit-backdrop-filter: blur(20px) saturate(140%);
+    right: clamp(16px, 2vw, 28px);
+    top: 50%;
+    transform: translateY(-50%);
     z-index: 40;
-  }
-  .nav-sidebar-eyebrow {
-    font-family: var(--ff-sans);
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: var(--c-research);
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding-left: 4px;
-  }
-  .nav-sidebar-eyebrow::before {
-    content: '';
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    background: var(--c-research);
-    display: inline-block;
+    padding: 14px 12px;
+    background: rgba(255,255,255,0.78);
+    backdrop-filter: blur(16px) saturate(140%);
+    -webkit-backdrop-filter: blur(16px) saturate(140%);
+    border: 1px solid var(--rule);
+    border-radius: 24px;
+    box-shadow: 0 14px 40px -22px rgba(15, 23, 42, 0.18);
   }
 
-  /* The pill stack — vertical column of horizontal rounded rectangles.
-     Each pill is the full sidebar-content width with consistent height
-     and a pill-shaped border-radius, matching the design shown in the
-     brief. One is highlighted (`pill-active`) to mark the "current"
-     section — defaults to the second pill (故事) since this is the
-     most-visited intro entry. */
+  /* The pill stack — a vertical column of compact horizontal pills.
+     Each pill is a small rounded rectangle (~32px tall) with the
+     section label centered. Width is sized to the longest label
+     so the column stays a tidy floating block. */
   .nav-sidebar-pills {
     display: flex;
     flex-direction: column;
-    gap: 18px;
-    margin-top: 4px;
+    gap: 10px;
   }
   .nav-sidebar-pills .pill {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 8px;
-    width: 100%;
-    /* The pill itself — horizontal rectangle with rounded corners.
-       Padding sits comfortably inside the sidebar's 20px gutter. */
-    padding: 12px 22px;
-    background: var(--bg-soft);
-    color: var(--ink-mid);
+    justify-content: center;
+    min-width: 96px;
+    padding: 8px 18px;
+    background: rgba(255,255,255,0.6);
+    border: 1px solid var(--rule);
     border-radius: 999px;
+    color: var(--ink-mid);
     font-family: var(--ff-zh);
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 500;
     letter-spacing: 0.02em;
     text-decoration: none;
-    transition: background 0.25s ease, color 0.25s ease, transform 0.25s ease;
-  }
-  .nav-sidebar-pills .pill .arrow {
-    font-family: var(--ff-sans);
-    font-style: normal;
-    font-size: 13px;
-    font-weight: 600;
-    opacity: 0;
-    transform: translate(-4px, 0);
-    transition: opacity 0.25s ease, transform 0.25s ease;
+    transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
   }
   .nav-sidebar-pills .pill:hover {
-    background: var(--rule);
+    background: var(--bg-soft);
     color: var(--ink-dark);
+    border-color: var(--ink-faint);
   }
-  .nav-sidebar-pills .pill:hover .arrow {
-    opacity: 1;
-    transform: translate(0, 0);
-  }
-  /* Active / current pill — uses brand-blue to mirror the highlighted
+  /* Active / current pill — brand-blue fill, matching the highlight
      rectangle in the brief. */
   .nav-sidebar-pills .pill.pill-active {
     background: var(--brand);
-    color: #fff;
-  }
-  .nav-sidebar-pills .pill.pill-active .arrow {
-    opacity: 1;
-    transform: translate(0, 0);
+    border-color: var(--brand);
     color: #fff;
   }
   .nav-sidebar-pills .pill.pill-active:hover {
     background: var(--brand-dark);
+    border-color: var(--brand-dark);
     color: #fff;
   }
 }
@@ -2140,22 +2107,26 @@ main .page-header-desc {
 
 /* Sidebar-aware main content padding. The Nav component sets a
    `has-sidebar` class on <html> while it's mounted. globals.css uses
-   that class to apply two offsets on desktop:
-     - top padding = height of the .nav-top bar
-     - left padding = width of the .nav-sidebar pill column
+   that class to apply the top-bar height offset on desktop. The
+   sidebar itself is a floating right-edge panel — it does NOT need
+   a left-side body offset anymore, so only the top padding is added.
    On routes that don't render Nav (/apply, /minicamp served from
    minicamp.innoseed.club which uses SubdomainHeader instead), the
    class is absent and the body returns to full-width. */
 html.has-sidebar {
   --nav-top-h: 80px;
-  --nav-sidebar-w: 220px;
 }
 @media (min-width: 721px) {
   html.has-sidebar body {
     padding-top: calc(var(--nav-top-h) + env(safe-area-inset-top, 0px));
-    padding-left: var(--nav-sidebar-w);
   }
-  html.has-sidebar .container { padding-left: 40px; padding-right: 40px; }
+  /* Reserve a right-side gutter equal to the floating sidebar width
+     so its pills don't overlap section content near the edge. The
+     sidebar is ~140px wide on a 1440 viewport, so 160px is a safe
+     floor that still leaves plenty of room for the main column. */
+  html.has-sidebar .container {
+    padding-right: max(40px, calc(var(--nav-sidebar-w, 140px) + 40px));
+  }
 }
 
 /* ===================== A11Y ===================== */
