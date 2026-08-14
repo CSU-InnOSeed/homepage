@@ -1,7 +1,9 @@
 import { useRef } from 'react';
 import useReveal from '../hooks/useReveal';
 import useHeroParallax from '../hooks/useHeroParallax';
+import useHeroSweep from '../hooks/useHeroSweep';
 import { HERO } from '../content/site';
+import styles from './Hero.module.css';
 
 /**
  * Hero — first viewport.
@@ -12,7 +14,74 @@ import { HERO } from '../content/site';
  * actually see — the big accent text is the headline, the thinner
  * sentence is the lede. Each animatable element has its own
  * useReveal so the entry transition fires once it enters viewport.
+ *
+ * The h1 paints its rows twice as two stacked layers
+ * (`.base` + `.overlay`) so the hover sweep can reveal an amber
+ * copy over a base ink-dark copy via clip-path, without relying on
+ * `background-clip: text` (which renders inconsistently across some
+ * Chromium variants — including the Playwright headless shell that
+ * runs our e2e suite). The base layer is always visible, so the
+ * headline is never blank.
+ *
+ * All headline-related styles live in `Hero.module.css`, not in
+ * `globals.css`. The reveal / fade-up observer (`useReveal`) is a
+ * project-wide concern, so its `.reveal` / `.reveal.in` classes
+ * stay in globals.css; we compose them here via the bare `reveal`
+ * string literal.
  */
+function renderHeadlineRows() {
+  return HERO.headlineRows.map((row, i) => (
+    <span className={styles.row} key={i}>
+      <span>
+        {row.text !== undefined ? (
+          row.text
+        ) : (
+          <>
+            <span className={styles.accent}>{row.lead}</span>
+            {row.trail}
+          </>
+        )}
+      </span>
+    </span>
+  ));
+}
+
+/**
+ * SVG-flavored variant of `renderHeadlineRows`, used by the overlay
+ * layer so each glyph can carry a dashed `stroke` (via SVG's
+ * `stroke-dasharray`, which CSS Modules / `-webkit-text-stroke`
+ * cannot replicate). `fill: transparent` on the overlay means the
+ * base layer's ink-dark text shows through the SVG glyphs — only
+ * the dashed amber outline is visible, which is the "速写本 dashed
+ * edge" effect the user asked for.
+ *
+ * Baseline alignment note: SVG `<text y="1em">` puts the first
+ * baseline at 1em from the SVG top (matching the .row's
+ * line-height: 1.0 layout in HTML). Each `<tspan dy="1em">` then
+ * drops the next baseline by exactly 1em, so the two rows line up
+ * pixel-for-pixel with the base layer's HTML glyphs.
+ */
+function renderSvgHeadlineRows() {
+  return HERO.headlineRows.map((row, i) => {
+    const inner =
+      row.text !== undefined ? (
+        row.text
+      ) : (
+        <>
+          <tspan className={styles.svgAccent}>{row.lead}</tspan>
+          {row.trail}
+        </>
+      );
+    return (
+      // dy="1em" on every row including the first — the SVG <text>
+      // baseline at y="1em" is the first baseline, and dy is the
+      // spacing between consecutive baselines (== line-height).
+      <tspan key={i} x="0" dy="1em">
+        {inner}
+      </tspan>
+    );
+  });
+}
 export default function Hero() {
   const imgRef = useHeroParallax();
   const tagRef = useRef<HTMLDivElement | null>(null);
@@ -26,6 +95,10 @@ export default function Hero() {
   useReveal(ledeRef);
   useReveal(subRef);
   useReveal(ctaRef);
+  // Reuse the same h1Ref — useReveal only adds an `.in` class via
+  // IntersectionObserver; useHeroSweep only writes a CSS variable via
+  // mousemove. They never conflict on the same node.
+  useHeroSweep(h1Ref);
 
   return (
     <section className="hero" id="top">
@@ -63,21 +136,17 @@ export default function Hero() {
         <div ref={tagRef} className="hero-tag reveal">
           {HERO.tag}
         </div>
-        <h1 ref={h1Ref} className="hero-headline reveal" data-delay="1">
-          {HERO.headlineRows.map((row, i) => (
-            <div className="row" key={i}>
-              <span>
-                {row.text !== undefined ? (
-                  row.text
-                ) : (
-                  <>
-                    <span className="accent">{row.lead}</span>
-                    {row.trail}
-                  </>
-                )}
-              </span>
-            </div>
-          ))}
+        <h1 ref={h1Ref} className={`${styles.headline} reveal`} data-delay="1">
+          <span className={styles.layer}>{renderHeadlineRows()}</span>
+          <svg
+            className={`${styles.layer} ${styles.overlay}`}
+            aria-hidden="true"
+            preserveAspectRatio="xMinYMin meet"
+          >
+            <text className={styles.svgText} y="-0.15em">
+              {renderSvgHeadlineRows()}
+            </text>
+          </svg>
         </h1>
         <p ref={ledeRef} className="hero-lede reveal" data-delay="2">
           {HERO.lead}

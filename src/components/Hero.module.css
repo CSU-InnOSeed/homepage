@@ -1,0 +1,210 @@
+/* Hero — headline sweep-light with dashed amber outline.
+ *
+ * Moved out of globals.css (Aug 2025) into a CSS Module so the sweep
+ * effect is fully encapsulated: the dashed amber outline, the
+ * dual-layer clip-path trick, and the row rise-in animation are all
+ * owned by Hero and don't leak into globals.css's selector space.
+ *
+ * The sweep-light uses two stacked copies of the same rows:
+ *   - Base layer: normal static headline — ink-dark text + brand-blue
+ *     accent em. Pure HTML `<span>`s so screen readers, SEO, and
+ *     text selection work as usual.
+ *   - Overlay layer: an SVG `<text>` carrying the same glyphs with
+ *     `fill: transparent` and a `stroke-dasharray` amber outline. SVG
+ *     is the only way to get real per-glyph dashed strokes — CSS's
+ *     `-webkit-text-stroke` does not honor `stroke-dasharray`. Because
+ *     the SVG fill is transparent, the base layer's ink-dark text
+ *     shows through; only the dashed amber edge is visible, which
+ *     is the "速写本 dashed edge" effect over the swept area.
+ *
+ * Why amber `--accent-amber` instead of `--brand` for the outline:
+ *   The accent em "InnOSeed" is rendered in `--brand` on the base
+ *   layer; a `--brand` outline would be invisible against it. Amber
+ *   (#D97706) gives a clear warm/cool contrast against the cool blue
+ *   accent and the cool dark ink — the sweep reads instantly.
+ *
+ * Why the overlay is SVG `<text>` rather than two stacked `<span>`s:
+ *   We tried that first (an earlier draft) and the dashed effect
+ *   genuinely requires SVG `stroke-dasharray` — there's no CSS-only
+ *   way to render a dashed outline on a glyph.
+ *
+ * The overlay is `pointer-events: none` so it never intercepts
+ * hover/move events meant for the base layer or anything below it.
+ *
+ * `var(--sweep-y)` is driven by `src/hooks/useHeroSweep.ts`; the
+ * default value `0px` is declared inline on the `.headline` rule so
+ * the overlay's clip-path still resolves before JS hydrates.
+ *
+ * SVG / base alignment: the SVG overlay's `<text y="1em">` puts the
+ * first baseline at 1em from the SVG top, and each `<tspan dy="1em">`
+ * adds another 1em of baseline spacing — matching the base layer's
+ * `line-height: 1.0` HTML layout. Pixel-level glyph registration is
+ * good enough across Chrome / Safari / Firefox for the same font, but
+ * not perfect (CSS and SVG rendering pipelines are separate); the
+ * dashed outline being slightly offset from the underlying ink-dark
+ * glyph is visually fine — it reads as the intended "stroked" effect.
+ *
+ * The h1's own rules here only need a single `.headline` selector —
+ * globals.css used to carry a `.hero h1 { font-size: 20–32px }` rule
+ * (v3 era, when the hero had a separate lead-sentence h1) but that
+ * rule was removed: nothing in the current codebase matches it.
+ */
+
+.headline {
+  font-family: var(--ff-display);
+  font-weight: 800;
+  font-size: clamp(56px, 8vw, 128px);
+  line-height: 1.0;
+  letter-spacing: -0.035em;
+  color: var(--ink-dark);
+  margin: 10px 0 22px;
+  max-width: 1300px;
+  /* Holds the two stacked .layer children; the overlay positions
+     itself absolutely against this container. */
+  position: relative;
+  /* Default so the overlay's clip-path still resolves before JS
+     hydrates and before the cursor has entered the h1. */
+  --sweep-y: 0px;
+}
+
+.row {
+  display: block;
+  overflow: hidden;
+}
+.row > span {
+  display: inline-block;
+  transform: translateY(110%);
+  animation: heroRise 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+.row:nth-child(1) > span { animation-delay: 0.2s; }
+.row:nth-child(2) > span { animation-delay: 0.45s; }
+.row:nth-child(3) > span { animation-delay: 0.7s; }
+@keyframes heroRise { to { transform: translateY(0); } }
+
+/* Italic Fraunces for the Latin brand name "InnOSeed", weighted and
+   tinted brand-blue so it still reads as the visual anchor inside
+   the serif block. Same treatment as the section <em>s (Manifesto /
+   Pillars / Numbers / Members / Recruit / page-header h1). */
+.accent {
+  font-family: var(--ff-display);
+  font-style: italic;
+  font-weight: 800;
+  color: var(--brand);
+  letter-spacing: -0.04em;
+}
+
+.layer {
+  display: block;
+}
+.base {
+  color: var(--ink-dark);
+}
+
+/* SVG overlay: an SVG element positioned over the base layer, sized
+   to match the h1 box. It carries the dashed amber glyph outlines
+   that appear (via clip-path) wherever the cursor has swept. */
+.overlay {
+  position: absolute;
+  inset: 0;
+  /* SVG has intrinsic 300×150 dimensions; without explicit width/
+     height the element would be a small square in the corner of
+     the h1, with the dashed glyphs clipped beyond its right/bottom
+     edges. Force the SVG to fill the absolutely-positioned box. */
+  width: 100%;
+  height: 100%;
+  /* Reveal the top `--sweep-y` slice, clip the rest.
+     `calc(100% - var(--sweep-y))` is the bottom inset. When
+     --sweep-y is 0, the bottom inset equals 100%, so the overlay is
+     entirely clipped and invisible — the static headline is
+     unchanged. */
+  clip-path: inset(0 0 calc(100% - var(--sweep-y, 0px)) 0);
+  pointer-events: none;
+  user-select: none;
+  /* Hide the SVG dashed outline until the base layer's hero-rise
+     entry animation finishes — otherwise the dashed glyphs would
+     float in mid-air before the base text rises into place. */
+  opacity: 0;
+  animation: overlayIn 0.4s ease 1.55s forwards;
+}
+@keyframes overlayIn {
+  to { opacity: 1; }
+}
+
+/* SVG text styling. `fill: transparent` lets the base layer's
+   ink-dark text show through; only the dashed amber `stroke` is
+   visible. `paint-order: stroke fill` (the explicit two-value form)
+   keeps the dashed stroke crisply readable — without it, the
+   stroke would be drawn first and the (transparent) fill on top
+   would punch holes through the dashes. */
+.svgText {
+  font-family: var(--ff-display);
+  font-size: clamp(56px, 8vw, 128px);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  /* Two-color glyph effect for the swept area:
+       fill:  amber  — the same `--accent-amber` the original sweep
+                       used, so the swept region reads as a color
+                       change (matching the "scanned text changes
+                       color" behavior that was lost when we tried
+                       fill: transparent).
+       stroke: ink-dark + dashed  — a black dashed outline that
+                       sits on the glyph edges, on top of the amber
+                       fill (paint-order below). The dark stroke on
+                       warm amber gives the "sketched over" feel
+                       without losing the underlying color shift. */
+  fill: var(--accent-amber);
+  stroke: var(--ink-dark);
+  stroke-width: 1.2;
+  stroke-dasharray: 4 3;
+  paint-order: stroke fill;
+}
+
+/* The SVG <tspan> for "InnOSeed" — italic Fraunces, matching the
+   base layer's `.accent`. Color is omitted; it inherits `stroke`
+   from `.svgText` so the brand word gets the same amber outline as
+   the surrounding Chinese glyphs. */
+.svgAccent {
+  font-family: var(--ff-display);
+  font-style: italic;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+}
+
+/* Mobile (≤720px): tighten the headline's vertical margin and the
+   font-size cap so the three rows still fit comfortably inside the
+   first viewport. The SVG overlay's font-size must track the base
+   layer's, otherwise the dashed outline floats above the wrong
+   glyph positions. Was carried over from the v4 globals.css rules. */
+@media (max-width: 720px) {
+  .headline {
+    margin: 14px 0 24px;
+    font-size: clamp(40px, 10vw, 96px);
+    letter-spacing: -0.02em;
+  }
+  .svgText {
+    font-size: clamp(40px, 10vw, 96px);
+    letter-spacing: -0.02em;
+  }
+}
+
+/* Ultra-small (≤360px, iPhone SE 1): cap the headline at a floor of
+   32px so it stays readable inside a 320px-wide viewport without
+   horizontal overflow. */
+@media (max-width: 360px) {
+  .headline {
+    font-size: 32px;
+  }
+  .svgText {
+    font-size: 32px;
+  }
+}
+
+/* Reduced-motion users see the dashed overlay instantly — no fade-in
+   delay — since they don't get the hero-rise entry animation
+   either. */
+@media (prefers-reduced-motion: reduce) {
+  .overlay {
+    opacity: 1;
+    animation: none;
+  }
+}
