@@ -66,9 +66,31 @@ test.describe('desktop @ 1440x900', () => {
     expect(actual, `pill hrefs should be ${expected.join(',')}, got ${actual.join(',')}`).toEqual(expected);
   });
 
-  test('exactly one sidebar pill is highlighted (pill-active)', async ({ page }) => {
+  test('sidebar pill highlight tracks the current scroll position', async ({ page }) => {
+    // The blue highlight is NOT hardcoded — it follows whichever
+    // section the user is currently scrolled into. At the top of the
+    // page (hero), no pill is highlighted. Scroll to #pillars and the
+    // 方向 pill becomes pill-active.
     await page.goto('/');
-    await expect(page.locator('.nav-sidebar-pills .pill.pill-active')).toHaveCount(1);
+    await page.waitForLoadState('networkidle');
+    // Hero state: no pill should be highlighted.
+    await expect(page.locator('.nav-sidebar-pills .pill.pill-active')).toHaveCount(0);
+    // Scroll to #pillars — 方向 should become pill-active, others not.
+    await page.locator('#pillars').scrollIntoViewIfNeeded();
+    await page.waitForTimeout(200);
+    const activeAfterScroll = await page.evaluate(() => {
+      const el = document.querySelector('.nav-sidebar-pills .pill.pill-active');
+      return el ? el.getAttribute('href') : null;
+    });
+    expect(activeAfterScroll, 'after scrolling to #pillars, the 方向 pill should be active').toBe('#pillars');
+    // Scroll to #recruit — 招新 should become pill-active.
+    await page.locator('#recruit').scrollIntoViewIfNeeded();
+    await page.waitForTimeout(200);
+    const activeAtRecruit = await page.evaluate(() => {
+      const el = document.querySelector('.nav-sidebar-pills .pill.pill-active');
+      return el ? el.getAttribute('href') : null;
+    });
+    expect(activeAtRecruit, 'after scrolling to #recruit, the 招新 pill should be active').toBe('#recruit');
   });
 
   test('sidebar floats at the right edge, vertically centered', async ({ page }) => {

@@ -37,6 +37,11 @@ const SIDEBAR_PILLS: { href: string; label: string; key: string }[] = [
 export default function Nav() {
   const [scrolled, scrollSentinelRef] = useScrolled(60);
   const [open, setOpen] = useState(false);
+  // The sidebar pill that's currently highlighted brand-blue. Driven
+  // by which section the user is scrolled into — see the scroll
+  // listener below. Starts empty so the user sees no highlight while
+  // they're still in the hero.
+  const [activeSection, setActiveSection] = useState<string>('');
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -98,6 +103,46 @@ export default function Nav() {
   useEffect(() => {
     setOpen(false);
   }, [location.pathname]);
+
+  // Scroll-driven pill highlight. On every scroll (throttled to
+  // requestAnimationFrame) we walk the section list in document order
+  // and pick the last section whose top has scrolled above a trigger
+  // line ~120px below the viewport top. That section is what the user
+  // is currently reading, so its pill gets the blue highlight.
+  // Sections above the trigger line are skipped (they're done with);
+  // sections below haven't reached the user yet.
+  useEffect(() => {
+    if (typeof window === 'undefined') return undefined;
+    const triggerY = 120;
+    const updateActive = () => {
+      let active = '';
+      for (const p of SIDEBAR_PILLS) {
+        const el = document.getElementById(p.key);
+        if (!el) continue;
+        const rect = el.getBoundingClientRect();
+        if (rect.top <= triggerY) active = p.key;
+        else break; // sections are in document order — once one
+                    // is below the trigger, every later one is too.
+      }
+      setActiveSection(active);
+    };
+    let raf = 0;
+    const onScroll = () => {
+      if (raf) return;
+      raf = requestAnimationFrame(() => {
+        raf = 0;
+        updateActive();
+      });
+    };
+    updateActive();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+    return () => {
+      if (raf) cancelAnimationFrame(raf);
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+    };
+  }, []);
 
   const closeMenu = useCallback(() => setOpen(false), []);
 
@@ -213,16 +258,19 @@ export default function Nav() {
       {/* ── Sidebar (pill-style main-site section quick-nav) ── */}
       <aside className="nav-sidebar" aria-label="主站章节跳转">
         <nav className="nav-sidebar-pills">
-          {SIDEBAR_PILLS.map((p, i) => (
-            <a
-              key={p.key}
-              href={p.href}
-              className={`pill${i === 1 ? ' pill-active' : ''}`}
-              aria-current={i === 1 ? 'true' : undefined}
-            >
-              <span>{p.label}</span>
-            </a>
-          ))}
+          {SIDEBAR_PILLS.map((p) => {
+            const isActive = p.key === activeSection;
+            return (
+              <a
+                key={p.key}
+                href={p.href}
+                className={`pill${isActive ? ' pill-active' : ''}`}
+                aria-current={isActive ? 'true' : undefined}
+              >
+                <span>{p.label}</span>
+              </a>
+            );
+          })}
         </nav>
       </aside>
     </>
