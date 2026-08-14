@@ -67,7 +67,7 @@ test.describe('minicamp @ /minicamp route', () => {
     // Top bar exposes the single Mini Camp entry.
     await expect(page.locator('.nav-top-minicamp-entry')).toBeVisible();
     // Sidebar pills are present on desktop viewports.
-    await expect(page.locator('.nav-sidebar-pills .pill')).toHaveCount(4);
+    await expect(page.locator('.nav-sidebar-pills .pill')).toHaveCount(6);
     // Subdomain-only chrome should NOT be present
     await expect(page.locator('.minicamp-subdomain-head')).toHaveCount(0);
   });

@@ -35,13 +35,15 @@ test.describe('desktop @ 1440x900', () => {
     );
   });
 
-  test('sidebar pills render as a compact vertical stack of 4 rounded rectangles', async ({ page }) => {
+  test('sidebar pills render as a compact vertical stack of 6 main-site section anchors', async ({ page }) => {
+    // The sidebar is the main-site nav (关于 / 方向 / 成果 / 代表 /
+    // 活动 / 招新), not minicamp's. Each pill is an anchor link to
+    // its section id on the home page.
     await page.goto('/');
     const pills = page.locator('.nav-sidebar-pills .pill');
-    await expect(pills).toHaveCount(4);
-    // Each pill is a small horizontal rectangle (width > height), and
-    // every pill has the same height so the stack reads as a tidy
-    // floating block rather than a varied list.
+    await expect(pills).toHaveCount(6);
+    // Pills are horizontal rectangles (width > height) and share one
+    // height so the column reads as a tidy floating block.
     const boxes = await pills.evaluateAll((els) =>
       els.map((el) => {
         const r = el.getBoundingClientRect();
@@ -49,10 +51,19 @@ test.describe('desktop @ 1440x900', () => {
       })
     );
     const heights = new Set(boxes.map((b) => b.h));
-    expect(heights.size, `all 4 pills should share one height, got: ${[...heights].join(',')}`).toBe(1);
+    expect(heights.size, `all 6 pills should share one height, got: ${[...heights].join(',')}`).toBe(1);
     for (const b of boxes) {
       expect(b.w, `pill width ${b.w} should exceed height ${b.h}`).toBeGreaterThan(b.h);
     }
+  });
+
+  test('sidebar pills anchor to the main-site sections', async ({ page }) => {
+    await page.goto('/');
+    const expected = ['#manifesto', '#pillars', '#numbers', '#members', '#events', '#recruit'];
+    const actual = await page.locator('.nav-sidebar-pills .pill').evaluateAll((els) =>
+      els.map((el) => el.getAttribute('href'))
+    );
+    expect(actual, `pill hrefs should be ${expected.join(',')}, got ${actual.join(',')}`).toEqual(expected);
   });
 
   test('exactly one sidebar pill is highlighted (pill-active)', async ({ page }) => {

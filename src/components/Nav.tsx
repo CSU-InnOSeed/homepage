@@ -1,47 +1,51 @@
-import { useState, useRef, useEffect, useCallback, type MouseEvent } from 'react';
+import { useState, useEffect, useCallback, type MouseEvent } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import useScrolled from '../hooks/useScrolled';
 import useSmoothAnchorScroll from '../hooks/useSmoothAnchorScroll';
 
 /**
- * Mini Camp sidebar pills — the main site nav was redesigned (Aug 2025)
- * into a two-part layout:
+ * Sidebar pills — the main-site nav was redesigned (Aug 2025) into a
+ * two-part layout:
  *
  *   1. Top horizontal bar  — brand mark + ONE Mini Camp entry (the
  *                            single jumping-off point to the activity
  *                            site).
- *   2. Left vertical sidebar — a stack of pill-style quick-links into
- *                              specific Mini Camp sections (主页 /
- *                              故事 / 四路 / 现场). Each pill is a
- *                              horizontal rounded rectangle; one is
- *                              highlighted as the "current" entry.
+ *   2. Right floating sidebar — a stack of pill-style quick-links into
+ *                                 the main-site sections (关于 / 方向 /
+ *                                 成果 / 代表 / 活动 / 招新). Each pill
+ *                                 is a horizontal rounded rectangle
+ *                                 that smooth-scrolls to its anchor on
+ *                                 the current page.
  *
- * The 4 pills mirror the main directions visitors care about — they
- * match the section ids on minicamp.innoseed.club so each pill is a
- * one-click jump to that anchor on the activity site.
+ * The pill IDs mirror the `<section id=...>` anchors in App.tsx so each
+ * pill is a one-click scroll. One pill is highlighted (方向) as a
+ * visual default — IntersectionObserver wiring for a true active
+ * state is a future tweak.
  *
  * Mobile (≤720px): the sidebar disappears and the top bar collapses
- * the single Mini Camp entry behind a hamburger panel — same UX as
- * the previous v4 nav.
+ * the single Mini Camp entry behind a hamburger panel.
  */
 const SIDEBAR_PILLS: { href: string; label: string; key: string }[] = [
-  { key: 'home',   href: 'https://minicamp.innoseed.club/',                 label: '主页' },
-  { key: 'story',  href: 'https://minicamp.innoseed.club/#minicamp-story',   label: '故事' },
-  { key: 'tracks', href: 'https://minicamp.innoseed.club/#minicamp-tracks',  label: '四路' },
-  { key: 'recap',  href: 'https://minicamp.innoseed.club/#minicamp-recap',   label: '现场' },
+  { key: 'manifesto', href: '#manifesto', label: '关于' },
+  { key: 'pillars',   href: '#pillars',   label: '方向' },
+  { key: 'numbers',   href: '#numbers',   label: '成果' },
+  { key: 'members',   href: '#members',   label: '代表' },
+  { key: 'events',    href: '#events',    label: '活动' },
+  { key: 'recruit',   href: '#recruit',   label: '招新' },
 ];
 
 export default function Nav() {
   const [scrolled, scrollSentinelRef] = useScrolled(60);
-  const navRef = useRef<HTMLElement | null>(null);
   const [open, setOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Smooth-scroll delegation for the brand "回到顶部" anchor link in
-  // the top bar. (The sidebar pills are all absolute URLs, so they
-  // don't need scroll interception.)
-  useSmoothAnchorScroll(navRef);
+  // Smooth-scroll delegation. The hook listens on the document so it
+  // catches anchor clicks from BOTH the top bar (brand → #top) and
+  // the sidebar pills (→ #manifesto / #pillars / etc.). The 60px
+  // offset built into the hook keeps each section clear of the
+  // fixed top bar.
+  useSmoothAnchorScroll();
 
   // Mark <html> with `has-sidebar` for as long as this component is
   // mounted — globals.css uses that class to apply the sidebar-aware
@@ -139,7 +143,6 @@ export default function Nav() {
       <header
         className={`nav-top${scrolled ? ' scrolled' : ''}${open ? ' open' : ''}`}
         id="nav"
-        ref={navRef}
       >
         <div className="container nav-top-inner">
           <a
@@ -207,23 +210,17 @@ export default function Nav() {
         </div>
       </header>
 
-      {/* ── Sidebar (pill-style Mini Camp quick-nav) ── */}
-      <aside className="nav-sidebar" aria-label="Mini Camp 跳转">
-        <span className="nav-sidebar-eyebrow" aria-hidden="true">
-          Mini Camp
-        </span>
+      {/* ── Sidebar (pill-style main-site section quick-nav) ── */}
+      <aside className="nav-sidebar" aria-label="主站章节跳转">
         <nav className="nav-sidebar-pills">
           {SIDEBAR_PILLS.map((p, i) => (
             <a
               key={p.key}
               href={p.href}
-              target="_blank"
-              rel="noopener"
               className={`pill${i === 1 ? ' pill-active' : ''}`}
               aria-current={i === 1 ? 'true' : undefined}
             >
               <span>{p.label}</span>
-              <span className="arrow" aria-hidden="true">↗</span>
             </a>
           ))}
         </nav>
