@@ -20,28 +20,54 @@ test.describe('desktop @ 1440x900', () => {
     await expect(page.locator('.nav-toggle')).toBeHidden();
   });
 
-  test('nav links render as a vertical sidebar column', async ({ page }) => {
-    // The main nav was redesigned (Aug 2025) from a horizontal top bar
-    // to a left-side vertical sidebar that serves as a Mini Camp jump
-    // board. The links live in `.nav-links` and stack vertically on
-    // desktop — verify they share one left edge, not one top.
+  test('top bar exposes a single Mini Camp entry', async ({ page }) => {
+    // The redesigned nav (Aug 2025) is two-part: a horizontal top bar
+    // with brand + ONE Mini Camp entry, plus a left-side pill sidebar
+    // for section jumps. The top bar must surface exactly one
+    // minicamp entry, not the original 6-section link row.
     await page.goto('/');
-    const links = page.locator('.nav-links a');
-    const count = await links.count();
-    expect(count, `expected 5 Mini Camp links, got ${count}`).toBe(5);
-    const lefts = await links.evaluateAll((els) =>
-      els.map((el) => Math.round(el.getBoundingClientRect().left))
+    const topEntry = page.locator('.nav-top-minicamp-entry');
+    await expect(topEntry).toBeVisible();
+    await expect(topEntry).toContainText('Mini Camp');
+    await expect(topEntry).toHaveAttribute(
+      'href',
+      'https://minicamp.innoseed.club/'
     );
-    const uniqueLefts = [...new Set(lefts)];
-    expect(uniqueLefts.length, `expected one column, got lefts: ${lefts.join(',')}`).toBe(1);
   });
 
-  test('sidebar nav takes the full viewport height', async ({ page }) => {
+  test('sidebar pills render as a vertical stack of 4 rounded rectangles', async ({ page }) => {
     await page.goto('/');
-    const nav = page.locator('.nav');
-    const box = await nav.boundingBox();
-    const vh = await page.evaluate(() => window.innerHeight);
-    expect(box.height).toBeGreaterThanOrEqual(vh - 1);
+    const pills = page.locator('.nav-sidebar-pills .pill');
+    await expect(pills).toHaveCount(4);
+    // Pills are horizontal rectangles — each pill has a height < width
+    // (i.e. the layout is "landscape pill, stacked vertically").
+    const boxes = await pills.evaluateAll((els) =>
+      els.map((el) => {
+        const r = el.getBoundingClientRect();
+        return { w: Math.round(r.width), h: Math.round(r.height) };
+      })
+    );
+    for (const b of boxes) {
+      expect(b.w, `pill width ${b.w} should exceed height ${b.h}`).toBeGreaterThan(b.h);
+    }
+  });
+
+  test('exactly one sidebar pill is highlighted (pill-active)', async ({ page }) => {
+    // The design brief shows one pill highlighted (brand-blue); the
+    // other three stay neutral. Pin both ends of that invariant so a
+    // future change can't drop the highlight or highlight all four.
+    await page.goto('/');
+    await expect(page.locator('.nav-sidebar-pills .pill.pill-active')).toHaveCount(1);
+  });
+
+  test('sidebar sits below the top bar on the left edge', async ({ page }) => {
+    await page.goto('/');
+    const top = await page.locator('.nav-top').boundingBox();
+    const side = await page.locator('.nav-sidebar').boundingBox();
+    // The sidebar's top should equal the top bar's bottom (or be just
+    // below it within sub-pixel tolerance).
+    expect(side.y).toBeGreaterThanOrEqual(top.y + top.height - 2);
+    expect(side.x).toBe(0);
   });
 
   test('numbers count-up finishes at target value', async ({ page }) => {

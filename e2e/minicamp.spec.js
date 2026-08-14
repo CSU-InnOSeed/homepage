@@ -62,12 +62,12 @@ test.describe('minicamp @ /minicamp route', () => {
     await expect(cta).toHaveAttribute('href', '/apply');
   });
 
-  test('on the main domain the page shows the full Nav sidebar (not subdomain chrome)', async ({ page }) => {
+  test('on the main domain the page shows the full Nav (top bar + sidebar)', async ({ page }) => {
     await page.goto('/minicamp');
-    // The main-domain Nav now lives as a left-side sidebar. The link
-    // count comes from MINICAMP_NAV_LINKS in Nav.tsx (5 entries).
-    await expect(page.locator('.nav.nav-sidebar')).toBeVisible();
-    await expect(page.locator('.nav-sidebar-eyebrow')).toContainText('Mini Camp');
+    // Top bar exposes the single Mini Camp entry.
+    await expect(page.locator('.nav-top-minicamp-entry')).toBeVisible();
+    // Sidebar pills are present on desktop viewports.
+    await expect(page.locator('.nav-sidebar-pills .pill')).toHaveCount(4);
     // Subdomain-only chrome should NOT be present
     await expect(page.locator('.minicamp-subdomain-head')).toHaveCount(0);
   });

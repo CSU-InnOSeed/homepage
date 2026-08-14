@@ -1,56 +1,54 @@
-import { useState, useRef, useEffect, useCallback } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useState, useRef, useEffect, useCallback, type MouseEvent } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import useScrolled from '../hooks/useScrolled';
+import useSmoothAnchorScroll from '../hooks/useSmoothAnchorScroll';
 
 /**
- * Mini Camp nav items — the main site nav now exists primarily as a
- * Mini Camp jump board (sidebar on the left). Each link points to the
- * dedicated `minicamp.innoseed.club` subdomain so visitors land directly
- * on the activity surface instead of the lab overview.
+ * Mini Camp sidebar pills — the main site nav was redesigned (Aug 2025)
+ * into a two-part layout:
  *
- * Kept here (not in `content/site.ts`) because the sidebar's mini-camp
- * focus is a deliberate departure from NAV_LINKS, which still feeds
- * the Footer nav block (see FOOTER.navLinks).
+ *   1. Top horizontal bar  — brand mark + ONE Mini Camp entry (the
+ *                            single jumping-off point to the activity
+ *                            site).
+ *   2. Left vertical sidebar — a stack of pill-style quick-links into
+ *                              specific Mini Camp sections (主页 /
+ *                              故事 / 四路 / 现场). Each pill is a
+ *                              horizontal rounded rectangle; one is
+ *                              highlighted as the "current" entry.
+ *
+ * The 4 pills mirror the main directions visitors care about — they
+ * match the section ids on minicamp.innoseed.club so each pill is a
+ * one-click jump to that anchor on the activity site.
+ *
+ * Mobile (≤720px): the sidebar disappears and the top bar collapses
+ * the single Mini Camp entry behind a hamburger panel — same UX as
+ * the previous v4 nav.
  */
-const MINICAMP_NAV_LINKS: { href: string; label: string; external?: boolean }[] = [
-  { href: 'https://minicamp.innoseed.club/', label: 'Mini Camp 主页' },
-  { href: 'https://minicamp.innoseed.club/#minicamp-story', label: '故事' },
-  { href: 'https://minicamp.innoseed.club/#minicamp-tracks', label: '四路分头' },
-  { href: 'https://minicamp.innoseed.club/#minicamp-recap', label: '上届现场' },
-  { href: '/apply', label: '报名申请' },
+const SIDEBAR_PILLS: { href: string; label: string; key: string }[] = [
+  { key: 'home',   href: 'https://minicamp.innoseed.club/',                 label: '主页' },
+  { key: 'story',  href: 'https://minicamp.innoseed.club/#minicamp-story',   label: '故事' },
+  { key: 'tracks', href: 'https://minicamp.innoseed.club/#minicamp-tracks',  label: '四路' },
+  { key: 'recap',  href: 'https://minicamp.innoseed.club/#minicamp-recap',   label: '现场' },
 ];
 
-/**
- * Nav — sidebar fixed to the left edge of the viewport.
- *
- * Layout change vs v4 (Aug 2025): the top horizontal nav was repurposed
- * as a vertical sidebar so the existing site structure ("关于 / 方向 /
- * 成果 / 代表 / 活动 / 招新" anchor links) becomes a Mini Camp jump
- * board — every entry points visitors at minicamp.innoseed.club,
- * where the standalone activity page lives.
- *
- * Desktop (≥721px): sidebar pinned left, full-height column.
- * Mobile (≤720px): the sidebar collapses behind a hamburger that opens
- * a slide-down panel — same UX as the previous top nav.
- *
- * `useSmoothAnchorScroll` is intentionally NOT wired up here: every
- * link is an absolute URL to another origin (or a /apply route), so
- * the in-page scroll interception is a no-op.
- */
 export default function Nav() {
   const [scrolled, scrollSentinelRef] = useScrolled(60);
   const navRef = useRef<HTMLElement | null>(null);
   const [open, setOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
+
+  // Smooth-scroll delegation for the brand "回到顶部" anchor link in
+  // the top bar. (The sidebar pills are all absolute URLs, so they
+  // don't need scroll interception.)
+  useSmoothAnchorScroll(navRef);
 
   // Mark <html> with `has-sidebar` for as long as this component is
-  // mounted — globals.css uses that class to apply the 240px left
-  // offset to <body> on desktop. When Nav unmounts (e.g. /apply route,
-  // or /minicamp served from minicamp.innoseed.club which uses the
-  // SubdomainHeader instead), the class is removed and the layout
-  // returns to full-width. This means routes that don't render Nav
-  // don't have to opt out of the sidebar — they just don't get the
-  // class in the first place.
+  // mounted — globals.css uses that class to apply the sidebar-aware
+  // body offset (top + left padding) on desktop. When Nav unmounts
+  // (e.g. /apply route, or /minicamp served from minicamp.innoseed.club
+  // which uses SubdomainHeader instead), the class is removed and the
+  // layout returns to full-width.
   useEffect(() => {
     if (typeof document === 'undefined') return undefined;
     document.documentElement.classList.add('has-sidebar');
@@ -59,8 +57,9 @@ export default function Nav() {
     };
   }, []);
 
-  // Auto-close when viewport widens past the breakpoint so we never land in
-  // a state where the desktop sidebar stays hidden behind the mobile panel.
+  // Auto-close when viewport widens past the breakpoint so we never
+  // land in a state where the desktop top bar is hidden behind the
+  // mobile panel.
   useEffect(() => {
     if (typeof window === 'undefined') return undefined;
     const mq = window.matchMedia('(min-width: 721px)');
@@ -98,9 +97,27 @@ export default function Nav() {
 
   const closeMenu = useCallback(() => setOpen(false), []);
 
-  const handleLinkClick = useCallback(() => {
-    closeMenu();
-  }, [closeMenu]);
+  /**
+   * Click handler for the brand "回到顶部" anchor (#top). On any route
+   * other than `/`, navigate home first then scroll to the anchor.
+   */
+  const handleBrandClick = useCallback(
+    (e: MouseEvent<HTMLAnchorElement>) => {
+      if (location.pathname !== '/') {
+        e.preventDefault();
+        navigate('/');
+        setTimeout(() => {
+          const el = document.querySelector('#top');
+          if (el) {
+            const y = el.getBoundingClientRect().top + window.scrollY - 60;
+            window.scrollTo({ top: y, behavior: 'smooth' });
+          }
+        }, 60);
+      }
+      closeMenu();
+    },
+    [location.pathname, navigate, closeMenu]
+  );
 
   return (
     <>
@@ -117,13 +134,20 @@ export default function Nav() {
           visibility: 'hidden',
         }}
       />
+
+      {/* ── Top horizontal bar (brand + the ONE Mini Camp entry) ── */}
       <header
-        className={`nav nav-sidebar${scrolled ? ' scrolled' : ''}${open ? ' open' : ''}`}
+        className={`nav-top${scrolled ? ' scrolled' : ''}${open ? ' open' : ''}`}
         id="nav"
         ref={navRef}
       >
-        <div className="container nav-inner">
-          <a href="https://minicamp.innoseed.club/" className="brand">
+        <div className="container nav-top-inner">
+          <a
+            href="#top"
+            className="brand"
+            onClick={handleBrandClick}
+            aria-label="InnOSeed · 回到顶部"
+          >
             <span className="brand-mark">
               <img src="/imgs/favicon.png" alt="InnOSeed" />
             </span>
@@ -133,54 +157,77 @@ export default function Nav() {
             </span>
           </a>
 
-          <span className="nav-sidebar-eyebrow" aria-hidden="true">
-            Mini Camp
-          </span>
-
-          <nav
-            id="nav-links"
-            className="nav-links"
-            aria-label="Mini Camp 跳转"
-            aria-hidden={open ? false : undefined}
-          >
-            {MINICAMP_NAV_LINKS.map((l) => (
-              <a
-                key={l.href + l.label}
-                href={l.href}
-                onClick={handleLinkClick}
-                {...(l.external || l.href.startsWith('http') ? { target: '_blank', rel: 'noopener' } : {})}
-              >
-                {l.label}
-                {l.href.startsWith('http') && (
-                  <span className="arrow" aria-hidden="true">↗</span>
-                )}
-              </a>
-            ))}
-          </nav>
-
+          {/* The single Mini Camp entry — clicking this jumps visitors
+              straight to the activity site. On desktop the full label
+              + arrow are visible; on mobile it collapses behind the
+              hamburger and the panel shows it as the only link. */}
           <a
-            className="nav-sidebar-cta"
-            href="/apply"
-            onClick={handleLinkClick}
+            href="https://minicamp.innoseed.club/"
+            className="nav-top-minicamp-entry"
+            target="_blank"
+            rel="noopener"
+            onClick={closeMenu}
           >
-            <span>报名申请</span>
-            <span className="arrow" aria-hidden="true">→</span>
+            <span>Mini Camp</span>
+            <span className="arrow" aria-hidden="true">↗</span>
           </a>
+
+          <button
+            type="button"
+            className="nav-toggle"
+            aria-label={open ? '关闭菜单' : '打开菜单'}
+            aria-expanded={open}
+            aria-controls="nav-minicamp-panel"
+            onClick={() => setOpen((o) => !o)}
+          >
+            <span className="bar" />
+            <span className="bar" />
+            <span className="bar" />
+          </button>
         </div>
 
-        <button
-          type="button"
-          className="nav-toggle"
-          aria-label={open ? '关闭菜单' : '打开菜单'}
-          aria-expanded={open}
-          aria-controls="nav-links"
-          onClick={() => setOpen((o) => !o)}
+        {/* Mobile panel — only shows when ≤720px AND open. The single
+            Mini Camp entry is duplicated here so the hamburger pattern
+            stays consistent with the previous v4 nav. */}
+        <div
+          id="nav-minicamp-panel"
+          className="nav-minicamp-panel"
+          aria-hidden={!open}
         >
-          <span className="bar" />
-          <span className="bar" />
-          <span className="bar" />
-        </button>
+          <a
+            href="https://minicamp.innoseed.club/"
+            className="nav-minicamp-panel-link"
+            target="_blank"
+            rel="noopener"
+            onClick={closeMenu}
+          >
+            <span>Mini Camp</span>
+            <span className="arrow" aria-hidden="true">↗</span>
+          </a>
+        </div>
       </header>
+
+      {/* ── Sidebar (pill-style Mini Camp quick-nav) ── */}
+      <aside className="nav-sidebar" aria-label="Mini Camp 跳转">
+        <span className="nav-sidebar-eyebrow" aria-hidden="true">
+          Mini Camp
+        </span>
+        <nav className="nav-sidebar-pills">
+          {SIDEBAR_PILLS.map((p, i) => (
+            <a
+              key={p.key}
+              href={p.href}
+              target="_blank"
+              rel="noopener"
+              className={`pill${i === 1 ? ' pill-active' : ''}`}
+              aria-current={i === 1 ? 'true' : undefined}
+            >
+              <span>{p.label}</span>
+              <span className="arrow" aria-hidden="true">↗</span>
+            </a>
+          ))}
+        </nav>
+      </aside>
     </>
   );
 }

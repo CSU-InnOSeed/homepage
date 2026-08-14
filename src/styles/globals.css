@@ -268,41 +268,36 @@ section { position: relative; }
   border-radius: 4px;
 }
 
-/* ===================== NAV (sidebar layout, Aug 2025) =====================
-   The main nav was redesigned from a horizontal top bar to a left-side
-   vertical sidebar. It now serves as a Mini Camp jump board:
-     - Brand mark links to https://minicamp.innoseed.club/
-     - The link list points to Mini Camp destinations
-   The main content area gets a left padding equal to the sidebar width
-   so nothing hides underneath. Mobile (≤720px) collapses to a hamburger
-   panel like before. */
-.nav {
+/* ===================== NAV (top bar + sidebar, Aug 2025) =====================
+   Two-part layout:
+     1. .nav-top — horizontal top bar (brand + ONE Mini Camp entry).
+                   Same UX as v4 on mobile (hamburger collapses the
+                   single entry behind a panel).
+     2. .nav-sidebar — left vertical column of pill-style quick-links
+                        into specific Mini Camp sections. Hidden on
+                        mobile; the top-bar entry is the only nav on
+                        small screens.
+
+   .has-sidebar on <html> drives the body offset (top + left padding)
+   so content clears both the top bar and the sidebar on desktop. */
+.nav-top {
   position: fixed;
   top: env(safe-area-inset-top, 0);
-  left: 0; bottom: 0;
+  left: 0; right: 0;
   z-index: 50;
-  width: var(--nav-sidebar-w, 240px);
-  padding: 28px 20px;
-  border-right: 1px solid var(--rule);
-  background: rgba(255,255,255,0.86);
-  backdrop-filter: blur(20px) saturate(140%);
-  -webkit-backdrop-filter: blur(20px) saturate(140%);
-  transition: background 0.4s ease, border-color 0.4s ease;
+  padding: 16px 0;
+  background: rgba(255,255,255,0.78);
+  backdrop-filter: blur(20px) saturate(120%);
+  -webkit-backdrop-filter: blur(20px) saturate(120%);
+  border-bottom: 1px solid var(--rule);
+  transition: background 0.4s ease, padding 0.4s ease;
 }
-.nav.scrolled {
-  background: rgba(255,255,255,0.94);
-  border-right-color: var(--rule);
+.nav-top.scrolled {
+  padding: 12px 0;
 }
-.nav-inner {
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
+.nav-top-inner {
+  display: flex; align-items: center; justify-content: space-between;
   gap: 24px;
-  height: 100%;
-  width: 100%;
-  max-width: none;
-  margin: 0;
-  padding: 0;
 }
 .brand {
   display: flex; align-items: center; gap: 12px;
@@ -312,12 +307,12 @@ section { position: relative; }
   text-decoration: none;
 }
 .brand-mark {
-  width: 36px; height: 36px;
+  width: 32px; height: 32px;
   display: grid; place-items: center;
   border-radius: 50%;
   background: var(--bg-soft);
 }
-.brand-mark img { width: 32px; height: 32px; }
+.brand-mark img { width: 28px; height: 28px; }
 .brand-sub {
   font-family: var(--ff-sans);
   font-size: 11px;
@@ -327,116 +322,153 @@ section { position: relative; }
   font-weight: 500;
   margin-top: 2px;
 }
-.nav-sidebar-eyebrow {
-  font-family: var(--ff-sans);
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--c-research);
+
+/* The single Mini Camp entry in the top bar — styled as a small
+   pill button so it reads as "the entry point" rather than just
+   another text link. */
+.nav-top-minicamp-entry {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-}
-.nav-sidebar-eyebrow::before {
-  content: '';
-  width: 6px; height: 6px;
-  border-radius: 50%;
-  background: var(--c-research);
-  display: inline-block;
-}
-.nav-links {
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  gap: 4px;
-  flex: 1;
-  margin-top: 4px;
-}
-.nav-links a {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  font-size: 14px;
-  color: var(--ink-dark);
-  padding: 10px 12px;
-  font-weight: 500;
-  letter-spacing: 0.02em;
-  border-radius: 10px;
-  text-decoration: none;
-  transition: background 0.2s ease, color 0.2s ease;
-}
-.nav-links a .arrow {
-  font-family: var(--ff-sans);
-  font-style: normal;
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--ink-muted);
-  opacity: 0;
-  transform: translate(-4px, 0);
-  transition: opacity 0.2s ease, transform 0.2s ease;
-}
-.nav-links a:hover {
-  background: var(--bg-soft);
-  color: var(--brand);
-}
-.nav-links a:hover .arrow {
-  opacity: 1;
-  transform: translate(0, 0);
-  color: var(--brand);
-}
-.nav-sidebar-cta {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  margin-top: auto;
-  padding: 14px 18px;
-  background: var(--brand);
+  margin-left: auto;
+  padding: 10px 18px;
+  background: var(--ink-dark);
   color: #fff;
   border-radius: 999px;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
   letter-spacing: 0.04em;
   text-decoration: none;
-  transition: background 0.3s ease, transform 0.3s ease;
+  transition: background 0.25s ease, transform 0.25s ease;
 }
-.nav-sidebar-cta .arrow {
+.nav-top-minicamp-entry .arrow {
   font-family: var(--ff-sans);
   font-style: normal;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
-  transition: transform 0.3s ease;
+  transition: transform 0.25s ease;
 }
-.nav-sidebar-cta:hover {
-  background: var(--ink-dark);
+.nav-top-minicamp-entry:hover {
+  background: var(--brand);
   color: #fff;
 }
-.nav-sidebar-cta:hover .arrow {
-  transform: translateX(4px);
+.nav-top-minicamp-entry:hover .arrow {
+  transform: translate(2px, -2px);
 }
-@media (max-width: 720px) {
-  .nav {
-    /* Mobile: reverts to the original top-bar layout. Hamburger panel
-       slides down below the bar (see .nav.open rules further down). */
+
+/* Mobile hamburger panel — slides down below the top bar when open.
+   Only the single Mini Camp entry lives here on mobile (the sidebar
+   is hidden). */
+.nav-minicamp-panel {
+  display: none;
+}
+
+/* ── Sidebar (desktop only) ─────────────────────────────────── */
+.nav-sidebar {
+  display: none;
+}
+@media (min-width: 721px) {
+  .nav-sidebar {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 24px;
     position: fixed;
-    top: env(safe-area-inset-top, 0);
-    left: 0; right: 0; bottom: auto;
-    width: auto;
-    padding: 14px 0;
-    border-right: none;
-    border-bottom: 1px solid var(--rule);
+    left: 0;
+    /* Sit below the top bar; --nav-top-h is set by .has-sidebar rule. */
+    top: var(--nav-top-h, 68px);
+    bottom: 0;
+    width: var(--nav-sidebar-w, 220px);
+    padding: 28px 20px 28px;
+    border-right: 1px solid var(--rule);
+    background: rgba(255,255,255,0.86);
+    backdrop-filter: blur(20px) saturate(140%);
+    -webkit-backdrop-filter: blur(20px) saturate(140%);
+    z-index: 40;
   }
-  .nav-inner {
-    flex-direction: row;
+  .nav-sidebar-eyebrow {
+    font-family: var(--ff-sans);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--c-research);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding-left: 4px;
+  }
+  .nav-sidebar-eyebrow::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--c-research);
+    display: inline-block;
+  }
+
+  /* The pill stack — vertical column of horizontal rounded rectangles.
+     Each pill is the full sidebar-content width with consistent height
+     and a pill-shaped border-radius, matching the design shown in the
+     brief. One is highlighted (`pill-active`) to mark the "current"
+     section — defaults to the second pill (故事) since this is the
+     most-visited intro entry. */
+  .nav-sidebar-pills {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    margin-top: 4px;
+  }
+  .nav-sidebar-pills .pill {
+    display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 16px;
-    padding: 0 var(--gutter);
+    gap: 8px;
+    width: 100%;
+    /* The pill itself — horizontal rectangle with rounded corners.
+       Padding sits comfortably inside the sidebar's 20px gutter. */
+    padding: 12px 22px;
+    background: var(--bg-soft);
+    color: var(--ink-mid);
+    border-radius: 999px;
+    font-family: var(--ff-zh);
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    text-decoration: none;
+    transition: background 0.25s ease, color 0.25s ease, transform 0.25s ease;
   }
-  .nav-sidebar-eyebrow { display: none; }
-  .nav-sidebar-cta { display: none; }
+  .nav-sidebar-pills .pill .arrow {
+    font-family: var(--ff-sans);
+    font-style: normal;
+    font-size: 13px;
+    font-weight: 600;
+    opacity: 0;
+    transform: translate(-4px, 0);
+    transition: opacity 0.25s ease, transform 0.25s ease;
+  }
+  .nav-sidebar-pills .pill:hover {
+    background: var(--rule);
+    color: var(--ink-dark);
+  }
+  .nav-sidebar-pills .pill:hover .arrow {
+    opacity: 1;
+    transform: translate(0, 0);
+  }
+  /* Active / current pill — uses brand-blue to mirror the highlighted
+     rectangle in the brief. */
+  .nav-sidebar-pills .pill.pill-active {
+    background: var(--brand);
+    color: #fff;
+  }
+  .nav-sidebar-pills .pill.pill-active .arrow {
+    opacity: 1;
+    transform: translate(0, 0);
+    color: #fff;
+  }
+  .nav-sidebar-pills .pill.pill-active:hover {
+    background: var(--brand-dark);
+    color: #fff;
+  }
 }
 
 /* ===================== HERO ===================== */
@@ -1951,11 +1983,10 @@ main .page-header-desc {
 
 /* Tablet + phone (≤ 720px): toggle hamburger, slide-down panel */
 @media (max-width: 720px) {
+  .nav-top-minicamp-entry { display: none; }
   .nav-toggle { display: inline-flex; }
-  .nav-links {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
+  .nav-minicamp-panel {
+    display: block;
     position: absolute;
     top: 100%; left: 0; right: 0;
     background: rgba(255, 255, 255, 0.97);
@@ -1964,7 +1995,6 @@ main .page-header-desc {
     padding: 12px var(--gutter) 20px;
     border-bottom: 1px solid var(--rule);
     box-shadow: 0 18px 40px -22px rgba(15, 23, 42, 0.18);
-    /* Hidden by default — toggled open by .nav.open */
     opacity: 0;
     visibility: hidden;
     transform: translateY(-8px);
@@ -1973,7 +2003,7 @@ main .page-header-desc {
       transform 0.28s cubic-bezier(0.22, 1, 0.36, 1),
       visibility 0s linear 0.28s;
   }
-  .nav.open .nav-links {
+  .nav-top.open .nav-minicamp-panel {
     opacity: 1;
     visibility: visible;
     transform: translateY(0);
@@ -1982,15 +2012,24 @@ main .page-header-desc {
       transform 0.28s cubic-bezier(0.22, 1, 0.36, 1),
       visibility 0s linear 0s;
   }
-  .nav-links a {
+  .nav-minicamp-panel-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     width: 100%;
     padding: 14px 0;
     font-size: 16px;
+    color: var(--ink-dark);
     border-bottom: 1px solid var(--rule);
-    display: block;
+    text-decoration: none;
   }
-  .nav-links a:last-child { border-bottom: none; }
-  .nav-links a::after { display: none; }
+  .nav-minicamp-panel-link .arrow {
+    font-family: var(--ff-sans);
+    font-style: normal;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink-muted);
+  }
 }
 
 /* Phone (≤ 480px): tighten type, padding, stack CTAs.
@@ -2099,20 +2138,23 @@ main .page-header-desc {
 
 .hidden { display: none !important; }
 
-/* Sidebar-aware main content padding. The 240px left offset is applied
-   to <body> ONLY when the Nav sidebar is mounted — Nav sets a `has-sidebar`
-   class on the <html> element on mount and clears it on unmount. On
-   routes that don't render Nav (/apply, /minicamp on the subdomain
-   where SubdomainHeader is used instead), the padding is dropped and
-   content takes the full viewport width.
-
-   The Nav component owns this class so any route that mounts Nav
-   automatically gets the layout right — no per-page opt-in required. */
+/* Sidebar-aware main content padding. The Nav component sets a
+   `has-sidebar` class on <html> while it's mounted. globals.css uses
+   that class to apply two offsets on desktop:
+     - top padding = height of the .nav-top bar
+     - left padding = width of the .nav-sidebar pill column
+   On routes that don't render Nav (/apply, /minicamp served from
+   minicamp.innoseed.club which uses SubdomainHeader instead), the
+   class is absent and the body returns to full-width. */
 html.has-sidebar {
-  --nav-sidebar-w: 240px;
+  --nav-top-h: 80px;
+  --nav-sidebar-w: 220px;
 }
 @media (min-width: 721px) {
-  html.has-sidebar body { padding-left: var(--nav-sidebar-w); }
+  html.has-sidebar body {
+    padding-top: calc(var(--nav-top-h) + env(safe-area-inset-top, 0px));
+    padding-left: var(--nav-sidebar-w);
+  }
   html.has-sidebar .container { padding-left: 40px; padding-right: 40px; }
 }
 
