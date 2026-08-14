@@ -82,13 +82,15 @@ function EventCard({ ev, idx }: EventCardProps) {
 
   const isUpcoming = ev.status === 'upcoming';
 
-  return (
-    <article
-      ref={ref}
-      className={`event-card reveal event-${ev.type}${isUpcoming ? '' : ' event-past'}`}
-      data-delay={String(Math.min(idx, 6))}
-      aria-labelledby={titleId}
-    >
+  // Past Mini Camp cards get a full-card link to the dedicated subdomain.
+  // Other past events without a destination stay click-free.
+  const miniCampHref = !isUpcoming && ev.key === 'mini-camp-fall-2025'
+    ? 'https://minicamp.innoseed.club/'
+    : null;
+  const cardClass = `event-card reveal event-${ev.type}${isUpcoming ? '' : ' event-past'}${miniCampHref ? ' event-card-link' : ''}`;
+
+  const inner = (
+    <>
       <header className="event-head">
         <span className="event-type">
           <span className="event-type-dot" aria-hidden="true" />
@@ -129,6 +131,42 @@ function EventCard({ ev, idx }: EventCardProps) {
           </a>
         )}
       </footer>
+    </>
+  );
+
+  if (miniCampHref) {
+    return (
+      <article
+        ref={ref}
+        className={cardClass}
+        data-delay={String(Math.min(idx, 6))}
+        aria-labelledby={titleId}
+      >
+        {/* The full-card overlay <a> sits on top via CSS (position: absolute,
+            inset: 0) so the entire card becomes one large hit target.
+            The footer link inside is z-index: 1 + position: relative so it
+            stays clickable on top of the overlay when both exist. */}
+        <a
+          className="event-card-overlay"
+          href={miniCampHref}
+          aria-label={`${ev.title} · 前往 Mini Camp 子站`}
+          onClick={() => trackEvent('cta_external_click', { to: miniCampHref, from: ev.key })}
+        >
+          <span className="visually-hidden">前往 Mini Camp 子站</span>
+        </a>
+        {inner}
+      </article>
+    );
+  }
+
+  return (
+    <article
+      ref={ref}
+      className={cardClass}
+      data-delay={String(Math.min(idx, 6))}
+      aria-labelledby={titleId}
+    >
+      {inner}
     </article>
   );
 }

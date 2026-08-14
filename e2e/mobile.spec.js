@@ -23,12 +23,12 @@ test.describe('mobile @ 375x812', () => {
     await expect(hamburger).toHaveAttribute('aria-expanded', 'false');
   });
 
-  test('hamburger opens panel with all 6 links', async ({ page }) => {
+  test('hamburger opens panel with all 5 Mini Camp links', async ({ page }) => {
     await page.goto('/');
     await page.locator('.nav-toggle').click();
     await expect(page.locator('.nav-toggle')).toHaveAttribute('aria-expanded', 'true');
     await expect(page.locator('.nav-links')).toBeVisible();
-    await expect(page.locator('.nav-links a')).toHaveCount(6);
+    await expect(page.locator('.nav-links a')).toHaveCount(5);
   });
 
   test('Esc closes the menu', async ({ page }) => {
@@ -42,7 +42,11 @@ test.describe('mobile @ 375x812', () => {
   test('clicking a nav link closes the menu', async ({ page }) => {
     await page.goto('/');
     await page.locator('.nav-toggle').click();
-    await page.locator('.nav-links a[href="#pillars"]').click();
+    // Any nav-link works here — we just want to assert that clicking a
+    // link closes the panel. The original site-section anchor links
+    // were replaced by Mini Camp jumps in the sidebar redesign, so
+    // we click the first available sidebar link instead.
+    await page.locator('.nav-links a').first().click();
     await page.waitForTimeout(200);
     await expect(page.locator('.nav-toggle')).toHaveAttribute('aria-expanded', 'false');
   });

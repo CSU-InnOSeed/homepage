@@ -49,13 +49,25 @@ test.describe('minicamp @ /minicamp route', () => {
     // Mini Camp is an activity page, not a recruitment flow.
     await expect(page.locator('.minicamp-page')).toContainText('不是招新流程');
     await expect(page.locator('.minicamp-timeline')).toHaveCount(0);
-    await expect(page.locator('.minicamp-cta')).toHaveCount(0);
   });
 
-  test('on the main domain the page shows full Nav (not subdomain chrome)', async ({ page }) => {
+  test('hero carries the "报名minicamp" CTA linking to /apply', async ({ page }) => {
+    // The "报名minicamp ↗" button was added to mirror the main-site
+    // "申请加入 ↗" CTA. It must live in the hero CTA row and point to
+    // /apply so visitors on the subdomain can sign up directly.
     await page.goto('/minicamp');
-    // The full Nav renders the link row
-    await expect(page.locator('header nav a[href="#pillars"]')).toBeVisible();
+    const cta = page.locator('.minicamp-hero-cta-row a.btn.btn-primary');
+    await expect(cta).toBeVisible();
+    await expect(cta).toContainText('报名minicamp');
+    await expect(cta).toHaveAttribute('href', '/apply');
+  });
+
+  test('on the main domain the page shows the full Nav sidebar (not subdomain chrome)', async ({ page }) => {
+    await page.goto('/minicamp');
+    // The main-domain Nav now lives as a left-side sidebar. The link
+    // count comes from MINICAMP_NAV_LINKS in Nav.tsx (5 entries).
+    await expect(page.locator('.nav.nav-sidebar')).toBeVisible();
+    await expect(page.locator('.nav-sidebar-eyebrow')).toContainText('Mini Camp');
     // Subdomain-only chrome should NOT be present
     await expect(page.locator('.minicamp-subdomain-head')).toHaveCount(0);
   });

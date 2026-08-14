@@ -20,15 +20,28 @@ test.describe('desktop @ 1440x900', () => {
     await expect(page.locator('.nav-toggle')).toBeHidden();
   });
 
-  test('nav links are visible in a single row', async ({ page }) => {
+  test('nav links render as a vertical sidebar column', async ({ page }) => {
+    // The main nav was redesigned (Aug 2025) from a horizontal top bar
+    // to a left-side vertical sidebar that serves as a Mini Camp jump
+    // board. The links live in `.nav-links` and stack vertically on
+    // desktop — verify they share one left edge, not one top.
     await page.goto('/');
     const links = page.locator('.nav-links a');
-    await expect(links).toHaveCount(6);
-    const tops = await links.evaluateAll((els) =>
-      els.map((el) => Math.round(el.getBoundingClientRect().top))
+    const count = await links.count();
+    expect(count, `expected 5 Mini Camp links, got ${count}`).toBe(5);
+    const lefts = await links.evaluateAll((els) =>
+      els.map((el) => Math.round(el.getBoundingClientRect().left))
     );
-    const uniqueTops = [...new Set(tops)];
-    expect(uniqueTops.length, `expected one row, got tops: ${tops.join(',')}`).toBe(1);
+    const uniqueLefts = [...new Set(lefts)];
+    expect(uniqueLefts.length, `expected one column, got lefts: ${lefts.join(',')}`).toBe(1);
+  });
+
+  test('sidebar nav takes the full viewport height', async ({ page }) => {
+    await page.goto('/');
+    const nav = page.locator('.nav');
+    const box = await nav.boundingBox();
+    const vh = await page.evaluate(() => window.innerHeight);
+    expect(box.height).toBeGreaterThanOrEqual(vh - 1);
   });
 
   test('numbers count-up finishes at target value', async ({ page }) => {
@@ -103,6 +116,17 @@ test.describe('desktop @ 1440x900', () => {
     }, null, { timeout: 5000 });
     const answers = await page.locator('.rf-a').count();
     expect(answers, 'no FAQ answer should be rendered on initial load').toBe(0);
+  });
+
+  test('Mini Camp event card has a full-card overlay link to the subdomain', async ({ page }) => {
+    // The 2025 fall Mini Camp card on /events wraps its body in an
+    // overlay <a> that points at minicamp.innoseed.club so visitors
+    // can jump straight to the activity site from the main events list.
+    await page.goto('/events');
+    const card = page.locator('.event-card-link');
+    await expect(card).toHaveCount(1);
+    const overlay = card.locator('a.event-card-overlay');
+    await expect(overlay).toHaveAttribute('href', 'https://minicamp.innoseed.club/');
   });
 
   test('FAQ: focus indicator is on the question text, not a row frame', async ({ page }) => {

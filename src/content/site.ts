@@ -241,7 +241,7 @@ export const HERO: HeroData = {
   //  the v3 design also places the brand word in the colored em.)
   headlineRows: [
     { lead: '在 InnOSeed', trail: '，' },
-    { text: '你想做的。' },
+    { text: '做你想做的。' },
   ],
   sub:
     `${TAGLINE}\n竞赛 · 科研 · 创业 · 志合者 — 四个方向，一条共同的路。`,

@@ -234,6 +234,44 @@ main .minicamp-hero h1 {
   color: #93C5A2;
   background: rgba(147, 197, 162, 0.12);
 }
+
+/* CTA row — primary 报名 button + secondary "向下看现场" link.
+   Sized like the main-site hero so the two surfaces feel like one product. */
+.minicamp-hero-cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 18px;
+  margin-top: 28px;
+}
+.minicamp-hero-cta-row .btn {
+  padding: 18px 32px;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: #fff;
+}
+.minicamp-hero-cta-row .btn .arrow {
+  font-family: var(--ff-sans);
+  font-style: normal;
+  font-size: 16px;
+  font-weight: 600;
+}
+.minicamp-hero-cta-row .minicamp-scroll-link {
+  margin-top: 0;
+}
+@media (max-width: 480px) {
+  .minicamp-hero-cta-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+  .minicamp-hero-cta-row .btn,
+  .minicamp-hero-cta-row .minicamp-scroll-link {
+    width: 100%;
+    justify-content: center;
+  }
+}
 .minicamp-hero-index {
   position: absolute;
   right: clamp(20px, 4vw, 48px);

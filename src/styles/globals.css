@@ -268,40 +268,56 @@ section { position: relative; }
   border-radius: 4px;
 }
 
-/* ===================== NAV ===================== */
+/* ===================== NAV (sidebar layout, Aug 2025) =====================
+   The main nav was redesigned from a horizontal top bar to a left-side
+   vertical sidebar. It now serves as a Mini Camp jump board:
+     - Brand mark links to https://minicamp.innoseed.club/
+     - The link list points to Mini Camp destinations
+   The main content area gets a left padding equal to the sidebar width
+   so nothing hides underneath. Mobile (≤720px) collapses to a hamburger
+   panel like before. */
 .nav {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 50;
-  /* Push past iOS notch / Dynamic Island. Falls back to 0 on browsers
-     that don't expose safe-area-inset (everywhere except iOS Safari).
-     The body's padding-top mirrors this so flow content starts at the
-     same baseline. */
+  position: fixed;
   top: env(safe-area-inset-top, 0);
-  padding: 18px 0;
-  transition: background 0.4s ease, padding 0.4s ease, backdrop-filter 0.4s ease, box-shadow 0.4s ease;
+  left: 0; bottom: 0;
+  z-index: 50;
+  width: var(--nav-sidebar-w, 240px);
+  padding: 28px 20px;
+  border-right: 1px solid var(--rule);
+  background: rgba(255,255,255,0.86);
+  backdrop-filter: blur(20px) saturate(140%);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+  transition: background 0.4s ease, border-color 0.4s ease;
 }
 .nav.scrolled {
-  background: rgba(255,255,255,0.78);
-  backdrop-filter: blur(20px) saturate(120%);
-  -webkit-backdrop-filter: blur(20px) saturate(120%);
-  border-bottom: 1px solid var(--rule);
-  padding: 12px 0;
+  background: rgba(255,255,255,0.94);
+  border-right-color: var(--rule);
 }
 .nav-inner {
-  display: flex; align-items: center; justify-content: space-between; gap: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 24px;
+  height: 100%;
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0;
 }
 .brand {
   display: flex; align-items: center; gap: 12px;
   font-family: var(--ff-display);
   font-weight: 700; font-size: 19px; letter-spacing: -0.01em;
   color: var(--ink-dark);
+  text-decoration: none;
 }
 .brand-mark {
-  width: 32px; height: 32px;
+  width: 36px; height: 36px;
   display: grid; place-items: center;
   border-radius: 50%;
   background: var(--bg-soft);
 }
-.brand-mark img { width: 28px; height: 28px; }
+.brand-mark img { width: 32px; height: 32px; }
 .brand-sub {
   font-family: var(--ff-sans);
   font-size: 11px;
@@ -311,21 +327,117 @@ section { position: relative; }
   font-weight: 500;
   margin-top: 2px;
 }
-.nav-links { display: flex; align-items: center; gap: 36px; }
-.nav-links a {
-  font-size: 14px; color: var(--ink-dark);
-  position: relative; padding: 4px 0;
-  font-weight: 500; letter-spacing: 0.02em;
+.nav-sidebar-eyebrow {
+  font-family: var(--ff-sans);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--c-research);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
 }
-.nav-links a::after {
+.nav-sidebar-eyebrow::before {
   content: '';
-  position: absolute; left: 0; bottom: 0;
-  width: 0; height: 1px;
-  background: var(--brand);
-  transition: width 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--c-research);
+  display: inline-block;
 }
-.nav-links a:hover::after { width: 100%; }
-@media (max-width: 720px) { .nav-links { display: none; } }
+.nav-links {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 4px;
+  flex: 1;
+  margin-top: 4px;
+}
+.nav-links a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 14px;
+  color: var(--ink-dark);
+  padding: 10px 12px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  border-radius: 10px;
+  text-decoration: none;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+.nav-links a .arrow {
+  font-family: var(--ff-sans);
+  font-style: normal;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink-muted);
+  opacity: 0;
+  transform: translate(-4px, 0);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+.nav-links a:hover {
+  background: var(--bg-soft);
+  color: var(--brand);
+}
+.nav-links a:hover .arrow {
+  opacity: 1;
+  transform: translate(0, 0);
+  color: var(--brand);
+}
+.nav-sidebar-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: auto;
+  padding: 14px 18px;
+  background: var(--brand);
+  color: #fff;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  transition: background 0.3s ease, transform 0.3s ease;
+}
+.nav-sidebar-cta .arrow {
+  font-family: var(--ff-sans);
+  font-style: normal;
+  font-size: 14px;
+  font-weight: 600;
+  transition: transform 0.3s ease;
+}
+.nav-sidebar-cta:hover {
+  background: var(--ink-dark);
+  color: #fff;
+}
+.nav-sidebar-cta:hover .arrow {
+  transform: translateX(4px);
+}
+@media (max-width: 720px) {
+  .nav {
+    /* Mobile: reverts to the original top-bar layout. Hamburger panel
+       slides down below the bar (see .nav.open rules further down). */
+    position: fixed;
+    top: env(safe-area-inset-top, 0);
+    left: 0; right: 0; bottom: auto;
+    width: auto;
+    padding: 14px 0;
+    border-right: none;
+    border-bottom: 1px solid var(--rule);
+  }
+  .nav-inner {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 0 var(--gutter);
+  }
+  .nav-sidebar-eyebrow { display: none; }
+  .nav-sidebar-cta { display: none; }
+}
 
 /* ===================== HERO ===================== */
 .hero {
@@ -1395,6 +1507,49 @@ main .page-header-desc {
 }
 .event-past { opacity: 0.72; }
 .event-past:hover { opacity: 1; }
+
+/* Full-card overlay link — when an event has a dedicated destination
+   (e.g. Mini Camp → minicamp.innoseed.club), the whole card becomes
+   one large hit target. The overlay sits above the content; the
+   footer link (when present) stays clickable via z-index. */
+.event-card-link { position: relative; cursor: pointer; }
+.event-card-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  text-decoration: none;
+  border-radius: inherit;
+}
+.event-card-link .event-foot,
+.event-card-link .event-head {
+  /* Keep footer CTAs / future in-card buttons clickable above the
+     overlay — bump them to z-index 2 so the overlay doesn't swallow
+     the click. */
+  position: relative;
+  z-index: 2;
+}
+.event-card-link::after {
+  /* Hover affordance — a tiny arrow appears in the bottom-right so
+     users see the card is clickable. */
+  content: '↗';
+  position: absolute;
+  right: 22px;
+  bottom: 22px;
+  font-family: var(--ff-sans);
+  font-style: normal;
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--event-color, var(--brand));
+  opacity: 0;
+  transform: translate(-4px, 4px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  pointer-events: none;
+  z-index: 2;
+}
+.event-card-link:hover::after {
+  opacity: 0.85;
+  transform: translate(0, 0);
+}
 .event-foot {
   display: flex;
   align-items: center;
@@ -1943,6 +2098,23 @@ main .page-header-desc {
 }
 
 .hidden { display: none !important; }
+
+/* Sidebar-aware main content padding. The 240px left offset is applied
+   to <body> ONLY when the Nav sidebar is mounted — Nav sets a `has-sidebar`
+   class on the <html> element on mount and clears it on unmount. On
+   routes that don't render Nav (/apply, /minicamp on the subdomain
+   where SubdomainHeader is used instead), the padding is dropped and
+   content takes the full viewport width.
+
+   The Nav component owns this class so any route that mounts Nav
+   automatically gets the layout right — no per-page opt-in required. */
+html.has-sidebar {
+  --nav-sidebar-w: 240px;
+}
+@media (min-width: 721px) {
+  html.has-sidebar body { padding-left: var(--nav-sidebar-w); }
+  html.has-sidebar .container { padding-left: 40px; padding-right: 40px; }
+}
 
 /* ===================== A11Y ===================== */
 

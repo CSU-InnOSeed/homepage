@@ -1,37 +1,66 @@
-import { useState, useRef, useEffect, useCallback, type MouseEvent } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useState, useRef, useEffect, useCallback } from 'react';
+import { useLocation } from 'react-router-dom';
 import useScrolled from '../hooks/useScrolled';
-import useSmoothAnchorScroll from '../hooks/useSmoothAnchorScroll';
-import { NAV_LINKS } from '../content/site';
 
 /**
- * Nav — fixed header with brand mark + link row.
+ * Mini Camp nav items — the main site nav now exists primarily as a
+ * Mini Camp jump board (sidebar on the left). Each link points to the
+ * dedicated `minicamp.innoseed.club` subdomain so visitors land directly
+ * on the activity surface instead of the lab overview.
  *
- * On ≤720px the link row collapses behind a hamburger button. State is local
- * (`open`) and self-clears on: link click, Esc key, viewport widening past the
- * breakpoint, or route change. `aria-expanded` / `aria-controls` for AT.
+ * Kept here (not in `content/site.ts`) because the sidebar's mini-camp
+ * focus is a deliberate departure from NAV_LINKS, which still feeds
+ * the Footer nav block (see FOOTER.navLinks).
+ */
+const MINICAMP_NAV_LINKS: { href: string; label: string; external?: boolean }[] = [
+  { href: 'https://minicamp.innoseed.club/', label: 'Mini Camp 主页' },
+  { href: 'https://minicamp.innoseed.club/#minicamp-story', label: '故事' },
+  { href: 'https://minicamp.innoseed.club/#minicamp-tracks', label: '四路分头' },
+  { href: 'https://minicamp.innoseed.club/#minicamp-recap', label: '上届现场' },
+  { href: '/apply', label: '报名申请' },
+];
+
+/**
+ * Nav — sidebar fixed to the left edge of the viewport.
  *
- * Anchor links (`#xxx`) behave differently depending on the current route:
- *   - On `/`               — native anchor scroll (CSS `scroll-behavior: smooth`
- *                            + useSmoothAnchorScroll's 60px offset).
- *   - On `/events` / `/recruit` — navigate to `/<hash>` instead, so the user
- *                            lands on the home page with the right section
- *                            scrolled into view (after React paints the section).
- *                            This keeps shareable URLs working AND keeps
- *                            intra-site nav from reloading the page.
+ * Layout change vs v4 (Aug 2025): the top horizontal nav was repurposed
+ * as a vertical sidebar so the existing site structure ("关于 / 方向 /
+ * 成果 / 代表 / 活动 / 招新" anchor links) becomes a Mini Camp jump
+ * board — every entry points visitors at minicamp.innoseed.club,
+ * where the standalone activity page lives.
+ *
+ * Desktop (≥721px): sidebar pinned left, full-height column.
+ * Mobile (≤720px): the sidebar collapses behind a hamburger that opens
+ * a slide-down panel — same UX as the previous top nav.
+ *
+ * `useSmoothAnchorScroll` is intentionally NOT wired up here: every
+ * link is an absolute URL to another origin (or a /apply route), so
+ * the in-page scroll interception is a no-op.
  */
 export default function Nav() {
   const [scrolled, scrollSentinelRef] = useScrolled(60);
   const navRef = useRef<HTMLElement | null>(null);
   const [open, setOpen] = useState(false);
   const location = useLocation();
-  const navigate = useNavigate();
 
-  // Smooth-scroll delegation (works for both desktop link row and mobile panel).
-  useSmoothAnchorScroll(navRef);
+  // Mark <html> with `has-sidebar` for as long as this component is
+  // mounted — globals.css uses that class to apply the 240px left
+  // offset to <body> on desktop. When Nav unmounts (e.g. /apply route,
+  // or /minicamp served from minicamp.innoseed.club which uses the
+  // SubdomainHeader instead), the class is removed and the layout
+  // returns to full-width. This means routes that don't render Nav
+  // don't have to opt out of the sidebar — they just don't get the
+  // class in the first place.
+  useEffect(() => {
+    if (typeof document === 'undefined') return undefined;
+    document.documentElement.classList.add('has-sidebar');
+    return () => {
+      document.documentElement.classList.remove('has-sidebar');
+    };
+  }, []);
 
   // Auto-close when viewport widens past the breakpoint so we never land in
-  // a state where the desktop link row stays hidden behind the panel.
+  // a state where the desktop sidebar stays hidden behind the mobile panel.
   useEffect(() => {
     if (typeof window === 'undefined') return undefined;
     const mq = window.matchMedia('(min-width: 721px)');
@@ -42,7 +71,7 @@ export default function Nav() {
     return () => mq.removeEventListener('change', onChange);
   }, []);
 
-  // Esc closes the panel.
+  // Esc closes the mobile panel.
   useEffect(() => {
     if (!open) return undefined;
     const onKey = (e: KeyboardEvent) => {
@@ -52,8 +81,7 @@ export default function Nav() {
     return () => window.removeEventListener('keydown', onKey);
   }, [open]);
 
-  // Lock body scroll while panel is open — prevents the page from scrolling
-  // behind a translucent overlay.
+  // Lock body scroll while the mobile panel is open.
   useEffect(() => {
     if (!open) return undefined;
     const prev = document.body.style.overflow;
@@ -63,44 +91,19 @@ export default function Nav() {
     };
   }, [open]);
 
-  // Close panel on route change.
+  // Close mobile panel on route change.
   useEffect(() => {
     setOpen(false);
   }, [location.pathname]);
 
   const closeMenu = useCallback(() => setOpen(false), []);
 
-  /**
-   * Click handler for anchor links (#xxx).
-   * - On `/`: do nothing — browser native anchor + scroll-behavior:smooth.
-   * - On sub-routes: navigate to `/<hash>` and scroll into the target after
-   *   the next paint (50ms is plenty for React 18 to mount and measure).
-   */
-  const handleAnchorClick = useCallback(
-    (e: MouseEvent<HTMLAnchorElement>, hash: string) => {
-      if (location.pathname !== '/') {
-        e.preventDefault();
-        navigate('/' + hash);
-        setTimeout(() => {
-          const el = document.querySelector(hash);
-          if (el) {
-            const y = el.getBoundingClientRect().top + window.scrollY - 60;
-            window.scrollTo({ top: y, behavior: 'smooth' });
-          }
-        }, 60);
-      }
-      closeMenu();
-    },
-    [location.pathname, navigate, closeMenu]
-  );
+  const handleLinkClick = useCallback(() => {
+    closeMenu();
+  }, [closeMenu]);
 
   return (
     <>
-      {/* Sentinel for useScrolled's IntersectionObserver. Lives at the
-          top of the document (the nav header above is position:fixed
-          so it takes no document space). When the user scrolls past
-          60px the sentinel crosses out the top of the IO root and
-          useScrolled flips to true — no scroll listener needed. */}
       <div
         ref={scrollSentinelRef}
         aria-hidden="true"
@@ -115,37 +118,55 @@ export default function Nav() {
         }}
       />
       <header
-        className={`nav${scrolled ? ' scrolled' : ''}${open ? ' open' : ''}`}
+        className={`nav nav-sidebar${scrolled ? ' scrolled' : ''}${open ? ' open' : ''}`}
         id="nav"
         ref={navRef}
       >
-      <div className="container nav-inner">
-        <a href="#top" className="brand" onClick={(e) => handleAnchorClick(e, '#top')}>
-          <span className="brand-mark">
-            <img src="/imgs/favicon.png" alt="InnOSeed" />
-          </span>
-          <span>
-            <div>InnOSeed</div>
-            <div className="brand-sub">CSU · 中南大学</div>
-          </span>
-        </a>
+        <div className="container nav-inner">
+          <a href="https://minicamp.innoseed.club/" className="brand">
+            <span className="brand-mark">
+              <img src="/imgs/favicon.png" alt="InnOSeed" />
+            </span>
+            <span>
+              <div>InnOSeed</div>
+              <div className="brand-sub">CSU · 中南大学</div>
+            </span>
+          </a>
 
-        <nav
-          id="nav-links"
-          className="nav-links"
-          aria-hidden={open ? false : undefined}
-        >
-          {NAV_LINKS.map((l) => (
-            <a
-              key={l.href}
-              href={l.href}
-              onClick={(e) => handleAnchorClick(e, l.href)}
-              {...(l.external ? { target: '_blank', rel: 'noopener' } : {})}
-            >
-              {l.label}
-            </a>
-          ))}
-        </nav>
+          <span className="nav-sidebar-eyebrow" aria-hidden="true">
+            Mini Camp
+          </span>
+
+          <nav
+            id="nav-links"
+            className="nav-links"
+            aria-label="Mini Camp 跳转"
+            aria-hidden={open ? false : undefined}
+          >
+            {MINICAMP_NAV_LINKS.map((l) => (
+              <a
+                key={l.href + l.label}
+                href={l.href}
+                onClick={handleLinkClick}
+                {...(l.external || l.href.startsWith('http') ? { target: '_blank', rel: 'noopener' } : {})}
+              >
+                {l.label}
+                {l.href.startsWith('http') && (
+                  <span className="arrow" aria-hidden="true">↗</span>
+                )}
+              </a>
+            ))}
+          </nav>
+
+          <a
+            className="nav-sidebar-cta"
+            href="/apply"
+            onClick={handleLinkClick}
+          >
+            <span>报名申请</span>
+            <span className="arrow" aria-hidden="true">→</span>
+          </a>
+        </div>
 
         <button
           type="button"
@@ -159,7 +180,6 @@ export default function Nav() {
           <span className="bar" />
           <span className="bar" />
         </button>
-      </div>
       </header>
     </>
   );

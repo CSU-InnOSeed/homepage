@@ -66,10 +66,16 @@ export default function MiniCamp() {
               <em>{MINICAMP.headline.accent}</em>
             </h1>
             <p className="page-header-desc">{MINICAMP.lead}</p>
-            <a className="minicamp-scroll-link" href="#minicamp-story">
-              <span>向下看现场</span>
-              <span aria-hidden="true">↓</span>
-            </a>
+            <div className="minicamp-hero-cta-row">
+              <a className="btn btn-primary" href="/apply">
+                <span>报名minicamp</span>
+                <span className="arrow">↗</span>
+              </a>
+              <a className="minicamp-scroll-link" href="#minicamp-story">
+                <span>向下看现场</span>
+                <span aria-hidden="true">↓</span>
+              </a>
+            </div>
           </div>
           <div className="minicamp-hero-index" aria-hidden="true">
             <span>MC</span>
