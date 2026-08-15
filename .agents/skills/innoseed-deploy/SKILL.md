@@ -5,81 +5,72 @@ description: Deploy workflow for the InnOSeed Lab landing (innoseed.club) — lo
 
 # InnOSeed Deploy
 
-End-to-end workflow for shipping changes to the InnOSeed landing site. Three
-phases — verify locally, push for review, finish the deploy by hand in
-Vercel + DNS.
+上线 / 子域名 / DNS / 分支清理的可执行流程。仓库级禁区与验证权威清单见 `AGENTS.md`，本 skill **不复述**长段契约。
 
-## Repository invariants (do not violate)
+## 何时触发
 
-From `AGENTS.md`:
+- 要把改动推上 `main`（Production）
+- 新增或验证子域名（如 `minicamp.innoseed.club`）
+- 配置 Vercel Domains / DNS CNAME
+- 清理已合并的本地/远程分支
 
-- **Don't `vercel deploy` manually.** CI is the authoritative deploy
-  path. Push to a branch, open a PR, CI builds + Vercel deploys the
-  preview, then merge → production.
-- **`framework: null` in `vercel.json`** is intentional, do not let
-  Vercel infer.
-- **Branch prefix `codex/`** (or `MciG-ggg/` matching existing style —
-  see `git for-each-ref`).
-- **Conventional commits**: `feat / fix / perf / refactor / chore / docs`.
-- **TypeScript strict**: don't loosen `tsconfig.json`.
-- **Don't bypass `pnpm-workspace.yaml`**: pnpm 11 needs it for esbuild.
+## 必读文件
 
-## Phase 1 — verify locally
+| 文件 | 为何 |
+| --- | --- |
+| `AGENTS.md` §2 / §4.1 / §4.3 | 禁区、验证权威清单、部署摘要 |
+| `vercel.json` | SPA rewrite；新子域名通常**不用**改此文件 |
+| `scripts/verify-subdomain.mjs` | 子域名 host 行为断言；改 hostname 列表改顶部 `SUBDOMAIN` |
+| `src/App.tsx` | hostname → `<Navigate>` / chrome 分支 |
+| `package.json` → `verify:subdomain` | 一键本地验证入口 |
+
+## 提醒（详见 AGENTS.md）
+
+- **不要**手动 `vercel deploy`；推 `main` 才是权威上线路径。
+- `vercel.json` 的 `framework: null` 不要让 Vercel 推断掉。
+- 分支前缀 `codex/`（或现有 `MciG-ggg/` 风格）；验证命令以 `AGENTS.md` §4.1 为准。
+
+## 分步流程
+
+### Phase 1 — 本地验证
 
 ```bash
-# 1. Static checks + build + tests. Must all be green.
+# 权威清单见 AGENTS.md §4.1；上线前至少跑通：
 pnpm typecheck
 pnpm exec tsc -p tsconfig.node.json
 pnpm build
 pnpm test:e2e
-pnpm test:tag-codes
+pnpm test:tag-codes   # 若改动触及 apply / tagcode，必跑
 
-# 2. Subdomain behavior check (only if the change touches hostname
-# routing or adds a new route / subdomain). Self-contained: starts vite
-# preview, runs 4 browser assertions, kills the server. Exit code 0
-# means OK.
+# 仅当改动触及 hostname 路由或新增子域名时：
 pnpm verify:subdomain
 ```
 
-`pnpm verify:subdomain` exercises what `e2e/minicamp.spec.js` cannot:
-the host-aware `<Navigate>` at `/`. It uses Chromium's
-`--host-resolver-rules` to map `minicamp.innoseed.club` → `127.0.0.1`
-without touching `/etc/hosts` (no sudo needed). The full flag set it
-needs (already wired in the script):
+`pnpm verify:subdomain` 会启动 vite preview，用 Chromium `--host-resolver-rules` 把子域名指到 `127.0.0.1`（无需改 `/etc/hosts`），断言 4 件事后退出。Chromium 需要同时带：
 
 ```
 --host-resolver-rules=MAP minicamp.innoseed.club 127.0.0.1
 --no-proxy-server
---proxy-server=direct://   # Chromium needs both flags; --no-proxy-server
-                           # alone doesn't always clear its detected proxy.
+--proxy-server=direct://
 ```
 
-If you change the hostname list (e.g. adding a new subdomain), edit
-`SUBDOMAIN` near the top of `scripts/verify-subdomain.mjs`. The script
-asserts 4 things:
+脚本已写好上述 flag。若改 hostname 列表，编辑 `scripts/verify-subdomain.mjs` 顶部的 `SUBDOMAIN`。四条断言：
 
-1. `minicamp.innoseed.club/` redirects to `/minicamp` + renders
-   subdomain chrome (4 tracks, no recruitment timeline).
-2. `minicamp.innoseed.club/apply` still lands on Apply (not hijacked).
-3. `127.0.0.1:8765/` lands on the main landing page (no redirect).
-4. `127.0.0.1:8765/minicamp` renders the page with full Nav (NOT
-   subdomain chrome).
+1. `minicamp.innoseed.club/` → 重定向到 `/minicamp` + 子域名 chrome（4 tracks，无招新时间线）
+2. `minicamp.innoseed.club/apply` 仍落在 Apply（不被劫持）
+3. `127.0.0.1:8765/` 落在主站 landing（无重定向）
+4. `127.0.0.1:8765/minicamp` 用完整 Nav（**不是**子域名 chrome）
 
-## Phase 2 — commit on a branch, merge to main, push
+### Phase 2 — 分支提交，合并到 main 并推送
 
-Vercel auto-deploys production on every push to `main`. **The canonical
-ship path is: branch → commit → merge to main locally → push main.**
-Skip `gh pr create` for routine fixes; the merge itself is the review
-boundary. (Use a PR only when you want external review — see
-"PR-based review" below.)
+Vercel 在每次推 `main` 时自动部署 Production。**常规上线路径：branch → commit → 本地 ff-only merge 到 main → push main。** 例行修复不必强制 `gh pr create`；需要外部 review（spec/设计大改、高风险重构）再用 PR。
 
 ```bash
-# Branch off main. Use codex/<slug> or MciG-ggg/<slug>.
 git checkout main && git pull
 git checkout -b codex/<short-slug>
 
-# Stage deliberately — never `git add .`. Composite-emitted .d.ts/.js
-# are gitignored, but verify with `git status --short` before commit.
+# 刻意 stage —— 禁止 git add .
+# composite 冒出的 .d.ts/.js 已 gitignore，提交前仍用 git status --short 确认干净。
 git add <specific paths>
 
 git commit -F- <<'EOF'
@@ -88,105 +79,79 @@ git commit -F- <<'EOF'
 <body explaining what + why, not how>
 EOF
 
-# Ship it: fast-forward main and push. Vercel picks up the new HEAD.
 git checkout main
 git merge --ff-only codex/<short-slug>
 git push origin main
 
-# Delete the local branch (remote was never pushed, so nothing to prune).
 git branch -d codex/<short-slug>
 ```
 
-**Push to `main` is the deploy.** There is no separate `vercel deploy`
-step; CI on `main` builds and Vercel ships. If `git push` fails with
-non-fast-forward, run `git fetch origin && git rebase origin/main` on
-your branch before retrying.
+**推 `main` = 部署。** 若 `git push` 非快进：`git fetch origin && git rebase origin/main` 后再试。
 
-### PR-based review (optional)
-
-For changes that need eyes on them before they hit production
-(spec/design shifts, risky refactors), open a PR instead:
+#### 可选：PR review
 
 ```bash
 git push -u origin HEAD
 gh pr create --title "<same as commit subject>" --body-file /tmp/pr-body.md
-gh pr checks <num>          # wait for Vercel + CI to go green
+gh pr checks <num>
 gh pr merge --squash --delete-branch
+git pull && git fetch --prune
 ```
 
-After the squash merge, pull `main` and clean up: `git pull && git
-fetch --prune`.
+Commit 类型示例：`feat` / `fix` / `perf` / `refactor` / `chore` / `docs`。
 
-### Commit message conventions
+### Phase 3 — 让新子域名可达（每个新域名一次）
 
-```
-feat(minicamp): add minicamp.innoseed.club subdomain
-fix(apply): stack CTA buttons on tablet
-perf(images): serve AVIF variants
-chore(site): update copyright
-docs(ag): document deploy workflow
-```
-
-## Phase 3 — make the subdomain reachable (one-time per new domain)
-
-`vercel.json` rewrites `/`, `/apply`, `/events`, `/recruit`, `/minicamp`
-to `/index.html` — same SPA serves every host. To bind a new subdomain:
+同一套 SPA rewrite 服务所有 host。绑定新子域名：
 
 ```bash
-# A. Vercel side (browser or CLI):
-#    1. Vercel dashboard → innoseed-landing → Settings → Domains, or:
-#       vercel domains add <subdomain> innoseed-landing
-#    2. Run `vercel domains verify <subdomain>` to get the exact target.
-#       The current minicamp target is:
-#       CNAME  minicamp  →  9293a6f6fcfa0256.vercel-dns-017.com
-#    3. Wait for Vercel to issue the SSL cert after DNS resolves.
+# A. Vercel
+#    vercel domains add <subdomain> innoseed-landing
+#    vercel domains verify <subdomain>  → 拿精确 CNAME target
+#    当前 minicamp 示例：
+#    CNAME  minicamp  →  9293a6f6fcfa0256.vercel-dns-017.com
 
-# B. DNS side (provider-specific, e.g. Cloudflare):
-#    Use the exact CNAME target from `vercel domains verify`.
-#    Proxy: DNS only (off the orange cloud) — Cloudflare's proxy breaks
-#    Vercel's SSL issuance. Do not blindly use the generic
-#    cname.vercel-dns.com when Vercel returns a project-specific target.
+# B. DNS（如 Cloudflare）
+#    用 verify 返回的精确 target；Proxy = DNS only（关掉橙云），
+#    否则会打断 Vercel 签 SSL。不要盲用通用 cname.vercel-dns.com。
 
-# C. Verify:
-curl -I https://minicamp.innoseed.club/      # 200 from Vercel
-open https://minicamp.innoseed.club/         # browser lands on Mini Camp
+# C. 验证
+curl -I https://minicamp.innoseed.club/
+open https://minicamp.innoseed.club/
 ```
 
-`vercel.json` does **not** need editing for new subdomains — same SPA
-rewrite rules cover every host. Only `package.json`, `vite.config.ts`,
-and `src/App.tsx` (hostname detection) need code changes when adding a
-subdomain.
+**不必**为新子域名改 `vercel.json`。代码侧通常改 `package.json` / `vite.config.ts` / `src/App.tsx`（hostname 检测）；页面文案走 `innoseed-content`。
 
-## Branch cleanup
-
-Before cleanup, check what's safe to delete:
+### 分支清理
 
 ```bash
 git for-each-ref --format='%(refname:short)' refs/heads/ refs/remotes/
 
-# '+' marker on local branches = checked out in another worktree.
-# Don't `git branch -D` those.
-
-# Remote branches: only safe to delete if merged into main.
+# 本地分支带 '+' = 在别的 worktree 里 checkout，不要 git branch -D。
+# 远程：仅当已是 origin/main 祖先才可删（先 dry-run）。
 for b in $(git branch -r | grep -v HEAD); do
   git merge-base --is-ancestor $b origin/main \
     && echo "DELETE OK: $b" \
     || echo "KEEP (not merged): $b"
 done
-
-# Confirm before deleting — output is dry-run only.
 ```
 
-`git fetch --prune` cleans up stale remote-tracking branches after
-deletions on origin.
+删完后 `git fetch --prune`。
+
+## 本任务验证子集
+
+- 必跑：`AGENTS.md` §4.1 全套（至少 typecheck + build + e2e）
+- 触及 hostname / 新子域名 → 追加 `pnpm verify:subdomain`
+- 触及 apply → 追加 `pnpm test:tag-codes`
+- 上线后：Vercel dashboard → `innoseed-landing` → Deployments
 
 ## Troubleshooting
 
-| Symptom | Cause |
+| 症状 | 原因 |
 | --- | --- |
-| `vite preview` returns 502 / 403 on `minicamp.innoseed.club` from curl | Vite 5 Host header check. Either use `vite.verify-subdomain.config.ts` (sets `preview.allowedHosts: true`) or set Host header to `127.0.0.1:8765` in curl. |
-| `pnpm verify:subdomain` reports `subdomain_root.ok: false` but `pnpm preview` works | Missing `--proxy-server=direct://` flag. Both `--no-proxy-server` and `--proxy-server=direct://` are required. |
-| `vite preview` says `Port 8765 in use` | A previous run didn't clean up. `pkill -9 -f vite` then retry. |
-| `git push` rejected — non-fast-forward | `git fetch origin && git rebase origin/main`. |
-| `gh pr create` fails with `No default branch` | `gh repo set-default` or pass `--base main`. |
-| `pnpm exec tsc -p tsconfig.node.json` emits `src/content/site.d.ts` + `site.js` | Composite-mode cross-project ref artifact from `tsconfig.node.json`. Already in `.gitignore` — verify `git status` is clean before commit. |
+| curl 子域名 502/403 | Vite 5 Host 检查；用 `vite.verify-subdomain.config.ts`（`preview.allowedHosts: true`）或把 Host 设成 `127.0.0.1:8765` |
+| `verify:subdomain` 失败但 preview 正常 | 缺 `--proxy-server=direct://`（两个 proxy flag 都要） |
+| Port 8765 in use | `pkill -9 -f vite` 后重试 |
+| push 非快进 | `git fetch origin && git rebase origin/main` |
+| `gh pr create` 无 default branch | `gh repo set-default` 或 `--base main` |
+| `tsc -p tsconfig.node.json` 冒出 `site.d.ts` / `site.js` | composite 产物，已在 `.gitignore`；commit 前确认 `git status` 干净 |
