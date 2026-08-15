@@ -162,6 +162,14 @@
   --c-startup:  #1E40AF;   /* 蓝 */
   --c-bonds:    #991B1B;   /* 红 */
 
+  /* Warm accent — distinct from the cool brand/pillar palette.
+     Used as the Hero headline sweep-light highlight color (so the
+     cursor sweep reads over the brand-blue "InnOSeed" accent em) and
+     as the skip-link :focus-visible outline. Spec §7 lists this
+     token but it was previously undefined; landing it here closes
+     that dangling reference. */
+  --accent-amber: #D97706;
+
   /* Type families — system fonts come FIRST so most visitors (macOS, iOS,
      Windows, modern Android) never download Noto SC. Noto SC is the
      last fallback for Linux / older Android without system Chinese. */
@@ -501,73 +509,13 @@ section { position: relative; }
   display: inline-block;
 }
 
-.hero h1 {
-  font-family: var(--ff-zh);
-  font-weight: 700;
-  /* Smaller than the headline — keep it as a lead sentence, not a poster. */
-  font-size: clamp(20px, 2.4vw, 32px);
-  line-height: 1.35;
-  letter-spacing: -0.005em;
-  margin-bottom: 14px;
-  max-width: 980px;
-  color: var(--ink-dark);
-  /* Let Latin words like "different thinkers" sit naturally inside the CN line. */
-  word-break: keep-all;
-  overflow-wrap: break-word;
-}
-.hero h1 em {
-  font-family: var(--ff-sans);
-  font-style: normal;
-  font-weight: 700;
-  color: var(--brand);
-  padding: 0 0.15em;
-  position: relative;
-}
-.hero h1 em::after {
-  content: '';
-  position: absolute;
-  left: 0.12em; right: 0.12em; bottom: 0.06em;
-  height: 0.12em;
-  background: rgba(28,100,242,0.18);
-  z-index: -1;
-  border-radius: 2px;
-}
-
-.hero h1.hero-headline {
-  /* Unify with editorial section headings — Fraunces (Latin) + Source Han Serif
-     (CJK) — so the brand statement shares the typographic register of the
-     Manifesto / Pillars / Numbers / Members / Recruit headlines that follow. */
-  font-family: var(--ff-display);
-  font-weight: 800;
-  /* Cap so the three rows fit inside 100vh. Old --fs-display went to 220px. */
-  font-size: clamp(56px, 8vw, 128px);
-  line-height: 1.0;
-  letter-spacing: -0.035em;
-  color: var(--ink-dark);
-  margin: 10px 0 22px;
-  max-width: 1300px;
-}
-.hero-headline .row { display: block; overflow: hidden; }
-.hero-headline .row span {
-  display: inline-block;
-  transform: translateY(110%);
-  animation: hero-rise 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-}
-.hero-headline .row:nth-child(1) span { animation-delay: 0.2s; }
-.hero-headline .row:nth-child(2) span { animation-delay: 0.45s; }
-.hero-headline .row:nth-child(3) span { animation-delay: 0.7s; }
-@keyframes hero-rise { to { transform: translateY(0); } }
-.hero-headline .accent {
-  /* Match the section <em> treatment (Manifesto / Pillars / Numbers /
-     Members / Recruit / page-header h1): italic Fraunces for the Latin
-     brand name, weighted and tinted brand-blue so "InnOSeed" still
-     reads as the visual anchor inside the serif block. */
-  font-family: var(--ff-display);
-  font-style: italic;
-  font-weight: 800;
-  color: var(--brand);
-  letter-spacing: -0.04em;
-}
+/* No .hero h1 lead-sentence rule:
+   The hero h1 is now the module-styled hero headline (see
+   Hero.module.css). Previous v3 versions of this site had a h1 that
+   doubled as a "lead sentence" above a separate headline element;
+   that h1 is gone, and so is the matching rule. Keeping the rule
+   here would (a) create a CSS specificity fight against the module
+   and (b) match nothing. */
 
 .hero-sub {
   font-family: var(--ff-zh);
@@ -2015,8 +1963,6 @@ main .page-header-desc {
   /* Hero */
   .hero-inner { padding: 110px 0 72px; }
   .hero-tag { font-size: 11px; padding: 6px 12px; margin-bottom: 24px; letter-spacing: 0.22em; }
-  .hero h1 { font-size: clamp(22px, 6vw, 56px); margin-bottom: 18px; }
-  .hero h1.hero-headline { margin: 14px 0 24px; font-size: clamp(40px, 10vw, 96px); letter-spacing: -0.02em; }
   .hero-sub { font-size: 15px; line-height: 1.6; margin-bottom: 32px; }
   .hero-cta {
     flex-direction: column;
@@ -2097,8 +2043,6 @@ main .page-header-desc {
     --gutter: 20px;
     --fs-display: clamp(44px, 13vw, 220px);
   }
-  .hero h1 { font-size: 21px; }
-  .hero h1.hero-headline { font-size: 32px; }
   .recruit h2 { font-size: 30px; }
   .pillar-name { font-size: 26px; }
 }

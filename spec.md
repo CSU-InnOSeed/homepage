@@ -115,6 +115,7 @@ v3 阶段放弃了原 spec 里的 video-led hero（macro time-lapse 种子萌芽
 | `--c-research` | `#166534` | 深绿（科研 pillar + 国家荣誉数字 + Recruit CTA） |
 | `--c-startup` | `#1E40AF` | 蓝（创业 pillar） |
 | `--c-bonds` | `#991B1B` | 红（志合者 pillar） |
+| `--accent-amber` | `#D97706` | 琥珀（Hero headline 扫光高亮色 + skip-link focus 描边） |
 
 ---
 
@@ -143,6 +144,7 @@ v4 引入明确的三档移动端断点（v3 散落在 520/720/760/880/920/980px
 | Nav scrolled 切换 | scroll > 60px | 0.4s ease |
 | Pillar hover 上浮 | mouseover | 0.5s |
 | Hero parallax | scroll (≥720px) | rAF 节流，translateY 0.25× scroll |
+| Hero headline 扫光 | mouseover (桌面 `(hover:hover) and (pointer:fine)`) | rAF 节流，--sweep-y → overlay 的 `clip-path: inset()` 露顶，被扫过的字变 `--accent-amber`；触屏 / prefers-reduced-motion 关闭 |
 | 滚动指示下落 | 无限循环 | 2.2s scaleY 1→0.4 |
 | Marquee | 无限循环 | 36s linear translateX |
 
