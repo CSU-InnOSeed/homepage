@@ -306,6 +306,9 @@ section { position: relative; }
 .nav-top-inner {
   display: flex; align-items: center; justify-content: space-between;
   gap: 24px;
+  /* Top bar only: sit a bit wider than section .container (--max 1320)
+     so brand / Mini Camp breathe toward the viewport edges. */
+  max-width: 1520px;
 }
 .brand {
   display: flex; align-items: center; gap: 12px;
@@ -2068,7 +2071,7 @@ html.has-sidebar {
      so its pills don't overlap section content near the edge. The
      sidebar is ~140px wide on a 1440 viewport, so 160px is a safe
      floor that still leaves plenty of room for the main column. */
-  html.has-sidebar .container {
+  html.has-sidebar .container:not(.nav-top-inner) {
     padding-right: max(40px, calc(var(--nav-sidebar-w, 140px) + 40px));
   }
 }
