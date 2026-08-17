@@ -9,11 +9,15 @@
  *   - Each candidate picks tags; the system encodes their selection as
  *     a base64 string ("个性标签 code") that they can save and reference
  *     later.
- *   - 9 interviewers; each has tags. Match score = intersection of the
- *     candidate's picks with the interviewer's tags.
+ *   - 9 interviewers (8 active + 1 hidden signal for e2e parity); each
+ *     has tags. Match score = intersection of the candidate's picks
+ *     with the interviewer's tags.
  *
- * NOTE: interviewer data below is the 2024 set. 2025 招新 season will
- * likely want a fresh list — that's a content edit in this file only.
+ * NOTE: interviewer data + tag pool are the 2026 set, sourced from
+ * `assets/self-intro/2026.md`. The list grows organically each season
+ * to cover new hobbies / sub-areas mentioned by the new cohort. Glyph
+ * choices stay inside the emoji + geometric-unicode range so the
+ * Apply page ships no icon-font assets.
  */
 
 export type PillarKey = 'compete' | 'research' | 'startup' | 'bonds';
@@ -74,6 +78,7 @@ export const APPLY_CATEGORIES: ApplyCategory[] = [
       { name: '算法', glyph: '∑' },
       { name: '深度学习', glyph: '◐' },
       { name: '大模型', glyph: '✦' },
+      { name: '具身智能', glyph: '⚙' },
       { name: '计算机视觉', glyph: '◉' },
       { name: '数据优化', glyph: '◇' },
       { name: '逆向', glyph: '⇄' },
@@ -108,21 +113,29 @@ export const APPLY_CATEGORIES: ApplyCategory[] = [
       { name: '咖啡', glyph: '☕' },
       { name: '干饭', glyph: '☖' },
       { name: '羽毛球', glyph: '⬭' },
-      { name: '篮球', glyph: '◯' },
+      { name: '排球', glyph: '🏐' },
+      { name: '足球', glyph: '⚽' },
+      { name: '篮球', glyph: '🏀' },
       { name: '游泳', glyph: '≈' },
       { name: '唱歌', glyph: '♪' },
       { name: '美术', glyph: '✎' },
       { name: '舞蹈', glyph: '✧' },
       { name: '桌游', glyph: '⬡' },
+      { name: 'MC', glyph: '⛏' },
       { name: '睡觉', glyph: '☾' },
       { name: '撸猫', glyph: '🐱' },
       { name: '撸狗', glyph: '🐶' },
       { name: '轻小说', glyph: '✎' },
-      { name: '乒乓球', glyph: '◯' },
+      { name: '乒乓球', glyph: '🏓' },
       { name: '麻将', glyph: '⬢' },
+      { name: '象棋', glyph: '♟' },
       { name: '西洋棋', glyph: '♛' },
       { name: '魔术', glyph: '✦' },
       { name: '摄影', glyph: '◉' },
+      { name: '电影', glyph: '🎬' },
+      { name: '创赛', glyph: '🏆' },
+      { name: '竞赛', glyph: '🥇' },
+      { name: '社团', glyph: '👥' },
     ],
   },
   {
@@ -140,77 +153,91 @@ export const APPLY_CATEGORIES: ApplyCategory[] = [
 ];
 
 /**
- * Interviewer roster (2024 set). Each interviewer's `tags` are matched
- * against the candidate's selected tag set; the top 3 (or all, if fewer)
- * appear in the '契合度匹配' step.
+ * Interviewer roster (2026 set, mirrored from `assets/self-intro/2026.md`).
+ * Each interviewer's `tags` are matched against the candidate's selected
+ * tag set; the resulting match score is shown in the picker step.
+ *
+ * Handles are the canonical nicknames used on the public landing and
+ * in the 飞书 Bitable Person field. '~' is 曹雨嘉's chosen handle and
+ * 'Rowling' is 罗茹菱's — both picked by the members themselves.
  */
 export const INTERVIEWERS: Interviewer[] = [
   {
-    code: 'Mr.Y',
+    code: '~',
     avatar: '',
-    intros: ['我可以和你聊聊智能体、创业、算法、台球和撸猫', '我的 MBTI 为 : ENFJ'],
+    intros: [
+      'INFP。掌握 C++ / Java，擅长网站搭建，偏好前端开发',
+      '闲暇喜欢绘画、读小说、看动漫，也会参与创赛；心思细腻，乐于交流，欢迎新成员一起学习探索。',
+    ],
     tags: [
-      { name: '智能体' }, { name: '创业' }, { name: '算法' }, { name: '台球' },
-      { name: '撸猫' }, { name: '剧本杀' }, { name: '综艺' }, { name: '干饭' },
-      { name: '羽毛球' }, { name: '摄影' }, { name: '唱歌' }, { name: '美术' },
-      { name: '舞蹈' }, { name: '撸狗' }, { name: '桌游' }, { name: '睡觉' },
+      { name: '前端' }, { name: '美术' }, { name: '文学' }, { name: '番剧' }, { name: '创赛' },
     ],
   },
   {
-    code: 'Zency',
+    code: 'sakura',
     avatar: '',
-    intros: ['我可以和你聊聊前端、逆向、项目、就业、番剧与轻小说', '我的 MBTI 为 : INTJ'],
+    intros: ['我可以和你聊聊后端、AI、生活和对未来的思考', '我的 MBTI 为 : INTP'],
     tags: [
-      { name: '前端' }, { name: '逆向' }, { name: '番剧' }, { name: '轻小说' }, { name: '就业' },
+      { name: '后端' }, { name: '智能体' }, { name: '大模型' },
     ],
   },
   {
-    code: 'DKK',
+    code: 'Flipper',
     avatar: '',
-    intros: ['我可以和你聊聊前端、交互设计、项目、就业与 MOBA 游戏', '我的 MBTI 为 : INFJ'],
+    intros: [
+      'vibe coding、足球、象棋、就业向',
+      '如果你也对 AI 的发展感兴趣，欢迎和我聊聊。我的 MBTI 为 : ENFP',
+    ],
     tags: [
-      { name: '前端' }, { name: '交互设计' }, { name: 'ESports' }, { name: '麻将' },
-      { name: '就业' }, { name: '睡觉' },
+      { name: '前端' }, { name: '后端' }, { name: '智能体' }, { name: '大模型' },
+      { name: '足球' }, { name: '象棋' }, { name: '就业' },
     ],
   },
   {
     code: 'MciG',
     avatar: '',
-    intros: ['我可以和你聊聊后端、System、开源、西洋棋与魔术', '我的 MBTI 为 : INTP'],
+    intros: [
+      '二次元、排球、开源、具身智能、科研、Infra',
+      '我的 MBTI 为 : 无',
+    ],
     tags: [
-      { name: '开源' }, { name: 'System' }, { name: '西洋棋' }, { name: '魔术' }, { name: '后端' },
+      { name: '番剧' }, { name: '排球' }, { name: '开源' }, { name: '具身智能' },
+      { name: '科研' }, { name: 'System' },
     ],
   },
   {
-    code: '007',
+    code: 'Shade',
     avatar: '',
-    intros: ['我可以和你聊聊深度学习、大模型、保研、科研与麻将', '我的 MBTI 为 : ISTJ'],
+    intros: [
+      '兴趣使然的开发者，感兴趣于交通、模拟经营类游戏，做过 CV 大方向的科研',
+      '我的 MBTI 为 : 无',
+    ],
     tags: [
-      { name: '深度学习' }, { name: '大模型' }, { name: '麻将' }, { name: '保研' },
+      { name: '计算机视觉' }, { name: '科研' }, { name: '桌游' },
     ],
   },
   {
-    code: 'Jing',
+    code: 'Mr.Li',
     avatar: '',
-    intros: ['我可以和你聊聊计算机视觉、深度强化学习、历史与时政', '我的 MBTI 为 : ISTJ'],
+    intros: ['深度学习、算法、保研、科研与 MC', '我的 MBTI 为 : ENTJ'],
     tags: [
-      { name: '计算机视觉' }, { name: '深度学习' }, { name: '文学' },
+      { name: '深度学习' }, { name: '算法' }, { name: '保研' }, { name: '科研' }, { name: 'MC' },
     ],
   },
   {
-    code: 'HH',
+    code: 'Zenia',
     avatar: '',
-    intros: ['我可以和你聊聊数据优化、旅游', '我的 MBTI 为 : ESFJ'],
+    intros: ['我可以和你聊聊竞赛、项目、电影', '我的 MBTI 为 : INTP'],
     tags: [
-      { name: '数据优化' }, { name: '旅游' },
+      { name: '竞赛' }, { name: '项目' }, { name: '电影' },
     ],
   },
   {
-    code: 'TT',
+    code: 'Rowling',
     avatar: '',
-    intros: ['我可以和你聊聊流量管理、乒乓球', '我的 MBTI 为 : INTJ'],
+    intros: ['我可以和你聊聊竞赛、科研、社团、企业对接项目与麻将', '我的 MBTI 为 : ESTJ'],
     tags: [
-      { name: '流量管理' }, { name: '乒乓球' },
+      { name: '竞赛' }, { name: '科研' }, { name: '社团' }, { name: '项目' }, { name: '麻将' },
     ],
   },
   {
