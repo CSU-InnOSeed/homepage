@@ -371,7 +371,6 @@ export const INSIDE: InsideData = {
   eyebrow: '05 — Inside The Lab',
   headline: ['在 InnOSeed', '做你想做的。'],
   paragraphs: [
-    'InnOSeed 有许多与企业合作，为中南大学尤其是计算机学院的同学提供有意思的活动沙龙。',
     '我们联络<strong>优秀的业界前辈</strong>举行 tech talk，为同学们答疑解惑、指点迷津；成员们也在各项活动与学术学习中大放异彩。',
     '欢迎到我们各平台的账号了解我们的最新成果。',
   ],

@@ -39,7 +39,7 @@ export default function Inside() {
         <div ref={textRef} className="inside-text reveal" data-delay="1">
           <span className="eyebrow">{INSIDE.eyebrow}</span>
           <h2 style={{ marginTop: 24 }}>
-            {INSIDE.headline[0]}<br /><em>{INSIDE.headline[1]}</em>
+            {INSIDE.headline[0]} <em>{INSIDE.headline[1]}</em>
           </h2>
           {INSIDE.paragraphs.map((p, i) => (
             <p
