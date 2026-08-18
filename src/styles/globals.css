@@ -1123,6 +1123,8 @@ section { position: relative; }
   font-family: var(--ff-display);
   font-style: italic;
   color: var(--brand);
+  /* Keep "做你想做的。" together — same orphan-fix as .rt-head h2 em. */
+  white-space: nowrap;
 }
 .inside-text p {
   font-family: var(--ff-zh);
