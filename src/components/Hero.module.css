@@ -203,6 +203,15 @@
    delay — since they don't get the hero-rise entry animation
    either. */
 @media (prefers-reduced-motion: reduce) {
+  /* The global `* { animation: none !important }` rule in
+     globals.css strips our `heroRise` keyframes, leaving each
+     `.row > span` stuck at `translateY(110%)`. With `.row { overflow:
+     hidden }` that hides the headline text entirely for users who
+     opt into reduced motion. Reset the inline-block transform so
+     the rows sit in their final position without animation. */
+  .row > span {
+    transform: none;
+  }
   .overlay {
     opacity: 1;
     animation: none;
