@@ -6,8 +6,8 @@
  *   The project has no test runner installed (no vitest/jest) and the
  *   mjs runtime here can't directly import .ts. The actual functions
  *   live in `src/content/apply.ts` (encode/decodeApplyCode) and
- *   `api/decode-tag.ts` (composeBitableFields). Whenever you change
- *   any of those, you must mirror the change here.
+ *   `aliyun-fc/code/index.js` (composeBitableFields). Whenever you
+ *   change any of those, you must mirror the change here.
  *
  *   To keep that in check, both files contain a `// mirror of
  *   src/content/apply.ts#decodeApplyCode` style comment block at the
@@ -95,14 +95,15 @@ const FIELD = {
   fieldTa: 'TA',
 };
 const INTERVIEWER_MAP = {
-  'Mr.Y':   { name: '刘美琴', openId: 'ou_aaa' },
-  'Zency':  { name: '王 Zency', openId: 'ou_bbb' },
-  'DKK':    { name: 'DKK',   openId: 'ou_ccc' },
-  'Leslie': { name: 'Leslie', openId: 'ou_ddd' },
-  '007':    { name: '007',   openId: 'ou_eee' },
-  'Jing':   { name: 'Jing',  openId: 'ou_fff' },
-  'HH':     { name: 'HH',    openId: 'ou_ggg' },
-  'TT':     { name: 'TT',    openId: 'ou_hhh' },
+  '~':         { name: '~',         openId: 'ou_aaa' },
+  'sakura':    { name: 'sakura',    openId: 'ou_bbb' },
+  'Flipper':   { name: 'Flipper',   openId: 'ou_ccc' },
+  'MciG':      { name: 'MciG',      openId: 'ou_ddd' },
+  'Shade':     { name: 'Shade',     openId: 'ou_eee' },
+  'Mr.Li':     { name: 'Mr.Li',     openId: 'ou_fff' },
+  'Zenia':     { name: 'Zenia',     openId: 'ou_ggg' },
+  'Rowling':   { name: 'Rowling',   openId: 'ou_hhh' },
+  'BarRaiser': { name: 'BarRaiser', openId: 'ou_iii' },
 };
 
 function composeBitableFields(decoded, interviewerMap, fieldNames) {
@@ -134,10 +135,10 @@ const knownIvs = new Set(Object.keys(INTERVIEWER_MAP));
 console.log('── encodeApplyCode / decodeApplyCode round-trip ──');
 {
   const cases = [
-    { selected: [[0], [1, 3], [0, 1], [0]], iv: 'Mr.Y' },
+    { selected: [[0], [1, 3], [0, 1], [0]], iv: '~' },
     { selected: [[3], [], [1], [1]], iv: null },
-    { selected: [[], [], [], []], iv: 'Zency' },
-    { selected: [[1, 2], [0, 1, 2, 3], [], []], iv: '007' },
+    { selected: [[], [], [], []], iv: 'sakura' },
+    { selected: [[1, 2], [0, 1, 2, 3], [], []], iv: 'MciG' },
   ];
   for (const [i, c] of cases.entries()) {
     const code = encodeApplyCode(c.selected, c.iv);
@@ -153,7 +154,7 @@ console.log('── encodeApplyCode / decodeApplyCode round-trip ──');
   }
 }
 console.log('\n── malformed code rejection ──');
-for (const bad of ['', 'no-pipe', '|', 'foo|notbase64', 'Mr.Y|!!!', 'Mr.Y|xyz']) {
+for (const bad of ['', 'no-pipe', '|', 'foo|notbase64', '~|!!!', '~|xyz']) {
   check(`malformed "${bad}"`, decodeApplyCode(bad, knownIvs), null);
 }
 {
@@ -167,7 +168,7 @@ for (const bad of ['', 'no-pipe', '|', 'foo|notbase64', 'Mr.Y|!!!', 'Mr.Y|xyz'])
 
 console.log('\n── composeBitableFields (4 multi-select + TA person) ──');
 {
-  const dec = decodeApplyCode('Mr.Y|MDowOzE6MSwzOzI6MCwxOzM6MA==', knownIvs);
+  const dec = decodeApplyCode('~|MDowOzE6MSwzOzI6MCwxOzM6MA==', knownIvs);
   const fields = composeBitableFields(dec, INTERVIEWER_MAP, FIELD);
   check('full pick: lane', fields['Mini Camp选路'], [{ text: '产品创意', type: 'text' }]);
   check('full pick: tech', fields['技术特长'], [{ text: '前端', type: 'text' }, { text: '算法', type: 'text' }]);
@@ -182,7 +183,7 @@ console.log('\n── composeBitableFields (4 multi-select + TA person) ──')
   check('no iv: lane filled', fields['Mini Camp选路'], [{ text: '项目展示', type: 'text' }]);
 }
 {
-  const dec = decodeApplyCode('Zency|', knownIvs);
+  const dec = decodeApplyCode('sakura|', knownIvs);
   const fields = composeBitableFields(dec, INTERVIEWER_MAP, FIELD);
   check('empty tags + iv: all multi-selects empty', fields['Mini Camp选路'], []);
   check('empty tags + iv: TA still set', fields['TA'], [{ id: 'ou_bbb' }]);

@@ -40,17 +40,14 @@ const APPLY_CATEGORIES = [
   ]},
 ];
 
-const INTERVIEWERS = [
-  { code: 'Mr.Y', tags: ['智能体', '创业', '算法', '台球', '撸猫', '剧本杀', '综艺', '干饭', '羽毛球', '摄影', '唱歌', '美术', '舞蹈', '撸狗', '桌游', '睡觉'] },
-  { code: 'Zency', tags: ['前端', '逆向', '番剧', '轻小说', '就业'] },
-  { code: 'DKK', tags: ['前端', '交互设计', 'ESPorts', '麻将', '就业', '睡觉'] },
-  { code: 'MciG', tags: ['开源', 'System', '西洋棋', '魔术', '后端'] },
-  { code: '007', tags: ['深度学习', '大模型', '麻将', '保研'] },
-  { code: 'Jing', tags: ['计算机视觉', '深度学习', '文学'] },
-  { code: 'HH', tags: ['数据优化', '旅游'] },
-  { code: 'TT', tags: ['流量管理', '乒乓球'] },
-  { code: 'BarRaiser', tags: ['迷茫'] },
-];
+// mirror of src/content/apply.ts#INTERVIEWERS (2026 roster).
+// Only `code` is read by decodeApplyCode() — `tags` is unused in the
+// FC, so we keep this as a plain Set to avoid drift.
+const INTERVIEWER_CODES = new Set([
+  '~', 'sakura', 'Flipper', 'MciG',
+  'Shade', 'Mr.Li', 'Zenia', 'Rowling',
+  'BarRaiser',
+]);
 
 function b64d(s) {
   if (s === '') return '';
@@ -93,10 +90,11 @@ function decodeApplyCode(code) {
   const interviewerCode = ivToken === '_' ? null : ivToken;
   let interviewer = null;
   if (interviewerCode !== null) {
-    for (let i = 0; i < INTERVIEWERS.length; i++) {
-      if (INTERVIEWERS[i].code === interviewerCode) { interviewer = INTERVIEWERS[i]; break; }
-    }
-    if (interviewer === null) return null;
+    if (!INTERVIEWER_CODES.has(interviewerCode)) return null;
+    // Keep the same return shape as before (object with `code`) so any
+    // external consumer reading `decoded.interviewer.code` still works,
+    // even though the FC itself only uses the string `interviewerCode`.
+    interviewer = { code: interviewerCode };
   }
   return { interviewerCode: interviewerCode, tagIndices: tagIndices, tagNames: tagNames, interviewer: interviewer };
 }
