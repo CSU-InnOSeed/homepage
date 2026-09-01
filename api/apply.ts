@@ -263,7 +263,9 @@ function resolveRequestId(request: VercelRequest): string {
 }
 
 const TAG_CODE_RE = /^[A-Za-z0-9+/=_-]{4,}$/;
-const INTERVIEWER_CODE_RE = /^[A-Za-z0-9._-]{1,40}$/;
+// `~` is one of the 2026 招新 handles (曹雨嘉), so include it in the
+// allowed char class. `-` is at the end of the class to stay literal.
+const INTERVIEWER_CODE_RE = /^[A-Za-z0-9._~-]{1,40}$/;
 const ALLOWED_CATEGORIES = new Set(['lane', 'tech', 'play', 'future']);
 
 /**
