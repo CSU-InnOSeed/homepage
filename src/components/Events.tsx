@@ -85,7 +85,7 @@ function EventCard({ ev, idx }: EventCardProps) {
   // Past Mini Camp cards get a full-card link to the dedicated subdomain.
   // Other past events without a destination stay click-free.
   const miniCampHref = !isUpcoming && ev.key === 'mini-camp-fall-2025'
-    ? 'https://minicamp.innoseed.club/'
+    ? 'https://minicamp.flipperusc.work/index.html#about'
     : null;
   const cardClass = `event-card reveal event-${ev.type}${isUpcoming ? '' : ' event-past'}${miniCampHref ? ' event-card-link' : ''}`;
 

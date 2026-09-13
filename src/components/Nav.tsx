@@ -210,7 +210,7 @@ export default function Nav() {
               + arrow are visible; on mobile it collapses behind the
               hamburger and the panel shows it as the only link. */}
           <a
-            href="https://minicamp.innoseed.club/"
+            href="https://minicamp.flipperusc.work/index.html#about"
             className="nav-top-minicamp-entry"
             target="_blank"
             rel="noopener"
@@ -243,7 +243,7 @@ export default function Nav() {
           aria-hidden={!open}
         >
           <a
-            href="https://minicamp.innoseed.club/"
+            href="https://minicamp.flipperusc.work/index.html#about"
             className="nav-minicamp-panel-link"
             target="_blank"
             rel="noopener"

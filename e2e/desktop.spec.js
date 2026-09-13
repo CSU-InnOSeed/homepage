@@ -31,7 +31,7 @@ test.describe('desktop @ 1440x900', () => {
     await expect(topEntry).toContainText('Mini Camp');
     await expect(topEntry).toHaveAttribute(
       'href',
-      'https://minicamp.innoseed.club/'
+      'https://minicamp.flipperusc.work/index.html#about'
     );
   });
 
@@ -207,7 +207,7 @@ test.describe('desktop @ 1440x900', () => {
     const card = page.locator('.event-card-link');
     await expect(card).toHaveCount(1);
     const overlay = card.locator('a.event-card-overlay');
-    await expect(overlay).toHaveAttribute('href', 'https://minicamp.innoseed.club/');
+    await expect(overlay).toHaveAttribute('href', 'https://minicamp.flipperusc.work/index.html#about');
   });
 
   test('FAQ: focus indicator is on the question text, not a row frame', async ({ page }) => {

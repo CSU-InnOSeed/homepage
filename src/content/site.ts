@@ -500,7 +500,7 @@ export const RECRUIT_EXTRAS: RecruitExtras = {
 };
 
 /**
- * MiniCamp — `minicamp.innoseed.club` 子域名的内容源
+ * MiniCamp — /minicamp 活动落地页的内容源
  *
  * 这个页面复用 PILLARS 的 4 色 accent (compete/research/startup/bonds) 给
  * 4 个分路上色,以及 EVENTS 中已有的 Mini Camp 活动素材。
