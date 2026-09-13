@@ -87,7 +87,7 @@ v3 阶段放弃了原 spec 里的 video-led hero（macro time-lapse 种子萌芽
 | 用途 | 字体 | 字重 | 字号 | 备注 |
 |------|------|------|------|------|
 | Display Headline（巨型标题） | Fraunces (serif) | 800 | `clamp(48px, 13vw, 220px)` (mobile 48px floor) | 用于 hero 与章节大数字 |
-| Brand Word（"InnOSeed"） | Fraunces | 700 italic | 动态 | 视觉签名 |
+| Brand Word（"InnOSeed"） | Fraunces | 700 italic | 标题字号的 `1.1em` | 视觉签名，与中文强调词保持相同视觉重量 |
 | Section Title | Noto Serif SC | 700 | `clamp(36px, 8vw, 96px)` (mobile 36px floor) | 中文标题 |
 | Body | Inter + Noto Sans SC | 400/500 | 16-18px | 段落正文 |
 | Eyebrow / Tag | Inter | 600 caps | 12-13px | 段落顶部小标 |
@@ -128,8 +128,8 @@ v4 引入明确的三档移动端断点（v3 散落在 520/720/760/880/920/980px
 | ≥ 981px | 桌面 | 全功能 4 列 / 3 列布局 |
 | 721 - 980px | 平板 | Pillars / Numbers 4 → 2 列；Members / Inside 1 列 |
 | 481 - 720px | 大手机 | hamburger 菜单；hero CTA 仍水平 |
-| ≤ 480px | 手机 | CTA 竖排全宽；section padding 72px；hero 字号 floor 下调 |
-| ≤ 360px | 超小屏 | gutter 14px；hero 44px |
+| ≤ 480px | 手机 | gutter 28px；CTA 竖排全宽；section padding 72px；hero 字号 floor 下调 |
+| ≤ 360px | 超小屏 | gutter 20px；hero 44px |
 
 ---
 

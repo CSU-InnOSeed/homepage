@@ -487,7 +487,7 @@ section { position: relative; }
 }
 .hero-inner {
   width: 100%;
-  padding: 88px 0 64px;
+  padding: 88px var(--gutter) 64px;
   position: relative; z-index: 2;
 }
 .hero-tag {
@@ -602,9 +602,14 @@ section { position: relative; }
   50% { transform: scaleY(0.4); transform-origin: top; }
 }
 @media (max-width: 720px) {
-  .hero-inner { padding: 88px 0 64px; }
+  .hero-inner { padding: 88px var(--gutter) 64px; }
   .hero-meta { font-size: 10px; bottom: 24px; }
 }
+
+/* Heading emphasis uses a slightly larger italic face so Latin brand
+   words and emphasized phrases hold the same visual weight as Chinese. */
+h1 em,
+h2 em { font-size: 1.1em; }
 
 /* ===================== MARQUEE ===================== */
 .marquee {
@@ -1904,6 +1909,9 @@ main .page-header-desc {
 
 /* Tablet + phone (≤ 720px): toggle hamburger, slide-down panel */
 @media (max-width: 720px) {
+  h1 em,
+  h2 em { font-size: 1.2em; }
+
   .nav-top-minicamp-entry { display: none; }
   .nav-toggle { display: inline-flex; }
   .nav-minicamp-panel {
@@ -1954,20 +1962,20 @@ main .page-header-desc {
 }
 
 /* Phone (≤ 480px): tighten type, padding, stack CTAs.
-   --gutter is INDEPENDENT from desktop — phone keeps the same 24px
-   breathing room as desktop (the 18px shrink caused mobile cramping);
-   it scales down only below 360px. The hero inline changes never
-   shrink the gutter to compensate for the headline's apparent width. */
+   --gutter is wider than desktop to keep text and controls away from
+   the viewport edge; it scales down only below 360px. The hero inline
+   changes never shrink the gutter to compensate for the headline's
+   apparent width. */
 @media (max-width: 480px) {
   :root {
-    --gutter: 24px;
+    --gutter: 28px;
     --fs-display: clamp(48px, 13vw, 220px);
     --fs-h1: clamp(36px, 8vw, 96px);
     --fs-h3: clamp(20px, 5vw, 36px);
   }
 
   /* Hero */
-  .hero-inner { padding: 110px 0 72px; }
+  .hero-inner { padding: 110px var(--gutter) 72px; }
   .hero-tag { font-size: 11px; padding: 6px 12px; margin-bottom: 24px; letter-spacing: 0.22em; }
   .hero-sub { font-size: 15px; line-height: 1.6; margin-bottom: 32px; }
   .hero-cta {

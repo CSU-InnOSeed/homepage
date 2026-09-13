@@ -89,6 +89,7 @@
   font-family: var(--ff-display);
   font-style: italic;
   font-weight: 800;
+  font-size: 1.1em;
   color: var(--brand);
   letter-spacing: -0.04em;
 }
@@ -167,6 +168,7 @@
   font-family: var(--ff-display);
   font-style: italic;
   font-weight: 800;
+  font-size: 1.1em;
   letter-spacing: -0.04em;
 }
 
@@ -181,6 +183,8 @@
     font-size: clamp(40px, 10vw, 96px);
     letter-spacing: -0.02em;
   }
+  .accent,
+  .svgAccent { font-size: 1.2em; }
   .svgText {
     font-size: clamp(40px, 10vw, 96px);
     letter-spacing: -0.02em;
