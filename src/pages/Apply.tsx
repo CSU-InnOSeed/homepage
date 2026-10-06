@@ -138,7 +138,7 @@ function GuideStep({ onNext }: { onNext: () => void }) {
       <h1>欢迎加入 InnOSeed。</h1>
       <p className="apply-lead">
         招新流程分四步：先看指引，然后选一位最想面聊的学长 / 学姐，
-        再填几行标签（Mini Camp 分路 / 技术 / 兴趣 / 未来），最后把生成的"个性标签"复制保存，作为后续匹配的引用。
+        再填几行标签（想做的事 / 技术 / 兴趣 / 未来），最后把生成的"个性标签"复制保存，作为后续匹配的引用。
       </p>
 
       <div className="apply-cta-row">
@@ -301,7 +301,7 @@ function ApplicationStep({
       <span className="eyebrow">03 — Application</span>
       <h1>选你的标签。</h1>
       <p className="apply-lead">
-        Mini Camp 分路必选一项；技术 / 兴趣 / 未来可多选，按熟练度从高到低排。
+        想做的事必选一项；技术 / 兴趣 / 未来可多选，按熟练度从高到低排。
       </p>
 
       {APPLY_CATEGORIES.map((cat, catIdx) => (

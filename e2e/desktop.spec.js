@@ -13,6 +13,30 @@ test.describe('desktop @ 1440x900', () => {
   test('all 9 sections render', checkAllSections);
   test('no console errors', checkNoConsoleErrors);
   test('hero h1 is visible (regression guard)', checkHeroH1Visible);
+  test('hero sweep covers aligned glyphs with amber fill', async ({ page }) => {
+    await page.goto('/');
+    await page.evaluate(() => document.fonts.ready);
+    const rows = page.locator('h1[class*="headline"] > span');
+    const base = rows.first().locator('span[class*="row"] > span');
+    const overlay = rows.last().locator('span[class*="row"] > span');
+    await expect(base).toHaveCount(2);
+    await expect(overlay).toHaveCount(2);
+    await base.last().evaluate((el) => Promise.all(el.getAnimations().map((a) => a.finished)));
+    for (let i = 0; i < 2; i++) {
+      const a = await base.nth(i).boundingBox();
+      const b = await overlay.nth(i).boundingBox();
+      expect(Math.abs(a.x - b.x)).toBeLessThan(1);
+      expect(Math.abs(a.y - b.y)).toBeLessThan(1);
+      expect(await overlay.nth(i).evaluate((el) => getComputedStyle(el.parentElement).color))
+        .toBe('rgb(217, 119, 6)');
+    }
+    const headline = page.locator('h1[class*="headline"]');
+    const h1 = await headline.boundingBox();
+    await page.mouse.move(h1.x + 10, h1.y + h1.height);
+    await expect.poll(async () => Number.parseFloat(await headline.evaluate(
+      (el) => getComputedStyle(el).getPropertyValue('--sweep-y')
+    ))).toBeGreaterThan(h1.height - 1);
+  });
   test('nav scrolls smoothly to each section', checkNavSmoothScroll);
 
   test('hamburger is hidden at desktop', async ({ page }) => {

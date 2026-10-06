@@ -6,7 +6,7 @@ import { test, expect } from '@playwright/test';
  * Asserts:
  *   - `/apply` route renders the Guide step on direct nav
  *   - the 4 progress pills reflect step transitions
- *   - the submit button is gated on a Mini Camp 选路 pick
+ *   - the submit button is gated on a primary interest pick
  *   - a valid submit transitions to Done and shows the server-assigned code
  *   - the Done step surfaces the Step 0 (投递简历) callout with a real
  *     link to the 飞书 form — the link now lives here instead of the
@@ -21,6 +21,8 @@ test.describe('apply @ /apply route', () => {
     await page.goto('/apply');
     await expect(page.locator('.apply-section h1').first()).toBeVisible();
     await expect(page.getByText('欢迎加入 InnOSeed。')).toBeVisible();
+    await expect(page.locator('.apply-lead')).toContainText('想做的事 / 技术 / 兴趣 / 未来');
+    await expect(page.locator('.apply-section')).not.toContainText('Mini Camp 分路');
 
     // Guide step no longer carries the 飞书 form link — that lives on
     // the Done step now. The Guide step just welcomes and starts.
@@ -36,11 +38,13 @@ test.describe('apply @ /apply route', () => {
     await expect(pills.first()).toHaveClass(/is-current/);
   });
 
-  test('submit without a Mini Camp 选路 leaves the submit button disabled', async ({ page }) => {
+  test('submit without a primary interest leaves the submit button disabled', async ({ page }) => {
     await page.goto('/apply');
     await page.getByRole('button', { name: '开始 →' }).click();
     await page.locator('.apply-interviewer-card').first().click();
     await page.getByRole('button', { name: /下一步：填申请/ }).click();
+    await expect(page.locator('.apply-category').first().locator('legend')).toContainText('选择你想做的事');
+    await expect(page.locator('.apply-lead')).toContainText('想做的事必选一项');
     const submit = page.getByRole('button', { name: /生成个性标签代码/ });
     await expect(submit).toBeDisabled();
   });

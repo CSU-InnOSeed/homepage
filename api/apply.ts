@@ -57,7 +57,7 @@ export interface Interviewer {
   tags: { name: string }[]; signal?: boolean;
 }
 export const APPLY_CATEGORIES: ApplyCategory[] = [
-  { key: 'lane', title: '选择你的 Mini Camp 分路', describe: '先定一条主路，再补充其他偏好',
+  { key: 'lane', title: '选择你想做的事', describe: '先定一条主路，再补充其他偏好',
     options: [
       { name: '产品创意', pillarKey: 'compete', glyph: '💡' },
       { name: '项目展示', pillarKey: 'startup', glyph: '🚀' },

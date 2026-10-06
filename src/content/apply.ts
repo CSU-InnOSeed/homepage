@@ -5,7 +5,7 @@
  * small image files.
  *
  * Mental model:
- *   - 4 tag categories, 1 'Mini Camp 分路' + '技术' + '兴趣' + '未来'
+ *   - 4 tag categories, 1 '想做的事' + '技术' + '兴趣' + '未来'
  *   - Each candidate picks tags; the system encodes their selection as
  *     a base64 string ("个性标签 code") that they can save and reference
  *     later.
@@ -25,7 +25,7 @@ export type PillarKey = 'compete' | 'research' | 'startup' | 'bonds';
 export interface ApplyTag {
   /** Display label, e.g. '智能体' / '算法' / '台球'. */
   name: string;
-  /** Used for the 'Mini Camp 分路' category — picks a 4-direction colour. */
+  /** Used for the '想做的事' category — picks a 4-direction colour. */
   pillarKey?: PillarKey;
   /** Single character or short label used as an icon stand-in. */
   glyph: string;
@@ -34,7 +34,7 @@ export interface ApplyTag {
 export interface ApplyCategory {
   /** Category key, used in the encoded code string. */
   key: 'lane' | 'tech' | 'play' | 'future';
-  /** Section heading, e.g. '选择你的 Mini Camp 分路'. */
+  /** Section heading, e.g. '选择你想做的事'. */
   title: string;
   /** Short subtitle shown next to the heading. */
   describe: string;
@@ -58,7 +58,7 @@ export interface Interviewer {
 export const APPLY_CATEGORIES: ApplyCategory[] = [
   {
     key: 'lane',
-    title: '选择你的 Mini Camp 分路',
+    title: '选择你想做的事',
     describe: '先定一条主路，再补充其他偏好',
     options: [
       { name: '产品创意', pillarKey: 'compete', glyph: '💡' },

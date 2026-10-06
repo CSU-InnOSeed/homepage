@@ -144,7 +144,7 @@ v4 引入明确的三档移动端断点（v3 散落在 520/720/760/880/920/980px
 | Nav scrolled 切换 | scroll > 60px | 0.4s ease |
 | Pillar hover 上浮 | mouseover | 0.5s |
 | Hero parallax | scroll (≥720px) | rAF 节流，translateY 0.25× scroll |
-| Hero headline 扫光 | mouseover (桌面 `(hover:hover) and (pointer:fine)`) | rAF 节流，--sweep-y → overlay 的 `clip-path: inset()` 露顶，被扫过的字变 `--accent-amber`；触屏 / prefers-reduced-motion 关闭 |
+| Hero headline 扫光 | mouseover (桌面 `(hover:hover) and (pointer:fine)`) | rAF 节流，--sweep-y → 同排版 HTML overlay 的 `clip-path: inset()` 露顶，被扫过的字以实心 `--accent-amber` 覆盖原字，第一行蓝色、第二行绿色实线描边；触屏 / prefers-reduced-motion 关闭 |
 | 滚动指示下落 | 无限循环 | 2.2s scaleY 1→0.4 |
 | Marquee | 无限循环 | 36s linear translateX |
 
