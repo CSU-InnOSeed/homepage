@@ -1,5 +1,5 @@
-import { useState, useCallback, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useCallback, useMemo, useRef } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
 import {
   APPLY_CATEGORIES,
   INTERVIEWERS,
@@ -7,6 +7,7 @@ import {
   type Interviewer,
 } from '../content/apply';
 import usePageMeta from '../hooks/usePageMeta';
+import useReveal from '../hooks/useReveal';
 import './Apply.css';
 
 type StepKey = 'guide' | 'pick' | 'apply' | 'done';
@@ -20,6 +21,8 @@ const STEPS: { key: StepKey; idx: number; title: string }[] = [
 
 export default function Apply() {
   const navigate = useNavigate();
+  const headRef = useRef<HTMLElement | null>(null);
+  useReveal(headRef);
   const [step, setStep] = useState<StepKey>('guide');
 
   // Per-category selected tag indices. Length always === APPLY_CATEGORIES.length.
@@ -85,7 +88,32 @@ export default function Apply() {
         </div>
       </header>
 
-      <main className="apply-main">
+      <main id="main" tabIndex={-1}>
+        {/* Guide step reuses the shared sub-page header that /events and
+            /recruit already use (globals.css `main .page-header`): breadcrumb
+            + eyebrow + serif display h1 with the Fraunces/brand `em`. The later
+            steps skip it — the flow is already under way and only needs the
+            vertical room. */}
+        {step === 'guide' && (
+          <header ref={headRef} className="page-header reveal">
+            <div className="container">
+              <nav className="breadcrumb" aria-label="面包屑">
+                <Link to="/">首页</Link>
+                <span aria-hidden="true">/</span>
+                <span aria-current="page">招新</span>
+              </nav>
+              <span className="eyebrow">Join Us · 2026 招新</span>
+              <h1>
+                加 入 <em>InnOSeed</em>
+              </h1>
+              <p className="page-header-desc">
+                四步走完投递：看指引、挑一位最想面聊的学长 / 学姐、勾几行标签，
+                再把生成的「个性标签代码」粘进飞书表单。
+              </p>
+            </div>
+          </header>
+        )}
+        <div className="apply-main">
         {step === 'guide' && (
           <GuideStep onNext={() => setStep('pick')} />
         )}
@@ -124,6 +152,7 @@ export default function Apply() {
             onHome={() => navigate('/')}
           />
         )}
+        </div>
       </main>
     </div>
   );
@@ -132,10 +161,14 @@ export default function Apply() {
 // ─── Step 1: Guide ────────────────────────────────────────────────────
 
 function GuideStep({ onNext }: { onNext: () => void }) {
+  const ref = useRef<HTMLElement | null>(null);
+  useReveal(ref);
   return (
-    <section className="apply-section">
+    <section ref={ref} className="apply-section reveal">
+      {/* No headline here on purpose — the shared page-header above already
+          says 加 入 InnOSeed. Repeating it made the page read as two stacked
+          titles. */}
       <span className="eyebrow">01 — Guide</span>
-      <h1>欢迎加入 InnOSeed。</h1>
       <p className="apply-lead">
         招新流程分四步：先看指引，然后选一位最想面聊的学长 / 学姐，
         再填几行标签（想做的事 / 技术 / 兴趣 / 未来），最后把生成的"个性标签"复制保存，作为后续匹配的引用。
@@ -161,6 +194,9 @@ interface PickProps {
 }
 
 function PickInterviewerStep({ selectedTags, picked, onPick, onBack, onNext }: PickProps) {
+  const ref = useRef<HTMLElement | null>(null);
+  useReveal(ref);
+
   const ranked = useMemo(() => {
     // match score = |picked tags ∩ interviewer tags|
     const flat = new Set(
@@ -178,9 +214,9 @@ function PickInterviewerStep({ selectedTags, picked, onPick, onBack, onNext }: P
   }, [selectedTags]);
 
   return (
-    <section className="apply-section">
+    <section ref={ref} className="apply-section reveal">
       <span className="eyebrow">02 — Pick Interviewer</span>
-      <h1>挑一位你最想面聊的。</h1>
+      <h2>挑一位你最想面聊的。</h2>
       <p className="apply-lead">
         上面排在前面的，是跟你现有标签契合度更高的。还没选标签？没关系，先看他们的介绍，找到让你好奇的那位。
       </p>
@@ -253,8 +289,10 @@ function ApplicationStep({
   onBack,
   onSubmitted,
 }: ApplyProps) {
+  const ref = useRef<HTMLFormElement | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState('');
+  useReveal(ref);
 
   const submit = useCallback(async () => {
     setSubmitting(true);
@@ -292,14 +330,15 @@ function ApplicationStep({
 
   return (
     <form
-      className="apply-section"
+      ref={ref}
+      className="apply-section reveal"
       onSubmit={(e) => {
         e.preventDefault();
         submit();
       }}
     >
       <span className="eyebrow">03 — Application</span>
-      <h1>选你的标签。</h1>
+      <h2>选你的标签。</h2>
       <p className="apply-lead">
         想做的事必选一项；技术 / 兴趣 / 未来可多选，按熟练度从高到低排。
       </p>
@@ -372,7 +411,10 @@ function DoneStep({
   onRestart: () => void;
   onHome: () => void;
 }) {
+  const ref = useRef<HTMLElement | null>(null);
   const [copied, setCopied] = useState(false);
+  useReveal(ref);
+
   const copy = useCallback(() => {
     navigator.clipboard?.writeText(tagCode).then(() => {
       setCopied(true);
@@ -381,9 +423,9 @@ function DoneStep({
   }, [tagCode]);
 
   return (
-    <section className="apply-section apply-done">
+    <section ref={ref} className="apply-section apply-done reveal">
       <span className="eyebrow">04 — Done</span>
-      <h1>你的个性标签已生成。</h1>
+      <h2>你的个性标签已生成。</h2>
       <p className="apply-lead">
         复制下面的代码保存下来——打开下方"飞书表单"，把它粘到表单里的
         <strong>「个性标签」字段</strong>，再上传简历

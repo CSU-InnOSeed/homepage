@@ -19,14 +19,28 @@ test.describe('apply @ /apply route', () => {
 
   test('renders the Guide step on direct nav', async ({ page }) => {
     await page.goto('/apply');
-    await expect(page.locator('.apply-section h1').first()).toBeVisible();
-    await expect(page.getByText('欢迎加入 InnOSeed。')).toBeVisible();
+    // The page h1 now lives in the shared sub-page header (same as
+    // /events, /recruit); the Guide step carries no headline of its own so
+    // the two don't stack.
+    await expect(page.locator('main .page-header h1')).toBeVisible();
+    await expect(page.locator('.apply-section .eyebrow')).toHaveText('01 — Guide');
     await expect(page.locator('.apply-lead')).toContainText('想做的事 / 技术 / 兴趣 / 未来');
     await expect(page.locator('.apply-section')).not.toContainText('Mini Camp 分路');
 
     // Guide step no longer carries the 飞书 form link — that lives on
     // the Done step now. The Guide step just welcomes and starts.
     await expect(page.locator('a[href*="feishu.cn"]')).toHaveCount(0);
+  });
+
+  test('Guide step carries the shared breadcrumb back into the site', async ({ page }) => {
+    await page.goto('/apply');
+    const breadcrumb = page.locator('.page-header .breadcrumb');
+    await expect(breadcrumb).toBeVisible();
+    await expect(breadcrumb).toHaveAttribute('aria-label', '面包屑');
+    await expect(breadcrumb.getByRole('link', { name: '首页' })).toBeVisible();
+    await expect(breadcrumb.locator('[aria-current="page"]')).toHaveText('招新');
+    await page.locator('.page-header .breadcrumb a').click();
+    await expect(page).toHaveURL(/\/$/);
   });
 
   test('progress pills transition as steps advance', async ({ page }) => {

@@ -107,8 +107,7 @@ v3 阶段放弃了原 spec 里的 video-led hero（macro time-lapse 种子萌芽
 | `--bg-mint` | `#EDF5EC` | Recruit 背景 |
 | `--ink-dark` | `#1F2937` | 主文字 |
 | `--ink-mid` | `#374151` | 副文字 |
-| `--ink-muted` | `#6B7280` | 辅助文字 |
-| `--ink-faint` | `#6B7280` | meta 文字 (与 `--ink-muted` 同值,WCAG AA 5.74:1) |
+| `--ink-muted` | `#6B7280` | 辅助文字 / meta 文字（WCAG AA 5.74:1） |
 | `--rule` | `#E5E7EB` | 分隔线 |
 | `--brand` | `#1C64F2` | 中南蓝，主强调 |
 | `--c-compete` | `#6B21A8` | 紫（竞赛 pillar + 国家一等奖数字） |
@@ -130,6 +129,9 @@ v4 引入明确的三档移动端断点（v3 散落在 520/720/760/880/920/980px
 | 481 - 720px | 大手机 | hamburger 菜单；hero CTA 仍水平 |
 | ≤ 480px | 手机 | gutter 28px；CTA 竖排全宽；section padding 72px；hero 字号 floor 下调 |
 | ≤ 360px | 超小屏 | gutter 20px；hero 44px |
+
+页级样式表（`src/pages/Apply.css` / `MiniCamp.css`）不再自带私有断点，只用本表的
+移动两档（720px 大手机 / 480px 手机），平板档统一在 980px 折叠。
 
 ---
 

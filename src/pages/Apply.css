@@ -3,9 +3,12 @@
    than the main landing. Stays inside the v4 design tokens.
    ========================================================= */
 
+/* Surface = --bg-base like the landing page; the shared page-header supplies
+   the cream band above (globals.css `main .page-header`). Cards/callouts below
+   invert to --bg-soft so they still read as raised surfaces on white. */
 .apply-page {
   min-height: 100vh;
-  background: var(--bg-cream);
+  background: var(--bg-base);
   color: var(--ink-dark);
   font-family: var(--ff-sans);
 }
@@ -21,7 +24,7 @@
   justify-content: space-between;
   gap: 24px;
   padding: 18px clamp(20px, 4vw, 64px);
-  background: rgba(247, 245, 239, 0.92);
+  background: rgba(255, 255, 255, 0.9);
   backdrop-filter: blur(14px) saturate(140%);
   -webkit-backdrop-filter: blur(14px) saturate(140%);
   border-bottom: 1px solid var(--rule);
@@ -34,7 +37,7 @@
   color: var(--ink-mid);
   padding: 8px 14px;
   border-radius: 999px;
-  background: var(--bg-base);
+  background: var(--bg-soft);
   border: 1px solid var(--rule);
   transition: border-color 0.2s ease, color 0.2s ease;
 }
@@ -42,71 +45,79 @@
 
 .apply-progress {
   display: flex;
-  gap: 8px;
+  gap: 10px;
   align-items: center;
   flex-wrap: wrap;
   justify-content: flex-end;
 }
+/* Stepper speaks the same language as `.eyebrow` on the landing page: brand
+   hairline under the row, Fraunces italic numerals, solid brand chip for the
+   step you're on. */
 .apply-step-pill {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 6px 14px;
-  border-radius: 999px;
+  padding: 4px 2px 6px;
+  border-bottom: 2px solid transparent;
   font-size: 12px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--ink-faint);
-  background: var(--bg-base);
-  border: 1px solid var(--rule);
-  transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+  color: var(--ink-muted);
+  transition: color 0.25s ease, border-color 0.25s ease;
 }
 .apply-step-pill .num {
   font-family: var(--ff-display);
   font-style: italic;
+  font-weight: 700;
   font-size: 13px;
+  line-height: 1;
+  padding: 4px 9px;
+  border-radius: 999px;
+  background: var(--brand-soft);
+  color: var(--brand);
+  transition: background 0.25s ease, color 0.25s ease;
 }
-.apply-step-pill.is-done {
-  color: var(--ink-mid);
-  border-color: var(--rule);
-}
-.apply-step-pill.is-current {
-  color: #fff;
-  background: var(--ink-dark);
-  border-color: var(--ink-dark);
-}
+.apply-step-pill.is-done { color: var(--ink-mid); border-bottom-color: var(--rule); }
+.apply-step-pill.is-current { color: var(--ink-dark); border-bottom-color: var(--brand); }
+.apply-step-pill.is-current .num { background: var(--brand); color: #fff; }
+
+/* Header breakpoint = spec §7 "大手机" tier. CTA stacking drops to the ≤480px
+   "手机" tier so 721–980px tablets keep the side-by-side pair. */
 @media (max-width: 720px) {
   .apply-header { flex-direction: column; align-items: flex-start; }
   .apply-progress { width: 100%; justify-content: flex-start; }
   .apply-step-pill .title { display: none; }
-
-  /* CTAs — stack vertically and fill width for thumb-friendly tap targets */
+}
+@media (max-width: 480px) {
+  /* Stack vertically and fill width for thumb-friendly tap targets. */
   .apply-cta-row { flex-direction: column; align-items: stretch; }
   .apply-cta-row .btn { width: 100%; justify-content: center; }
 }
 
 /* ── Main content ─────────────────────────────────────────────────── */
 
+/* Matches `.container` (spec §4 max width + gutter) so the step content lines
+   up with the page-header's container instead of floating 980px wide. */
 .apply-main {
-  max-width: 980px;
+  max-width: var(--max);
   margin: 0 auto;
-  padding: clamp(60px, 10vh, 120px) clamp(20px, 4vw, 64px)
+  padding: clamp(60px, 10vh, 120px) var(--gutter)
            calc(60px + env(safe-area-inset-bottom, 0px));
 }
+/* The shared page-header pads 120–200px at the top to clear a fixed Nav.
+/apply has no Nav and the sticky flow header scrolls away, so trim it — and
+   halve the gap the section below would otherwise stack on top. */
+.apply-page .page-header { padding-top: clamp(40px, 8vh, 80px); }
+.page-header + .apply-main { padding-top: clamp(32px, 6vh, 64px); }
 .apply-section { display: flex; flex-direction: column; gap: 28px; }
-.apply-section h1 {
+/* Step titles are h2 now (the page h1 lives in the shared page-header, same as
+   /recruit). Direct child only — the Done step's callout has its own h2. */
+.apply-section > h2 {
   font-family: var(--ff-zh-serif);
   font-weight: 900;
-  font-size: clamp(36px, 5.5vw, 64px);
-  line-height: 1.1;
+  font-size: clamp(30px, 4vw, 52px);
+  line-height: 1.15;
   letter-spacing: -0.02em;
-  color: var(--ink-dark);
-}
-.apply-section h2 {
-  font-family: var(--ff-zh-serif);
-  font-weight: 700;
-  font-size: clamp(22px, 2.4vw, 30px);
-  line-height: 1.3;
   color: var(--ink-dark);
   margin-top: 8px;
 }
@@ -129,12 +140,18 @@
   gap: 14px;
   padding: 28px 32px;
   border-radius: var(--radius-md);
-  background: var(--bg-base);
+  background: var(--bg-soft);
   border: 1px solid var(--rule);
   align-self: flex-start;
   max-width: 720px;
 }
-.apply-callout h2 { margin-top: 0; }
+.apply-callout h2 {
+  margin-top: 0;
+  font-family: var(--ff-zh-serif);
+  font-weight: 700;
+  font-size: clamp(20px, 2vw, 26px);
+  line-height: 1.3;
+}
 .apply-callout .btn { align-self: flex-start; }
 
 .apply-cta-row {
@@ -162,7 +179,7 @@
   grid-template-columns: 56px 1fr;
   gap: 16px;
   padding: 20px;
-  background: var(--bg-base);
+  background: var(--bg-soft);
   border: 1px solid var(--rule);
   border-radius: var(--radius-md);
   text-align: left;
@@ -176,7 +193,7 @@
 }
 .apply-interviewer-card.is-picked {
   border-color: var(--ink-dark);
-  background: var(--bg-soft);
+  background: var(--bg-base);
 }
 .apply-interviewer-avatar {
   width: 56px;
@@ -212,7 +229,7 @@
   text-transform: uppercase;
   padding: 3px 8px;
   border-radius: 999px;
-  background: var(--bg-soft);
+  background: var(--bg-base);
   color: var(--c-research);
   border: 1px solid var(--c-research);
   font-weight: 600;
@@ -268,7 +285,7 @@
   gap: 6px;
   padding: 8px 14px;
   border-radius: 999px;
-  background: var(--bg-base);
+  background: var(--bg-soft);
   border: 1px solid var(--rule);
   font-size: 13px;
   color: var(--ink-mid);

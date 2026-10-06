@@ -429,7 +429,7 @@ main .minicamp-hero h1 {
   position: absolute;
   top: 0; left: 0; right: 0;
   height: 3px;
-  background: var(--track-color, var(--ink-faint));
+  background: var(--track-color, var(--ink-muted));
 }
 .minicamp-track::after {
   content: '';
@@ -595,7 +595,7 @@ main .minicamp-hero h1 {
 
 /* ── Mobile ───────────────────────────────────────────────── */
 
-@media (max-width: 880px) {
+@media (max-width: 980px) {
   .minicamp-hero { min-height: clamp(560px, 88vh, 760px); }
   .minicamp-hero-index { display: none; }
   .minicamp-story-grid,
