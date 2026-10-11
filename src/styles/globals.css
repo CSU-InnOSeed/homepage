@@ -1168,6 +1168,9 @@ h2 em { font-size: 1.1em; }
   overflow: hidden;
   isolation: isolate;
 }
+@media (min-width: 721px) {
+  .recruit { min-height: 680px; }
+}
 .recruit-bg {
   position: absolute; inset: 0; z-index: -1;
   margin: 0;
@@ -1220,7 +1223,7 @@ h2 em { font-size: 1.1em; }
   font-style: italic;
   font-size: 18px;
   color: var(--c-research);
-  margin: 32px 0 48px;
+  margin: 32px auto 48px;
 }
 .recruit-cta {
   display: inline-flex; align-items: center; gap: 14px;

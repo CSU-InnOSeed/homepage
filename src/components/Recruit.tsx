@@ -36,12 +36,10 @@ export default function Recruit({ hideHero = false }: RecruitProps = {}) {
 function RecruitHero() {
   const eyebrowRef = useRef<HTMLSpanElement | null>(null);
   const headRef = useRef<HTMLHeadingElement | null>(null);
-  const pRef = useRef<HTMLParagraphElement | null>(null);
   const metaRef = useRef<HTMLParagraphElement | null>(null);
   const ctaRef = useRef<HTMLAnchorElement | null>(null);
   useReveal(eyebrowRef);
   useReveal(headRef);
-  useReveal(pRef);
   useReveal(metaRef);
   useReveal(ctaRef);
 
@@ -73,16 +71,13 @@ function RecruitHero() {
           {RECRUIT.headline.lead}{' '}
           <em>{RECRUIT.headline.accent}</em>
         </h2>
-        <p ref={pRef} className="reveal" data-delay="2">
-          {RECRUIT.body}
-        </p>
-        <p ref={metaRef} className="meta reveal" data-delay="3">
+        <p ref={metaRef} className="meta reveal" data-delay="2">
           {RECRUIT.meta}
         </p>
         <a
           ref={ctaRef}
           className="recruit-cta reveal"
-          data-delay="4"
+          data-delay="3"
           href={RECRUIT.cta.href}
           onClick={() => trackEvent('recruit_cta_click', { from: 'recruit-hero' })}
         >

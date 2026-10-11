@@ -89,7 +89,6 @@ export interface HeroData {
 export interface RecruitData {
   eyebrow: string;
   headline: { lead: string; accent: string };
-  body: string;
   meta: string;
   cta: HeroCta;
 }
@@ -383,7 +382,6 @@ export const INSIDE: InsideData = {
 export const RECRUIT: RecruitData = {
   eyebrow: '06 — Join Us',
   headline: { lead: '加 入', accent: '云盾社' },
-  body: '坚持小而精的发展路线，每届只固定招收 8 — 9 人，招生对象面向全校、只面向大二。我们没有硬性的招生标准。',
   meta: '— 只希望能够和有着不同想法的你相遇。',
   cta: { label: '立即申请 · Apply Now', arrow: '→', href: '/apply' },
 };
