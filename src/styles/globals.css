@@ -643,7 +643,7 @@ h2 em { font-size: 1.1em; }
   overflow: hidden;
 }
 .manifesto::before {
-  content: 'InnOSeed';
+  content: '云盾社';
   position: absolute;
   bottom: -8%; right: -4%;
   font-family: var(--ff-display);

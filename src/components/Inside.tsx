@@ -27,7 +27,7 @@ export default function Inside() {
               src="/imgs/group-photo-1200.jpg"
               srcSet="/imgs/group-photo-480.jpg 480w, /imgs/group-photo-800.jpg 800w, /imgs/group-photo-1200.jpg 1200w"
               sizes="(max-width: 880px) 100vw, 50vw"
-              alt="在 InnOSeed 做你想做的"
+              alt="在 云盾社 做你想做的"
               loading="lazy"
               decoding="async"
               onError={(e) => {

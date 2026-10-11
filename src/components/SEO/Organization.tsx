@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { BRAND, CONTACT_EMAIL, META } from '../../content/site';
 
 /**
- * Organization — JSON-LD structured data describing the InnOSeed
+ * Organization — JSON-LD structured data describing the 云盾社
  * organization as a schema.org Organization.
  *
  * Rendered exactly once at the root of the SPA (App.tsx). Lives on
@@ -39,7 +39,7 @@ export default function Organization() {
       '@context': 'https://schema.org',
       '@type': 'Organization',
       name: BRAND,
-      alternateName: 'InnOSeed Lab',
+      alternateName: '云盾社 Lab',
       url,
       logo: `${url}/imgs/favicon.png`,
       // Same as logo, but the wider og-cover is what we'd want

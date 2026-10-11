@@ -25,9 +25,9 @@ export default function EventsPage() {
   // Per-route SEO (stage-2 D1): title + description + canonical. Description
   // is hand-tuned for /events — the home page description is shorter.
   usePageMeta({
-    title: '活动 · InnOSeed Lab',
+    title: '活动 · 云盾社 Lab',
     description:
-      'InnOSeed 的活动:Mini Camp、tech talk、企业参访。了解我们准备过的一场 Mini Camp。',
+      '云盾社 的活动:Mini Camp、tech talk、企业参访。了解我们准备过的一场 Mini Camp。',
     canonical: '/events',
   });
 

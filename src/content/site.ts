@@ -184,7 +184,7 @@ export interface FooterData {
 
 // Site-wide constants used outside the section data objects (e.g. the 404
 // page) so they live in one place. Mirrors the values used in BRAND copy.
-export const BRAND = 'InnOSeed';
+export const BRAND = '云盾社';
 export const CONTACT_EMAIL = 'contact@innoseed.club';
 
 /**
@@ -215,12 +215,12 @@ export interface MetaData {
 // ─── Data ──────────────────────────────────────────────────────────────
 
 export const META: MetaData = {
-  title: 'InnOSeed Lab · 中南大学计算机学院',
+  title: '云盾社 Lab · 中南大学计算机学院',
   description:
-    'InnOSeed Lab — 中南大学计算机学院的创新实验室。我们更像俱乐部，属于 different thinkers 的俱乐部。',
+    '云盾社 Lab — 中南大学计算机学院的创新实验室。我们更像俱乐部，属于 different thinkers 的俱乐部。',
   themeColor: '#1C64F2',
   ogImage: '/imgs/og-cover.png',
-  ogImageAlt: 'InnOSeed Lab — Different Thinkers 的俱乐部',
+  ogImageAlt: '云盾社 Lab — Different Thinkers 的俱乐部',
 };
 
 export const NAV_LINKS: NavLink[] = [
@@ -233,14 +233,14 @@ export const NAV_LINKS: NavLink[] = [
 ];
 
 export const HERO: HeroData = {
-  tag: 'CSU InnOSeed Lab · est. 2019',
+  tag: 'CSU 云盾社 Lab · est. 2019',
   lead: '我们更像俱乐部，属于 different thinkers 的俱乐部。',
-  // 2 fixed rows; the accent em sits on "在 InnOSeed" so the brand
+  // 2 fixed rows; the accent em sits on "在 云盾社" so the brand
   // name is the visual anchor of the headline. Row 2 is plain text.
   // (Originally 3 rows with "在" alone on row 1 — looked like a typo;
   //  the v3 design also places the brand word in the colored em.)
   headlineRows: [
-    { lead: '在 InnOSeed', trail: '，' },
+    { lead: '在 云盾社', trail: '，' },
     { text: '做你想做的。' },
   ],
   sub:
@@ -260,7 +260,7 @@ export const MANIFESTO: ManifestoData = {
   headline: ['一 所', '不 太 一 样', '的 实 验 室。'],
   body: [
     {
-      html: 'InnOSeed 不是另一个学生组织，<span class="hl">而是一个"实验室"</span>——小而精，每届只收 8–9 个人，面向全校。',
+      html: '云盾社 不是另一个学生组织，<span class="hl">而是一个"实验室"</span>——小而精，每届只收 8–9 个人，面向全校。',
     },
     {
       html:
@@ -369,7 +369,7 @@ export const MEMBERS: Member[] = [
 
 export const INSIDE: InsideData = {
   eyebrow: '05 — Inside The Lab',
-  headline: ['在 InnOSeed', '做你想做的。'],
+  headline: ['在 云盾社', '做你想做的。'],
   paragraphs: [
     '我们联络<strong>优秀的业界前辈</strong>举行 tech talk，为同学们答疑解惑、指点迷津；成员们也在各项活动与学术学习中大放异彩。',
     '欢迎到我们各平台的账号了解我们的最新成果。',
@@ -382,16 +382,16 @@ export const INSIDE: InsideData = {
 
 export const RECRUIT: RecruitData = {
   eyebrow: '06 — Join Us',
-  headline: { lead: '加 入', accent: 'InnOSeed' },
+  headline: { lead: '加 入', accent: '云盾社' },
   body: '坚持小而精的发展路线，每届只固定招收 8 — 9 人，招生对象面向全校、只面向大二。我们没有硬性的招生标准。',
   meta: '— 只希望能够和有着不同想法的你相遇。',
   cta: { label: '立即申请 · Apply Now', arrow: '→', href: '/apply' },
 };
 
 export const FOOTER: FooterData = {
-  brand: 'InnOSeed',
+  brand: '云盾社',
   tagline: [TAGLINE, 'different thinkers 的俱乐部。'],
-  copyright: '© 2025-2026 InnOSeed Lab. 保留所有权利.',
+  copyright: '© 2025-2026 云盾社 Lab. 保留所有权利.',
   navHeading: '导航',
   navLinks: [
     { href: '#manifesto', label: '关于实验室' },
@@ -404,7 +404,7 @@ export const FOOTER: FooterData = {
   contactLinks: [
     { href: 'mailto:contact@innoseed.club', label: 'contact@innoseed.club' },
     { label: '微信号: MichIGaNmcig', plain: true },
-    { href: 'https://github.com/CSU-InnOSeed', label: 'GitHub · CSU-InnOSeed', external: true },
+    { href: 'https://github.com/CSU-InnOSeed', label: 'GitHub · 云盾社', external: true },
     { href: 'https://blog.csdn.net/cyl_csdn_1', label: 'CSDN · cyl_csdn_1', external: true },
   ],
   bottomLinks: [
@@ -440,7 +440,7 @@ export const EVENTS: EventsData = {
       date: '2025 · 09',
       title: '2025 秋季 Mini Camp',
       subtitle: '一个白天 · 9 月举行',
-      body: 'InnOSeed 曾准备一场 Mini Camp —— 参与者直接聚到一起,一个白天完成一次共创。4 路分头(产品 / 技术 / 设计 / 创业),每路 2-3 人组队,产出原型 + 现场 Demo + 当场反馈。',
+      body: '云盾社 曾准备一场 Mini Camp —— 参与者直接聚到一起,一个白天完成一次共创。4 路分头(产品 / 技术 / 设计 / 创业),每路 2-3 人组队,产出原型 + 现场 Demo + 当场反馈。',
       where: '具体地点见当时通知',
     },
   ],
@@ -476,7 +476,7 @@ export const RECRUIT_EXTRAS: RecruitExtras = {
       index: 3,
       when: '2025 · 09',
       title: '正式 offer',
-      desc: '完成面试后 3 天内发出 offer。从此刻起,InnOSeed 是你的另一个家。',
+      desc: '完成面试后 3 天内发出 offer。从此刻起,云盾社 是你的另一个家。',
     },
   ],
   faqs: [
@@ -494,7 +494,7 @@ export const RECRUIT_EXTRAS: RecruitExtras = {
     },
     {
       q: '招新期间我可以参加其他社团 / 实验室吗?',
-      a: '可以。我们本身鼓励多元尝试 —— InnOSeed 不是一个会消耗你所有时间的组织,前提是你认真。',
+      a: '可以。我们本身鼓励多元尝试 —— 云盾社 不是一个会消耗你所有时间的组织,前提是你认真。',
     },
   ],
 };
@@ -533,10 +533,10 @@ export interface MiniCampData {
 }
 
 export const MINICAMP: MiniCampData = {
-  eyebrow: 'Mini Camp · InnOSeed 活动',
+  eyebrow: 'Mini Camp · 云盾社 活动',
   headline: { lead: '一个白天的', accent: '共创活动。' },
   lead:
-    'Mini Camp 是 InnOSeed 准备过的一场活动：大家聚到一起，一个白天把想法做成原型、跑通 Demo，再当面交流反馈。',
+    'Mini Camp 是 云盾社 准备过的一场活动：大家聚到一起，一个白天把想法做成原型、跑通 Demo，再当面交流反馈。',
   paragraphs: [
     '大家按 <strong>产品 / 技术 / 设计 / 创业</strong> 四路分头，每路 2-3 人自由组队。',
     '一个白天的产出：原型 + 现场 Demo + 当场反馈。我们看的不是"做完了什么"，而是"怎么想的、怎么表达的、怎么和队友合作的"。',

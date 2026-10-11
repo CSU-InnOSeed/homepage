@@ -7,7 +7,7 @@ interface RecruitProps {
   /**
    * On the standalone /recruit page the page-header (in pages/Recruit.tsx)
    * already provides the title + intro. Setting this to true drops the
-   * in-section hero (group-photo background + duplicate "加入 InnOSeed"
+   * in-section hero (group-photo background + duplicate "加入 云盾社"
    * heading) so the page only shows the timeline + FAQs below the
    * page-header. On the home page (where the section is the last thing
    * before the footer) keep the default — the section hero IS the CTA.

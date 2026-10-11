@@ -21,9 +21,9 @@ export default function RecruitPage() {
 
   // Per-route SEO (stage-2 D1): title + description + canonical.
   usePageMeta({
-    title: '招新 · InnOSeed Lab',
+    title: '招新 · 云盾社 Lab',
     description:
-      '加入 InnOSeed 的招新流程与时间线 — 投递 + 简历初筛 / 1v1 面试 / Mini Camp / Offer。坚持小而精,每届 8 — 9 人。',
+      '加入 云盾社 的招新流程与时间线 — 投递 + 简历初筛 / 1v1 面试 / Mini Camp / Offer。坚持小而精,每届 8 — 9 人。',
     canonical: '/recruit',
   });
 
@@ -38,7 +38,7 @@ export default function RecruitPage() {
           </nav>
           <span className="eyebrow">Join Us · 2026 招新筹备中</span>
           <h1>
-            加 入 <em>InnOSeed</em>
+            加 入 <em>云盾社</em>
           </h1>
           <p className="page-header-desc">
             坚持小而精的发展路线,每届只固定招收 8 — 9 人,招生对象面向全校。

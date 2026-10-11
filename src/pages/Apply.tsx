@@ -55,9 +55,9 @@ export default function Apply() {
   // advances with each step so screen readers / tab strips reflect
   // progress.
   usePageMeta({
-    title: `招新 · 第 ${stepIdx + 1} 步 · InnOSeed Lab`,
+    title: `招新 · 第 ${stepIdx + 1} 步 · 云盾社 Lab`,
     description:
-      '加入 InnOSeed 的申请流程:挑一位最想面聊的学长 / 学姐,选几行个性标签,生成你的"个性标签代码"。',
+      '加入 云盾社 的申请流程:挑一位最想面聊的学长 / 学姐,选几行个性标签,生成你的"个性标签代码"。',
     canonical: '/apply',
     noindex: true,
   });
@@ -104,7 +104,7 @@ export default function Apply() {
               </nav>
               <span className="eyebrow">Join Us · 2026 招新</span>
               <h1>
-                加 入 <em>InnOSeed</em>
+                加 入 <em>云盾社</em>
               </h1>
               <p className="page-header-desc">
                 四步走完投递：看指引、挑一位最想面聊的学长 / 学姐、勾几行标签，
@@ -166,7 +166,7 @@ function GuideStep({ onNext }: { onNext: () => void }) {
   return (
     <section ref={ref} className="apply-section reveal">
       {/* No headline here on purpose — the shared page-header above already
-          says 加 入 InnOSeed. Repeating it made the page read as two stacked
+          says 加 入 云盾社. Repeating it made the page read as two stacked
           titles. */}
       <span className="eyebrow">01 — Guide</span>
       <p className="apply-lead">
@@ -459,7 +459,7 @@ function DoneStep({
         <p>
           <strong>必填</strong>：把上面那份『个性标签代码』粘到飞书表单的
           <strong>「个性标签」字段</strong>，再上传简历。
-          InnOSeed 通过简历 + 标签做综合评估——标签是面试官匹配 / 群组分配的依据。
+          云盾社 通过简历 + 标签做综合评估——标签是面试官匹配 / 群组分配的依据。
           飞书表单提交后我们会尽快与你联系。
         </p>
         <a

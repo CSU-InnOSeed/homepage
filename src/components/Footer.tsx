@@ -12,7 +12,7 @@ export default function Footer() {
         <div className="footer-grid">
           <div>
             <div className="footer-brand">
-              <img src="/imgs/favicon.png" alt="InnOSeed" />
+              <img src="/imgs/favicon.png" alt="云盾社" />
               <div className="footer-brand-text">
                 {FOOTER.brand}<em>.</em>
               </div>

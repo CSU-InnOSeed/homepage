@@ -21,7 +21,7 @@ export default function Members() {
             </h2>
           </div>
           <p ref={descRef} className="desc reveal" data-delay="2">
-            三位代表人物，三条不同的路。共同点是：都曾在 InnOSeed 认真做过一段事情。
+            三位代表人物，三条不同的路。共同点是：都曾在 云盾社 认真做过一段事情。
           </p>
         </div>
         <div className="members-grid">

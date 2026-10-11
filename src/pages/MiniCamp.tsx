@@ -27,9 +27,9 @@ export default function MiniCamp() {
   }, []);
 
   usePageMeta({
-    title: 'Mini Camp · InnOSeed',
+    title: 'Mini Camp · 云盾社',
     description:
-      'InnOSeed Mini Camp: 一个白天,把一个小想法做成原型、跑通 Demo,再当面交换反馈。',
+      '云盾社 Mini Camp: 一个白天,把一个小想法做成原型、跑通 Demo,再当面交换反馈。',
     canonical: '/minicamp',
   });
 

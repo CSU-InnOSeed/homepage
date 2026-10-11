@@ -194,13 +194,13 @@ export default function Nav() {
             href="#top"
             className="brand"
             onClick={handleBrandClick}
-            aria-label="InnOSeed · 回到顶部"
+            aria-label="云盾社 · 回到顶部"
           >
             <span className="brand-mark">
-              <img src="/imgs/favicon.png" alt="InnOSeed" />
+              <img src="/imgs/favicon.png" alt="云盾社" />
             </span>
             <span>
-              <div>InnOSeed</div>
+              <div>云盾社</div>
               <div className="brand-sub">CSU · 中南大学</div>
             </span>
           </a>

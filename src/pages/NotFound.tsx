@@ -41,8 +41,8 @@ export default function NotFound() {
   // context (we don't expect search engines to index this — noindex
   // is set above — but link unshorteners and dev tools render it).
   usePageMeta({
-    title: '页面走丢了 · InnOSeed Lab',
-    description: `${TAGLINE} — 页面走丢了,但种子还在土里。回主页看看 InnOSeed 在做什么。`,
+    title: '页面走丢了 · 云盾社 Lab',
+    description: `${TAGLINE} — 页面走丢了,但种子还在土里。回主页看看 云盾社 在做什么。`,
     canonical: '/',
     noindex: true,
   });
@@ -61,7 +61,7 @@ export default function NotFound() {
             <p>
               你找的页面可能搬家了、被收走了、或者根本没存在过。
               <br />
-              回主页看看 InnOSeed 在做什么 — 比迷路的地方有意思得多。
+              回主页看看 云盾社 在做什么 — 比迷路的地方有意思得多。
             </p>
             <Link to="/" className="btn btn-primary not-found-cta">
               <span>回到首页</span>

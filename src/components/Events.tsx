@@ -15,7 +15,7 @@ interface EventsProps {
 }
 
 /**
- * Events section — 时间倒序展示 InnOSeed 的活动 (upcoming 在前,past 在后)
+ * Events section — 时间倒序展示 云盾社 的活动 (upcoming 在前,past 在后)
  *
  * 视觉沿用 Pillars/Members:
  *   - 4 色 pillar accent (camp=research/talk=bonds/demo=startup/visit=compete)
