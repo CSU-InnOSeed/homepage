@@ -390,7 +390,7 @@ export const RECRUIT: RecruitData = {
 
 export const FOOTER: FooterData = {
   brand: '云盾社',
-  tagline: [TAGLINE, 'different thinkers 的俱乐部。'],
+  tagline: [],
   copyright: '© 2025-2026 云盾社 Lab. 保留所有权利.',
   navHeading: '导航',
   navLinks: [

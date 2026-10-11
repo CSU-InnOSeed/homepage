@@ -17,14 +17,16 @@ export default function Footer() {
                 {FOOTER.brand}<em>.</em>
               </div>
             </div>
-            <p className="footer-tagline">
-              {FOOTER.tagline.map((line, i) => (
-                <span key={i}>
-                  {line}
-                  {i < FOOTER.tagline.length - 1 && <br />}
-                </span>
-              ))}
-            </p>
+            {FOOTER.tagline.length > 0 && (
+              <p className="footer-tagline">
+                {FOOTER.tagline.map((line, i) => (
+                  <span key={i}>
+                    {line}
+                    {i < FOOTER.tagline.length - 1 && <br />}
+                  </span>
+                ))}
+              </p>
+            )}
           </div>
           <div>
             <h4>{FOOTER.navHeading}</h4>
